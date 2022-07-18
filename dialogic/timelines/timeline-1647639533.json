@@ -1,0 +1,27 @@
+{
+	"events": [
+		{
+			"character": "character-1640989017.json",
+			"event_id": "dialogic_001",
+			"portrait": "",
+			"text": "You found some keys. "
+		},
+		{
+			"definition": "1647639616-787",
+			"event_id": "dialogic_014",
+			"operation": "=",
+			"random_upper_limit": 100,
+			"set_random": false,
+			"set_value": "1"
+		},
+		{
+			"emit_signal": "KeyA",
+			"event_id": "dialogic_040"
+		}
+	],
+	"metadata": {
+		"dialogic-version": "1.4",
+		"file": "timeline-1647639533.json",
+		"name": "KeyAFound"
+	}
+}

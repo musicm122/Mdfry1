@@ -1,0 +1,46 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Entities/SecurityCamera.cs" type="Script" id=2]
+[ext_resource path="res://Entities/Components/RaycastVision.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 6.99988
+height = 8.01178
+
+[node name="SecurityCamera" type="Node2D"]
+rotation = -3.14159
+script = ExtResource( 2 )
+RotationSpeed = 3.0
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+rotation = -3.14159
+color = Color( 0.54902, 0.54902, 0.54902, 1 )
+polygon = PoolVector2Array( -15, -8, 10.3241, -12, 15, 0, 12.0895, 12, -14, 6, -19.6875, -1 )
+
+[node name="Pivot" type="Node2D" parent="."]
+rotation = -1.5708
+
+[node name="VisionCone" type="Polygon2D" parent="Pivot"]
+rotation = 0.689756
+color = Color( 0.85098, 0.807843, 0.137255, 0.32549 )
+polygon = PoolVector2Array( 5.55316, 16.1605, 22.0204, 51.8373, 40.225, 47.1906, 44.5261, 31.9754, 12.6308, 9.02563, 11.3192, 15.293 )
+
+[node name="RayCast2D" parent="Pivot" instance=ExtResource( 3 )]
+rotation = -1.54387
+cast_to = Vector2( -50, 0 )
+StartDirection = Vector2( -1, 0 )
+ConeAngle = 0.5
+AngleBetweenRays = 0.08
+
+[node name="DebugLabel" type="Label" parent="."]
+margin_right = 40.0
+margin_bottom = 14.0
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+position = Vector2( -1, 2.53506e-06 )
+rotation = 1.57676
+shape = SubResource( 1 )

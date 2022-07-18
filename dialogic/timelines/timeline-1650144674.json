@@ -1,0 +1,19 @@
+{
+	"events": [
+		{
+			"character": "character-1647639414.json",
+			"event_id": "dialogic_001",
+			"portrait": "",
+			"text": "Opening door"
+		},
+		{
+			"emit_signal": "",
+			"event_id": "dialogic_040"
+		}
+	],
+	"metadata": {
+		"dialogic-version": "1.4",
+		"file": "timeline-1650144674.json",
+		"name": "OpeningDoor"
+	}
+}
