@@ -1,0 +1,142 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Entities/Block.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Entities/PushBlock.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Entities/Flashlight.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Entities/LockedDoor.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/Key.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Entities/NPC.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Assets/Art/Environment/Light/light_mask.png" type="Texture" id=8]
+[ext_resource path="res://Entities/Spikes.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Entities/HealthKit.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Entities/PlayerV2.tscn" type="PackedScene" id=11]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+visible = false
+color = Color( 0.0431373, 0.0156863, 0.105882, 0.74902 )
+
+[node name="HealthKit" parent="." instance=ExtResource( 10 )]
+position = Vector2( 736, 56 )
+
+[node name="Player" parent="." groups=["Player"] instance=ExtResource( 11 )]
+position = Vector2( 648, -40 )
+Acceleration = 500.0
+Friction = 500.0
+MaxSpeed = 150.0
+RollSpeed = 120.0
+
+[node name="NPC" parent="." instance=ExtResource( 7 )]
+position = Vector2( 448, -48 )
+
+[node name="NPC2" parent="." instance=ExtResource( 7 )]
+position = Vector2( 448, 144 )
+Timeline = "/NPCS/AddMission"
+
+[node name="Flashlight" parent="." instance=ExtResource( 4 )]
+position = Vector2( 168, -48 )
+
+[node name="Light2D" type="Light2D" parent="Flashlight"]
+position = Vector2( 0, -69 )
+scale = Vector2( 0.273454, 0.180063 )
+texture = ExtResource( 8 )
+energy = 5.0
+
+[node name="Block" parent="." instance=ExtResource( 2 )]
+position = Vector2( -80, -40 )
+
+[node name="Block3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 264, 120 )
+scale = Vector2( 4.48597, 1.24564 )
+
+[node name="Block5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 168, 120 )
+scale = Vector2( 4.48597, 1.24564 )
+
+[node name="PushBlock" parent="." instance=ExtResource( 3 )]
+position = Vector2( -80, 24 )
+
+[node name="Block2" parent="." instance=ExtResource( 2 )]
+position = Vector2( -80, 96 )
+
+[node name="Label" type="Label" parent="."]
+show_behind_parent = true
+margin_left = -160.0
+margin_top = -103.0
+margin_right = -24.0
+margin_bottom = -89.0
+text = "Push Block mechanic"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label2" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 120.0
+margin_top = -104.0
+margin_right = 293.0
+margin_bottom = -90.0
+rect_pivot_offset = Vector2( 272, 88 )
+text = "Examinable Item Mechanic"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label6" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 648.0
+margin_top = -103.0
+margin_right = 821.0
+margin_bottom = -89.0
+rect_pivot_offset = Vector2( 272, 88 )
+text = "Health and Damage Mechanic"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label5" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 424.0
+margin_top = -104.0
+margin_right = 597.0
+margin_bottom = -90.0
+rect_pivot_offset = Vector2( 272, 88 )
+text = "Talk to NPC "
+
+[node name="Label4" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 376.0
+margin_top = 75.0
+margin_right = 549.0
+margin_bottom = 89.0
+rect_pivot_offset = Vector2( 272, 88 )
+text = "Mission Mechanic"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label3" type="Label" parent="."]
+show_behind_parent = true
+margin_left = 136.0
+margin_top = 72.0
+margin_right = 309.0
+margin_bottom = 86.0
+rect_pivot_offset = Vector2( 32, 120 )
+text = "Locked Door Mechanic"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LockedDoor" parent="." instance=ExtResource( 5 )]
+position = Vector2( 216, 120 )
+IsDebugging = true
+
+[node name="KeyA" parent="." instance=ExtResource( 6 )]
+position = Vector2( 160, 224 )
+Timeline = "/KeyAFound"
+
+[node name="Spikes" parent="." instance=ExtResource( 9 )]
+position = Vector2( 792, -32 )
+IsDebugging = true
+EffectForce = 25.0
