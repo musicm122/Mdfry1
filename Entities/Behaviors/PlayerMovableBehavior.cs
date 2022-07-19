@@ -54,7 +54,6 @@ namespace Mdfry1.Entities.Behaviors
             return currentVelocity;
         }
         
-        
         public override void _PhysicsProcess(float delta)
         {
             if (!CanMove) return;

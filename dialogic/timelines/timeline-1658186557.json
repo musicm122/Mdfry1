@@ -4,16 +4,16 @@
 			"character": "character-1647639414.json",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "A Health Kit Found"
+			"text": "1 Round Found"
 		},
 		{
-			"emit_signal": "HealthKitFound",
+			"emit_signal": "AmmoFound1",
 			"event_id": "dialogic_040"
 		}
 	],
 	"metadata": {
 		"dialogic-version": "1.4.1",
-		"file": "timeline-1650226903.json",
-		"name": "HealthKitFound"
+		"file": "timeline-1658186557.json",
+		"name": "AmmoFound1"
 	}
 }

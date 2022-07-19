@@ -1,6 +1,23 @@
-﻿namespace Mdfry1.Scripts.Extensions
+﻿using System;
+
+namespace Mdfry1.Scripts.Extensions
 {
-    
+
+    public static class ArrayExtensions
+    {
+        public static T Find<T>(this T[] array, Predicate<T> predicate)
+        {
+            foreach (var item in array)
+            {
+                if (predicate(item))
+                {
+                    return item;
+                }
+            }
+            return default(T);
+        }
+    }
+
     public static class StringExtensions
     {
         public static bool IsNullOrEmpty(this string val) => string.IsNullOrEmpty(val);

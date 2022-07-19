@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
+using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Item;
 
 namespace Mdfry1.Scripts.Constants
@@ -7,7 +9,7 @@ namespace Mdfry1.Scripts.Constants
     public static class MasterItemList
     {
 
-        public static readonly List<Item.Item> Items = new List<Item.Item>(){
+        public static readonly Item.Item[] Items = {
         new Item.Item(){
             Name = "Foo's Glasses",
             Description= "These are some thick lenses",
@@ -37,6 +39,10 @@ namespace Mdfry1.Scripts.Constants
             Description= "Heals damage",
             ImagePath = ItemConstants.FlashlightImagePath},
         new Item.Item(){
+            Name = "Ammo",
+            Description= "Ammo for your gun",
+            ImagePath = ItemConstants.PizzaImagePath},
+        new Item.Item(){
             Name = "KeyA",
             Description= "Opens 'A' doors",
             ImagePath = ItemConstants.KeyImagePath},
@@ -45,12 +51,9 @@ namespace Mdfry1.Scripts.Constants
         public static Item.Item GetItemByName(string name)
         {
             var result = Items.Find(i => i.Name == name);
-            if (result == null)
-            {
-                GD.PrintErr($"GetItemByName({name}) not found");
-                throw new ItemNotFoundException(name);
-            }
-            return result;
+            if (result != null) return result;
+            GD.PrintErr($"GetItemByName({name}) not found");
+            throw new ItemNotFoundException(name);
         }
     }
 }

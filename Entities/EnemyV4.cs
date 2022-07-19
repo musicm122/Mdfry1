@@ -78,7 +78,26 @@ namespace Mdfry1.Entities
             }
 
             Damagable.Init(EnemyDataStore);
+            Damagable.OnTakeDamage += OnTakeDamage;
+            Damagable.HurtboxInvincibilityStartedCallback += OnHurtboxInvincibilityStarted;
+            Damagable.HurtboxInvincibilityEndedCallback += OnHurtboxInvincibilityEnded;
             Init();
+        }
+
+        private void OnHurtboxInvincibilityEnded()
+        {
+            //todo: add invincibility end animation
+        }
+
+        private void OnHurtboxInvincibilityStarted()
+        {
+            //todo: add invincibility end animation
+        }
+
+        private void OnTakeDamage(Node sender, Vector2 damageForce)
+        {
+            MoveAndSlide(damageForce);
+            Alert();            
         }
 
         private void OnMoveHandler(Vector2 arg1, float arg2)
@@ -93,8 +112,7 @@ namespace Mdfry1.Entities
 
         private void OnTargetDetection(Node2D target)
         {
-            EnemyDataStore.CurrentCoolDownCounter = EnemyDataStore.MaxCoolDownTime;
-            this._stateMachine.TransitionTo(EnemyBehaviorStates.ChasePlayer);
+            Alert();
         }
 
         public override void _PhysicsProcess(float delta)

@@ -49,13 +49,41 @@ namespace Mdfry1.Scripts.Item
                     GetTree().AddItem(Flashlight);
                     ShouldRemove = true;
                     break;
+                case "Gun":
+                    GetTree().AddItem("Gun");
+                    ShouldRemove = true;
+                    break;
                 case "HealthKitFound":
                     GetTree().AddItem("HealthKit");
+                    ShouldRemove = true;
+                    break;
+                case "AmmoFound1":
+                    GetTree().AddItem("Ammo",1);
+                    ShouldRemove = true;
+                    break;
+                case "AmmoFound5":
+                    GetTree().AddItem("Ammo",5);
+                    ShouldRemove = true;
+                    break;
+                case "AmmoFound10":
+                    GetTree().AddItem("Ammo",10);
+                    ShouldRemove = true;
+                    break;
+                case "AmmoFound20":
+                    GetTree().AddItem("Ammo",20);
+                    ShouldRemove = true;
+                    break;
+                case "LighterFluidFound":
+                    GetTree().AddItem("LighterFluid");
                     ShouldRemove = true;
                     break;
                 case "KeyA":
                     this.Print("DialogListener: KEY switch");
                     GetTree().AddItem("KeyA");
+                    ShouldRemove = true;
+                    break;
+                case "AmmoFound":
+                    GetTree().AddItem("Ammo");
                     ShouldRemove = true;
                     break;
                 case "Find the glasses":
@@ -126,8 +154,6 @@ namespace Mdfry1.Scripts.Item
 
             if (GetChildCount() > 0 && InteractableArea != null)
             {
-                //InteractableArea.DisconnectBodyEntered(nameof(OnExaminableAreaEntered));
-                //InteractableArea.DisconnectBodyExited(nameof(OnExaminableAreaExited));
                 RemoveChild(InteractableArea);
             }
         }
@@ -144,12 +170,9 @@ namespace Mdfry1.Scripts.Item
         public virtual void OnExaminableAreaExited(Node body)
         {
             this.PrintCaller();
-            if (body.IsPlayer())
+            if (body.IsPlayer() && this.HasSignal(nameof(PlayerInteractingUnavailable)))
             {
-                if (this.HasSignal(nameof(PlayerInteractingUnavailable)))
-                {
-                    EmitSignal(nameof(PlayerInteractingUnavailable), this);
-                }
+                EmitSignal(nameof(PlayerInteractingUnavailable), this);
             }
         }
 
@@ -180,13 +203,5 @@ namespace Mdfry1.Scripts.Item
                 RegisterInteractable(InteractableArea);
             }
         }
-
-        // protected override void Dispose(bool disposing)
-        // {
-        //     base.Dispose(disposing);
-
-        //     InteractableArea.DisconnectBodyEntered(nameof(OnExaminableAreaEntered));
-        //     InteractableArea.DisconnectBodyExited(nameof(OnExaminableAreaExited));
-        // }
     }
 }

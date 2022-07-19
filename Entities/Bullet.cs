@@ -1,21 +1,23 @@
+using System;
 using Godot;
+using Mdfry1.Entities.Components;
 using Mdfry1.Scripts.Patterns.Logger;
 
 namespace Mdfry1.Entities
 {
-    public class Bullet : KinematicBody2D, IDebuggable<Node>
+    public class Bullet : HitBox
     {
+        public Action OnCollision { get; set; }
+        
         [Export]
-        public bool IsDebugging { get; set; } = false;
-
+        public int AttackPower { get; set; }
+        
         [Export]
         public float Speed { get; set; }
 
         public Vector2 Velocity { get; set; } = Vector2.Zero;
 
         public Timer LifeTime { get; set; }
-
-        public bool IsDebugPrintEnabled() => IsDebugging;
 
         public override void _Ready()
         {
@@ -34,27 +36,16 @@ namespace Mdfry1.Entities
             Clear();
         }
 
-        public void Start(Vector2 direction)
+        public void InitBullet(Vector2 position,Vector2 direction)
         {
-            Velocity = direction * Speed;
+            this.Position = position;
+            this.Rotation = direction.Angle();
+            this.Velocity = direction * Speed;
         }
 
-        //  // Called every frame. 'delta' is the elapsed time since the previous frame.
-        public override void _Process(float delta)
+        public override void _PhysicsProcess(float delta)
         {
-            var collision = MoveAndCollide(Velocity * delta);
-            if (collision != null)
-            {
-                this.LifeTime.Stop();
-                Clear();
-            }
-            /*
-            var collision := move_and_collide(velocity * delta)
-            if collision:
-                timer.stop()
-                clear()
-                collision.collider.damage(10)
-            */
+            this.Translate(Velocity * Speed * delta);
         }
     }
 }

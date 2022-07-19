@@ -13,6 +13,7 @@ namespace Mdfry1.Scripts.GDUtils
             Input.IsActionJustPressed(InputAction.Left) ||
             Input.IsActionJustPressed(InputAction.Down) ||
             Input.IsActionJustPressed(InputAction.Interact) ||
+            Input.IsActionJustPressed(InputAction.Shoot) ||
             Input.IsActionJustPressed(InputAction.Pause);
 
 
@@ -163,5 +164,7 @@ namespace Mdfry1.Scripts.GDUtils
         }
         
         public static bool IsCameraReset() => Input.IsActionJustPressed(InputAction.CameraReset);
+        
+        public static bool IsShooting() => Input.IsActionJustPressed(InputAction.Shoot);
     }
 }
