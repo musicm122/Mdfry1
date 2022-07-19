@@ -7,6 +7,7 @@ using Mdfry1.Scripts.Mission;
 
 namespace Mdfry1.Entities
 {
+
     public class PlayerV2 : PlayerMovableBehavior
     {
         public PlayerDataStore DataStore { get; set; }
@@ -18,7 +19,9 @@ namespace Mdfry1.Entities
         public IUiBehavior Ui { get; private set; }
 
         public IFlashlightBehavior Flashlight { get; private set; }
-
+        
+        public IShootableBehavior ShootableBehavior { get; private set; }
+        
         public Health PlayerStatus { get; set; }
 
         public PlayerAnimationManager AnimationManager { get; set; }
@@ -33,15 +36,17 @@ namespace Mdfry1.Entities
             {
                 PlayerStatus = PlayerStatus,
                 Inventory = new Inventory(),
-                MissionManager = new MissionManager()
+                MissionManager = new MissionManager(),
+                
             };
-
+            
+            DataStore.GetFacingDirection += AnimationManager.GetFacingDirection;
+            
             Damagable = GetNode<DamagableBehavior>("Behaviors/Damagable");
             Damagable.Init(PlayerStatus);
 
             Interactable = GetNode<InteractableBehavior>("Behaviors/Interactable");
             Interactable.Init(DataStore);
-
 
             Flashlight = GetNode<FlashlightBehavior>("Behaviors/Flashlight");
             Flashlight.Init(DataStore);
@@ -55,12 +60,28 @@ namespace Mdfry1.Entities
             Damagable.OnTakeDamage += OnTakeDamage;
             Damagable.HurtboxInvincibilityStartedCallback += OnHurtboxInvincibilityStarted;
             Damagable.HurtboxInvincibilityEndedCallback += OnHurtboxInvincibilityEnded;
-            this.OnPhysicsProcessMovement += OnProcessMovement;
-            this.OnMove += OnWalkAction;
-            this.OnIdle += OnIdleAction;
-            this.OnRoll += OnRollAction;
+            
+            OnPhysicsProcessMovement += OnProcessMovement;
+            OnMove += OnWalkAction;
+            OnIdle += OnIdleAction;
+            OnRoll += OnRollAction;
+            
+            ShootableBehavior = GetNode<IShootableBehavior>("Behaviors/Shootable");
+            ShootableBehavior.Init(this.DataStore);
+            ShootableBehavior.OnShootStart += OnShootStarted;
+            ShootableBehavior.OnNoAmmo += OnShootStartedWithEmptyClip;
         }
-
+        
+        private void OnShootStarted()
+        {
+            this.AnimationManager.PlayShootAnimation(Velocity);
+            DataStore.DecrementAmmo();
+        }
+        
+        private void OnShootStartedWithEmptyClip(){
+            this.AnimationManager.PlayEmptyClipAnimation(Velocity);
+        }
+        
         private void OnHurtboxInvincibilityEnded()
         {
             AnimationManager?.StopBlinkAnimation();

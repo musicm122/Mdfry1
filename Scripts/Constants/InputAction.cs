@@ -2,6 +2,7 @@ namespace Mdfry1.Scripts.Constants
 {
     public static class InputAction
     {
+        public const string Shoot = "shoot";
         public const string Interact = "interact";
         public const string Left = "left";
         public const string Right = "right";

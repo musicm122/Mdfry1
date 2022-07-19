@@ -4,3 +4,17 @@ Mdfry1 Gamejam
 https://itch.io/jam/mdfrys-horror-game-jam-1
 Theme:
 Your days are numbered
+
+
+Player can shoot enemies
+
+Player can light candles
+Player can hold lighter fluid
+Player can hold ammo
+
+Player has a small shack
+
+Small shack has surrounding candles  that go out over time.
+This is the only source of light for the player. 
+
+The player must fend off enemies while keeping the light on. 

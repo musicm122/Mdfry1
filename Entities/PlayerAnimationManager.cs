@@ -5,28 +5,27 @@ using Mdfry1.Scripts.Patterns.Logger.Implementation;
 namespace Mdfry1.Entities
 {
     // ReSharper disable once ClassNeverInstantiated.Global
-    public class PlayerAnimationManager : Node
+    public class PlayerAnimationManager : BaseAnimationManager
     {
-        private readonly ILogger _logger = new GDLogger(LogLevelOutput.Warning);
+        public void PlayShootAnimation(Vector2 currVelocity)
+        {
+            NavToAnimation("Shoot");
+        }
         
-        private AnimationTree AnimationTree { get; set; }
-        private  AnimationPlayer BlinkAnimationPlayer { get; set; }
-
-        private AnimationNodeStateMachinePlayback StateMachinePlayback { get; set; }
-
-        public void UpdateAnimationBlendPositions(Vector2 movementVector)
+        public override void UpdateAnimationBlendPositions(Vector2 movementVector)
         {
             _logger.Debug("UpdateAnimationBlendPositions arg:" + movementVector.ToString());
-            UpdateAnimationBlendPosition("Idle", movementVector);
-            UpdateAnimationBlendPosition("Walk", movementVector);
+            base.UpdateAnimationBlendPositions(movementVector);
             UpdateAnimationBlendPosition("Roll", movementVector);
+            UpdateAnimationBlendPosition("Shoot", movementVector);
+            UpdateAnimationBlendPosition("EmptyClip", movementVector);
         }
-
-        private void UpdateAnimationBlendPosition(string animationName, Vector2 movementVector)
+        
+        public void PlayEmptyClipAnimation(Vector2 currVelocity)
         {
-            AnimationTree.Set($"parameters/{animationName}/blend_position", movementVector);
+            NavToAnimation("EmptyClip");
         }
-
+        
         public void PlayRollAnimation(Vector2 currVelocity)
         {
             NavToAnimation("Roll");
@@ -40,21 +39,6 @@ namespace Mdfry1.Entities
         public void PlayWalkAnimation(Vector2 currVelocity)
         {
             NavToAnimation("Walk");
-        }
-
-        private void NavToAnimation(string animationName)
-        {
-            StateMachinePlayback.Travel(animationName);
-        }
-
-        public void StartBlinkAnimation()
-        {
-            BlinkAnimationPlayer.Play("Start");
-        }
-        
-        public void StopBlinkAnimation()
-        {
-            BlinkAnimationPlayer.Play("Stop");
         }
 
         public override void _Ready()
