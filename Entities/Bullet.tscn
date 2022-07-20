@@ -7,9 +7,11 @@
 radius = 8.0
 
 [node name="Area2D" type="Area2D"]
+collision_layer = 16
+collision_mask = 255
 script = ExtResource( 1 )
-AttackPower = 1
-Speed = 500.0
+EffectForce = 20.0
+Speed = 600.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2( 0.277608, -0.30266 )
@@ -29,7 +31,6 @@ polygon = PoolVector2Array( -0.760514, -1.74284, -1.08296, 0.0181835, -0.766715,
 [node name="HitBox" type="Area2D" parent="."]
 collision_layer = 16
 script = ExtResource( 2 )
-Damage = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 scale = Vector2( 0.277608, -0.30266 )

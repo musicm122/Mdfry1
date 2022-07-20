@@ -14,7 +14,6 @@ namespace Mdfry1.Entities.EnemyState
 
         public PatrolEnemyState(EnemyV4 enemy)
         {
-            this.Logger.Level = Scripts.Patterns.Logger.LogLevelOutput.Debug;
             this.Name = EnemyBehaviorStates.Patrol.GetDescription();
             Enemy = enemy;
 
@@ -29,7 +28,7 @@ namespace Mdfry1.Entities.EnemyState
             }
             else
             {
-                DataStore.DebugLabel.Text += "Status.PatrolPath is null";
+                this.Logger.Warning($"{Enemy.Name} PatrolPath is null");
             }
         }
 

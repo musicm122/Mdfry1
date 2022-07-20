@@ -13,8 +13,8 @@ namespace Mdfry1.Entities.Interfaces
         void OnHurtboxInvincibilityEnded();
         void OnHurtboxInvincibilityStarted();
         void OnTimerTimeout();
-        void SetInvincibility(bool hasInvincibility);
-        void StartInvincibility(float duration);
+        
+        void StartInvincibility();
         void _Ready();
     }
 }

@@ -12,10 +12,10 @@ namespace Mdfry1.Entities.Behaviors
         public Action OnShootComplete { get; set; }
         public Action OnNoAmmo { get; set; }
         
-        public Action OnBulletCollision { get; set; }
+        public Action<Node2D> OnBulletCollision { get; set; }
         
         public float CooldownAcc { get; set; }
-        public float MaxCooldown { get; set; }
+        public float MaxCooldown { get; set; } = 2f;
         public Position2D Muzzle { get; set; }
         public bool HasAmmo => DataStore.GetAmmoCount() > 0;
 
@@ -23,7 +23,6 @@ namespace Mdfry1.Entities.Behaviors
         {
             this.OnShootStart?.Invoke();
             var instance = InstantiateBullet(DataStore.CurrentBulletPath);
-            instance.OnCollision += OnBulletCollision;
             this.AddChild(instance);
             instance.SetAsToplevel(true);
             instance.GlobalPosition = this.Muzzle.GlobalPosition;
@@ -51,6 +50,12 @@ namespace Mdfry1.Entities.Behaviors
             var bulletType = GD.Load<PackedScene>(bulletPath);
             var rawInstance = bulletType.Instance();
             var instance = (Bullet)rawInstance; 
+            instance.OnCollision += (node) =>
+            {
+                if (!node.Name.ToLower().Contains("enemy")) return;
+                var enemy = (EnemyV4)node;
+                this.OnBulletCollision?.Invoke(node);
+            };
             return instance;
         }
 

@@ -1,4 +1,5 @@
 using Godot;
+using Mdfry1.Entities;
 using Mdfry1.Entities.Components;
 using Mdfry1.Scripts.Patterns.Logger;
 
@@ -11,6 +12,10 @@ namespace Mdfry1.Scripts.UI
 
         private string HealthBarDisplayPath { get; set; } = "./HealthPanel/HealthBar";
         private string GameOverPanelPath { get; set; } = "./GameOverPanel";
+        
+        private string AmmoDisplayPath { get; set; } = "./AmmoPanel/Ammo";
+        public Label AmmoDisplay { get; set; }
+        
 
         public Label HealthBarDisplay { get; set; }
 
@@ -22,15 +27,16 @@ namespace Mdfry1.Scripts.UI
         {
             HealthBarDisplay = GetNode<Label>(HealthBarDisplayPath);
             GameOverPanel = GetNode<PanelContainer>(GameOverPanelPath);
+            AmmoDisplay = GetNode<Label>(AmmoDisplayPath);
             GameOverPanel.Hide();
         }
 
-        public void RefreshUI(Health status)
+        public void RefreshUI(PlayerDataStore dataStore)
         {
             string maxHealthVal = "Health: ";
-            for (int i = 0; i < status.MaxHealth; i++)
+            for (int i = 0; i < dataStore.PlayerStatus.MaxHealth; i++)
             {
-                if (i < status.CurrentHealth)
+                if (i < dataStore.PlayerStatus.CurrentHealth)
                 {
                     maxHealthVal += "|X|";
                 }
@@ -40,7 +46,8 @@ namespace Mdfry1.Scripts.UI
                 }
             }
             HealthBarDisplay.Text = $"{maxHealthVal}";
-            if (status.CurrentHealth <= 0)
+            AmmoDisplay.Text = $"Ammo: {dataStore.GetAmmoCount().ToString()}";
+            if (dataStore.PlayerStatus.CurrentHealth <= 0)
             {
                 GameOverPanel.Show();
             }

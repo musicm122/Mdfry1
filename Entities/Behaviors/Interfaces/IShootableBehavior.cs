@@ -9,6 +9,7 @@ namespace Mdfry1.Entities.Behaviors.Interfaces
 
         public Action OnShootStart { get; set; }
         public Action OnShootComplete { get; set; }
+        public Action<Node2D> OnBulletCollision { get; set; }
 
         public Action OnNoAmmo { get; set; }
 

@@ -100,7 +100,7 @@ namespace Mdfry1.Entities.Behaviors
 
         public void RefreshUI()
         {
-            Hud.RefreshUI(DataStore.PlayerStatus);
+            Hud.RefreshUI(DataStore);
             PauseMenu.RefreshUI(DataStore.Inventory, DataStore.MissionManager);
         }
 

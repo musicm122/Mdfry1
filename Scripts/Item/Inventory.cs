@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 
@@ -72,14 +73,23 @@ namespace Mdfry1.Scripts.Item
         public int CountOfType(string name) =>
             Items.Count(i => i.Name.Equals(name));
 
+        public string[] DistinctItems() =>
+            Items.Select(item => item.Name)
+                .Distinct()
+                .ToArray();
+                
+
         public string Display()
         {
             var retval = "Items:\r\n=======\r\n";
+            
             if (Items.Count > 0)
             {
-                for (int i = 0; i < Items.Count; i++)
+                var distinctItems = DistinctItems();
+                
+                for (int i = 0; i < distinctItems.Length; i++)
                 {
-                    retval += Items[i].Name + "\r\n";
+                    retval += $"{distinctItems[i]}: {CountOfType(distinctItems[i])} \r\n";
                 }
             }
             else

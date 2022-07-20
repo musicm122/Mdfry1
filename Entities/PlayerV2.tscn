@@ -556,11 +556,12 @@ states/Walk/node = SubResource( 47 )
 states/Walk/position = Vector2( 605, 210 )
 transitions = [ "Idle", "Roll", SubResource( 52 ), "Roll", "Idle", SubResource( 53 ), "Idle", "Walk", SubResource( 54 ), "Walk", "Idle", SubResource( 55 ), "Idle", "Shoot", SubResource( 56 ), "Shoot", "Idle", SubResource( 57 ), "Idle", "EmptyClip", SubResource( 75 ), "EmptyClip", "Idle", SubResource( 76 ) ]
 start_node = "Idle"
+graph_offset = Vector2( 0, 74.7674 )
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=43]
 
 [node name="PlayerRoot" type="KinematicBody2D"]
-collision_layer = 31
+collision_mask = 63
 script = ExtResource( 13 )
 Acceleration = 200.0
 Friction = 800.0
@@ -705,6 +706,21 @@ __meta__ = {
 [node name="CanvasModulate" type="CanvasModulate" parent="UI/Camera2D/CanvasLayer/Hud/GameOverPanel"]
 color = Color( 0.537255, 0, 0, 0.878431 )
 
+[node name="AmmoPanel" type="PanelContainer" parent="UI/Camera2D/CanvasLayer/Hud"]
+margin_top = 40.0
+margin_right = 60.0
+margin_bottom = 28.0
+
+[node name="Ammo" type="Label" parent="UI/Camera2D/CanvasLayer/Hud/AmmoPanel"]
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 54.0
+margin_bottom = 21.0
+text = "Ammo:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tween" type="Tween" parent="UI/Camera2D"]
 playback_process_mode = 0
 
@@ -755,6 +771,7 @@ wait_time = 3.0
 script = ExtResource( 16 )
 
 [node name="Muzzle" type="Position2D" parent="Behaviors/Shootable"]
+position = Vector2( -10, 2 )
 
 [node name="Health" parent="." instance=ExtResource( 1 )]
 MaxHealth = 10
@@ -765,7 +782,7 @@ material = SubResource( 29 )
 texture = ExtResource( 17 )
 hframes = 12
 vframes = 8
-frame = 13
+frame = 1
 
 [node name="AnimationManager" type="Node" parent="."]
 script = ExtResource( 15 )

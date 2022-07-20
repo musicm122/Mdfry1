@@ -39,6 +39,8 @@ namespace Mdfry1.Entities
                 MissionManager = new MissionManager(),
                 
             };
+            //Note * for testing only
+            DataStore.Inventory.Add("Ammo", 100);
             
             DataStore.GetFacingDirection += AnimationManager.GetFacingDirection;
             
@@ -70,12 +72,14 @@ namespace Mdfry1.Entities
             ShootableBehavior.Init(this.DataStore);
             ShootableBehavior.OnShootStart += OnShootStarted;
             ShootableBehavior.OnNoAmmo += OnShootStartedWithEmptyClip;
+            
         }
-        
+
         private void OnShootStarted()
         {
             this.AnimationManager.PlayShootAnimation(Velocity);
             DataStore.DecrementAmmo();
+            Ui.RefreshUI();
         }
         
         private void OnShootStartedWithEmptyClip(){

@@ -26,6 +26,7 @@ namespace Mdfry1.Entities
         [Export]
         private string TitleDisplayPath { get; set; } = "./TitlePanel/Title";
 
+        
         public Label InventoryDisplay { get; set; }
         public Label MissionDisplay { get; set; }
         public Label TitleDisplay { get; set; }
@@ -43,6 +44,7 @@ namespace Mdfry1.Entities
             TitleDisplay = GetNode<Label>(TitleDisplayPath);
             InventoryDisplay = GetNode<Label>(InventoryDisplayPath);
             MissionDisplay = GetNode<Label>(MissionManagerDisplayPath);
+            
             if (TitleDisplay == null)
             {
                 this.Print("TitleDisplay is null");

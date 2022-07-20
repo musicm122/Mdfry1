@@ -3,14 +3,19 @@ using System.Globalization;
 using Godot;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Scripts.Patterns.Logger;
+using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
 namespace Mdfry1.Entities.Components
 {
     public class EnemyDataStore : Health
     {
+
+        [Export]
+        public float AttackRange { get; set; }
+        
         public IVision VisionManager { get; set; }
 
-        public ILogger Logger { get; set; }
+        public ILogger Logger { get; set; } = new GDLogger(LogLevelOutput.Warning); 
         public NodePath PatrolPath { get; private set; }
 
         public Label Cooldown { get; set; }
@@ -27,6 +32,7 @@ namespace Mdfry1.Entities.Components
 
         public float CurrentCoolDownCounter { get; set; }
 
+        [Export]
         public float MaxCoolDownTime { get; set; } = 10f;
 
         public void Init(NodePath patrolPath)
@@ -45,7 +51,7 @@ namespace Mdfry1.Entities.Components
 
             if (CurrentCoolDownCounter > 0f)
             {
-                this.Print("CurrentCoolDownCounter = ", CurrentCoolDownCounter);
+                Logger.Debug("CurrentCoolDownCounter = "+ CurrentCoolDownCounter);
                 CurrentCoolDownCounter -= delta;
                 Cooldown.Text =
                     $"Cooling Down in {CurrentCoolDownCounter.ToString(CultureInfo.InvariantCulture)} seconds";

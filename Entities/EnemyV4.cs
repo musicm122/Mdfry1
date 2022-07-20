@@ -6,6 +6,7 @@ using Mdfry1.Entities.EnemyState;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Entities.Vision;
 using Mdfry1.Scripts.Enum;
+using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.StateMachine;
 
 namespace Mdfry1.Entities
@@ -13,6 +14,7 @@ namespace Mdfry1.Entities
     public class EnemyV4 : EnemyMovableBehavior, IEnemy
     {
         [Export] public NodePath PatrolPath { get; set; }
+        public Position2D HitboxPivot { get; set; }
 
         [Export] public EnemyBehaviorStates DefaultState { get; set; } = EnemyBehaviorStates.Wander;
 
@@ -28,11 +30,13 @@ namespace Mdfry1.Entities
 
         private readonly StateMachine _stateMachine = new();
 
+        public EnemyAnimationManager AnimationManager { get; set; }
+
         public void Init()
         {
             _stateMachine.AddState(new IdleEnemyState(this));
             _stateMachine.AddState(new PatrolEnemyState(this));
-            _stateMachine.AddState(new ChaseEnemyState(this));
+            _stateMachine.AddState(new ChaseEnemyStateV2(this));
             _stateMachine.AddState(new WanderState(this));
 
             if (!EnemyDataStore.LineOfSight)
@@ -50,6 +54,9 @@ namespace Mdfry1.Entities
 
         public override void _Ready()
         {
+            HitboxPivot = GetNode<Position2D>("HitboxPiviot");
+            AnimationManager = GetNode<EnemyAnimationManager>("AnimationManager");
+            AnimationManager.Sprite = GetNode<Sprite>("Sprite");
             StateLabel = GetNode<Label>("StateLabel");
             EnemyDataStore = GetNode<EnemyDataStore>("Status");
             EnemyDataStore.VisionManager = GetNode<RaycastVision>("Vision");
@@ -74,35 +81,67 @@ namespace Mdfry1.Entities
             }
             else
             {
-                EnemyDataStore.DebugLabel.Text = "this.PatrolPath is null";
+                _logger.Debug("this.PatrolPath is null");
             }
 
             Damagable.Init(EnemyDataStore);
             Damagable.OnTakeDamage += OnTakeDamage;
+            Damagable.EmptyHealthBarCallback += OnEmptyHealthBar;
             Damagable.HurtboxInvincibilityStartedCallback += OnHurtboxInvincibilityStarted;
             Damagable.HurtboxInvincibilityEndedCallback += OnHurtboxInvincibilityEnded;
             Init();
         }
 
+        private void OnEmptyHealthBar()
+        {
+            //todo: death animation and sound effect
+            _logger.Debug(this.Name + " Died");
+            AnimationManager.PlayDeathAnimation();
+            this.QueueFree();
+        }
+
         private void OnHurtboxInvincibilityEnded()
         {
+            _logger.Debug(this.Name + " OnHurtboxInvincibilityEnded");
             //todo: add invincibility end animation
         }
 
         private void OnHurtboxInvincibilityStarted()
         {
+            _logger.Debug(this.Name + " OnHurtboxInvincibilityStarted");
             //todo: add invincibility end animation
         }
 
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
+            _logger.Debug(this.Name + " took damage");
+            AnimationManager.PlayTakeDamageAnimation();
             MoveAndSlide(damageForce);
-            Alert();            
+            Alert();
         }
 
-        private void OnMoveHandler(Vector2 arg1, float arg2)
+        private void OnMoveHandler(Vector2 velocity, float delta)
         {
-            EnemyDataStore.VisionManager.UpdateFacingDirection(arg1);
+            //this.flip_h = velocity.x > 0;
+            this.EnemyDataStore.DebugLabel.Text = this.Name + " Current Velocity " + velocity;
+            FlipCheck(velocity);
+
+            if (_stateMachine.CurrentState.Name == "ChasePlayer")
+            {
+                AnimationManager.PlayRunAnimation();
+            }
+            else
+            {
+                AnimationManager.PlayWalkAnimation();
+            }
+        }
+
+        void FlipCheck(Vector2 velocity) 
+        {
+            //assumes default flip is facing left
+            EnemyDataStore.VisionManager.UpdateFacingDirection(velocity);
+            AnimationManager.Sprite.FlipH = velocity.x > 0;
+            HitboxPivot.Scale =  velocity.x > 0 ? new Vector2(1,1): new Vector2(-1,1);
         }
 
         private void OnTargetLost(Node2D target)

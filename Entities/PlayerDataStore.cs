@@ -22,6 +22,7 @@ namespace Mdfry1.Entities
         public int GetAmmoCount() => Inventory.CountOfType("Ammo");
         
         public void DecrementAmmo() => Inventory.RemoveAmount("Ammo",1);
+        
 
     }
 }

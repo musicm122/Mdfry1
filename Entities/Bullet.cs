@@ -7,10 +7,7 @@ namespace Mdfry1.Entities
 {
     public class Bullet : HitBox
     {
-        public Action OnCollision { get; set; }
-        
-        [Export]
-        public int AttackPower { get; set; }
+        public Action<Node2D> OnCollision { get; set; }
         
         [Export]
         public float Speed { get; set; }
@@ -36,12 +33,12 @@ namespace Mdfry1.Entities
             Clear();
         }
 
-        public void InitBullet(Vector2 position,Vector2 direction)
-        {
-            this.Position = position;
-            this.Rotation = direction.Angle();
-            this.Velocity = direction * Speed;
-        }
+        // public void InitBullet(Vector2 position,Vector2 direction)
+        // {
+        //     this.Position = position;
+        //     this.Rotation = direction.Angle();
+        //     this.Velocity = direction * Speed;
+        // }
 
         public override void _PhysicsProcess(float delta)
         {

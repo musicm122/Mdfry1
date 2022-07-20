@@ -1,11 +1,17 @@
 using Godot;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Scripts.Patterns.Logger;
+using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
 namespace Mdfry1.Entities.Components
 {
     public class Hurtbox : Area2D, IDebuggable<Node>, IHurtbox
     {
+        [Export]
+        public float InvincibleTime { get; set; } = 0.6f;
+        
+        private ILogger _logger = new GDLogger(LogLevelOutput.Debug);
+        
         [Export]
         public bool IsDebugging { get; set; } = false;
 
@@ -14,31 +20,36 @@ namespace Mdfry1.Entities.Components
 
         [Signal]
         public delegate void InvincibilityEnded();
+        
+        private bool _isInvincible = false;
 
-        public bool IsInvincible { get; set; }
+        public bool IsInvincible
+        {
+            get => _isInvincible;
+            set
+            {
+                //todo: figure out why this is causing a stack overflow when shooting enemy
+                _isInvincible = value;
+                EmitSignal(value ? nameof(InvincibilityStarted) : nameof(InvincibilityEnded));
+            }
+        }
+
         public Timer Timer { get; set; }
         public CollisionShape2D CollisionShape { get; set; }
 
-        public void SetInvincibility(bool hasInvincibility)
+        public void StartInvincibility()
         {
-            IsInvincible = hasInvincibility;
-            if(IsInvincible)
-            {
-                EmitSignal(nameof(InvincibilityStarted));
-            }
-            else
-            {
-                EmitSignal(nameof(InvincibilityEnded));
-            }
+            _logger.Debug($"{nameof(Hurtbox)}: Starting invincibility");
+            IsInvincible = true;
+            Timer.Start(InvincibleTime);
         }
 
-        public void StartInvincibility(float duration)
+        public void OnTimerTimeout()
         {
-            SetInvincibility(true);
-            Timer.Start(duration);
+            Timer.Stop();
+            _logger.Debug($"{nameof(Hurtbox)}: OnTimerTimeout");               
+            IsInvincible = false;
         }
-
-        public void OnTimerTimeout() => SetInvincibility(false);
 
         public void OnHurtboxInvincibilityStarted() => CollisionShape.SetDeferred("disabled", true);
 

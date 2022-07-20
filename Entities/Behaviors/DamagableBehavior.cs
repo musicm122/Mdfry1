@@ -38,51 +38,60 @@ namespace Mdfry1.Entities.Behaviors
 
         public void OnHurtboxAreaEntered(Node body)
         {
-            this._logger.Debug($"OnHurtboxAreaEntered({body.Name})");
-            if(this.HurtBox.IsInvincible) return ;
-            if (!DamagableNames.Contains(body.Name.ToLower())) return;
-            this.HurtBox.StartInvincibility(0.6f);
-            var hitBox = (HitBox)body;
-            var force = (this.GlobalPosition - hitBox.GlobalPosition) * hitBox.EffectForce;
-            OnTakeDamage?.Invoke(body, force);
-            Status.CurrentHealth -= hitBox.Damage;
-            this._logger.Debug($"Current Health ={Status.CurrentHealth.ToString(CultureInfo.InvariantCulture)}");
+            try
+            {
+                this._logger.Debug($"OnHurtboxAreaEntered({body.Name})");
+                if(this.HurtBox.IsInvincible) return ;
+                if (!DamagableNames.Contains(body.Name.ToLower())) return;
+                this.HurtBox.StartInvincibility();
+                var hitBox = (HitBox)body;
+                var force = (this.GlobalPosition - hitBox.GlobalPosition) * hitBox.EffectForce;
+                OnTakeDamage?.Invoke(body, force);
+                this._logger.Debug($"OnHurtboxAreaEntered: hitBox.Damage={hitBox.Damage.ToString()}");
+                Status.CurrentHealth -= hitBox.Damage;
+                this._logger.Debug($"OnHurtboxAreaEntered: Current Health ={Status.CurrentHealth.ToString(CultureInfo.InvariantCulture)}");
+            }
+            catch (Exception e)
+            {
+                this._logger.Error(e);
+                throw;
+            }
         }
 
         public void OnEmptyHealthBar()
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} OnEmptyHealthBar called");
             this.IsDead = true;
             EmptyHealthBarCallback?.Invoke();
         }
 
         public void OnHurtboxInvincibilityStarted()
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} OnHurtboxInvincibilityStarted ");
             HurtboxInvincibilityStartedCallback?.Invoke();
         }
 
         public void OnHurtboxInvincibilityEnded()
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} OnHurtboxInvincibilityEnded ");
             HurtboxInvincibilityEndedCallback?.Invoke();
         }
 
         public void OnHealthChanged(int health)
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} OnHealthChanged {health.ToString()}");
             HealthChangedCallback?.Invoke(health);
         }
 
         public void OnMaxHealthChanged(int health)
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} OnMaxHealthChanged {health.ToString()}");
             MaxHealthChangedCallback?.Invoke(health);
         }
 
         private void RegisterHealthSignals()
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} RegisterHealthSignals called");
             Status.Connect(nameof(Health.NoHealth), this, nameof(OnEmptyHealthBar));
             Status.Connect(nameof(Health.HealthChanged), this, nameof(OnHealthChanged));
             Status.Connect(nameof(Health.MaxHealthChanged), this, nameof(OnMaxHealthChanged));
@@ -90,7 +99,7 @@ namespace Mdfry1.Entities.Behaviors
 
         private void RegisterHurtBoxSignals()
         {
-            this.PrintCaller();
+            this._logger.Debug($"{Name} RegisterHurtBoxSignals called");
             if (!HurtBox.TryConnectSignal("area_entered", this, nameof(OnHurtboxAreaEntered)))
             {
                 var arg = $"TryConnectSignal('area_entered', {this.Name}, {nameof(OnHurtboxAreaEntered)})";

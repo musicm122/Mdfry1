@@ -3,11 +3,14 @@ using Godot;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
+using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
 namespace Mdfry1.Entities.Vision
 {
     public class RaycastVision : RayCast2D, IDebuggable<Node2D>, IVision
     {
+        private bool canSeeTarget = false;
+        protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Warning);
         [Export] public Vector2 StartDirection { get; set; } = Vector2.Up;
 
         [Export] public bool IsDebugging { get; set; }
@@ -18,7 +21,7 @@ namespace Mdfry1.Entities.Vision
 
         [Export] public float MaxViewDistance { get; set; } = 100;
 
-        public bool CanSeeTarget() => NewTarget != null;
+        public bool CanSeeTarget() => canSeeTarget;
 
         public override void _Ready()
         {
@@ -67,14 +70,16 @@ namespace Mdfry1.Entities.Vision
             NewTarget = GetPlayerCollider();
             if (NewTarget != null)
             {
-                this.Print("Player found");
+                _logger.Debug("Player found");
+                canSeeTarget = true;
                 OnTargetSeen?.Invoke(NewTarget);
             }
             // if old target is not null and new target is null then target is out of sight
             else if (OldTarget != null)
             {
-                this.Print("Player out of sight");
+                _logger.Debug("Player out of sight");
                 OnTargetOutOfSight?.Invoke(OldTarget);
+                canSeeTarget = false;
             }
 
             // set old target to new target and new target to null

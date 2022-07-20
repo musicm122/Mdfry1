@@ -40,13 +40,5 @@ namespace Mdfry1.Entities
         {
             NavToAnimation("Walk");
         }
-
-        public override void _Ready()
-        {
-            AnimationTree = GetNode<AnimationTree>("AnimationTree");
-            AnimationTree.Active = true;
-            StateMachinePlayback = (AnimationNodeStateMachinePlayback)AnimationTree.Get("parameters/playback");
-            BlinkAnimationPlayer = GetNode<AnimationPlayer>("BlinkAnimationPlayer");
-        }
     }
 }
