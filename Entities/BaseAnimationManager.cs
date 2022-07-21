@@ -21,12 +21,17 @@ namespace Mdfry1.Entities
             _logger.Debug("UpdateAnimationBlendPositions arg:" + movementVector.ToString());
             UpdateAnimationBlendPosition("Idle", movementVector);
             UpdateAnimationBlendPosition("Walk", movementVector);
-
+            
         }
 
         protected void UpdateAnimationBlendPosition(string animationName, Vector2 movementVector)
         {
             AnimationTree.Set($"parameters/{animationName}/blend_position", movementVector);
+        }
+        
+        protected void UpdateAnimationBlendPosition(string animationName, float xPos)
+        {
+            AnimationTree.Set($"parameters/{animationName}/blend_position", xPos);
         }
 
         public Vector2 GetFacingDirection()

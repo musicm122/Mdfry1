@@ -15,6 +15,8 @@ namespace Mdfry1.Entities.Behaviors
         public Action<Node2D> OnBulletCollision { get; set; }
         
         public float CooldownAcc { get; set; }
+        
+        [Export]
         public float MaxCooldown { get; set; } = 2f;
         public Position2D Muzzle { get; set; }
         public bool HasAmmo => DataStore.GetAmmoCount() > 0;
@@ -53,7 +55,6 @@ namespace Mdfry1.Entities.Behaviors
             instance.OnCollision += (node) =>
             {
                 if (!node.Name.ToLower().Contains("enemy")) return;
-                var enemy = (EnemyV4)node;
                 this.OnBulletCollision?.Invoke(node);
             };
             return instance;

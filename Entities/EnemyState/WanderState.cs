@@ -130,13 +130,5 @@ namespace Mdfry1.Entities.EnemyState
 
             return Vector2.Zero;
         }
-
-        // private Stack<Vector2> GetNearestTargetPath(Vector2 targetPosition)
-        // {
-        //     var startingPoint = Nav.GetClosestPoint(targetPosition);    
-        //     var paths = new Stack<Vector2>(this.Nav.GetSimplePath(Agent.GlobalPosition, startingPoint, false));
-        // }
-            
-            
     }
 }

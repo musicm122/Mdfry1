@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using Godot;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
@@ -44,31 +45,38 @@ namespace Mdfry1.Entities.EnemyState
 
         void OnPhysicsProcess(float delta)
         {
-            if (Paths.Count > 0)
+            if (Paths!=null && Paths.Count > 0)
             {
                 MoveToTarget(delta);
+            }
+            else
+            {
+                  Paths = GetTargetPath(PlayerRef.GlobalPosition);
             }
         }
 
         private void MoveToTarget(float delta)
         {
+            this.SetDebugLabel();
             if (Enemy.GlobalPosition.DistanceTo(Paths.Peek()) < Threshold)
             {
-                Paths.Pop();
+                  Paths.Pop();
             }
             else
             {
                 var currentPath = Paths.Pop();
                 var dir = Enemy.GlobalPosition.DirectionTo(currentPath);
-                Enemy.Velocity = dir * Enemy.MaxSpeed;
+                Enemy.Velocity = dir * (Enemy.MoveMultiplier * Enemy.MaxSpeed);
                 Enemy.Move(delta);
+                
             }
-
+            
+            
             if (IsTargetVisible(PlayerRef.GlobalPosition))
             {
                 this.Enemy.EnemyDataStore.ResetCooldown();
             }
-
+            
             if (IsInAttackRange(PlayerRef.GlobalPosition))
             {
                 Enemy.AnimationManager.PlayAttackAnimation();
@@ -87,6 +95,26 @@ namespace Mdfry1.Entities.EnemyState
         }
 
         private Stack<Vector2> GetTargetPath(Vector2 targetPosition) =>
-            new Stack<Vector2>(this.Nav.GetSimplePath(Enemy.GlobalPosition, targetPosition, false));
+            new(this.Nav.GetSimplePath(Enemy.GlobalPosition, targetPosition, true));
+
+        void SetDebugLabel()
+        {
+            if (Enemy.IsDebugging)
+            {
+                Enemy.EnemyDataStore.DebugLabel.Text =
+                    @$"
+                    |-----------------------------------------------------------
+                    | Agent Position : {Enemy.Position.ToString()}
+                    | Agent Global Position : {Enemy.GlobalPosition.ToString()}
+                    | Velocity : {Enemy.Velocity.ToString()}
+                    |-----------------------------------------------------------
+                    | Paths Count: {Paths.Count.ToString()}
+                    | Paths Count: {Paths.Peek().ToString()}
+                    |-----------------------------------------------------------
+                    | Player Position : {PlayerRef.Position.ToString()}
+                    | Player Global Position : {PlayerRef.GlobalPosition.ToString()}
+                    |-----------------------------------------------------------";
+            }
+        }
     }
 }

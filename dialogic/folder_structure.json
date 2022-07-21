@@ -6,7 +6,9 @@
 		"Characters": {
 			"files": [
 				"character-1647636823.json",
-				"character-1647639414.json"
+				"character-1647639414.json",
+				"character-1647636823.json.import",
+				"character-1647639414.json.import"
 			],
 			"folders": {
 
@@ -45,7 +47,21 @@
 			"files": [
 				"timeline-1647636744.json",
 				"timeline-1647639376.json",
-				"timeline-1647639533.json"
+				"timeline-1647639533.json",
+				"timeline-1647636744.json.import",
+				"timeline-1647639376.json.import",
+				"timeline-1647639533.json.import",
+				"timeline-1650144567.json.import",
+				"timeline-1650144629.json.import",
+				"timeline-1650144674.json.import",
+				"timeline-1650144679.json.import",
+				"timeline-1650148633.json.import",
+				"timeline-1650204356.json.import",
+				"timeline-1650226903.json.import",
+				"timeline-1658186557.json.import",
+				"timeline-1658186738.json.import",
+				"timeline-1658186754.json.import",
+				"timeline-1658186760.json.import"
 			],
 			"folders": {
 				"Interactions": {

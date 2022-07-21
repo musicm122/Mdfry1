@@ -122,26 +122,17 @@ namespace Mdfry1.Entities
 
         private void OnMoveHandler(Vector2 velocity, float delta)
         {
-            //this.flip_h = velocity.x > 0;
-            this.EnemyDataStore.DebugLabel.Text = this.Name + " Current Velocity " + velocity;
-            FlipCheck(velocity);
+            AnimationManager?.UpdateAnimationBlendPositions(velocity);
+            EnemyDataStore.VisionManager?.UpdateFacingDirection(velocity);
 
             if (_stateMachine.CurrentState.Name == "ChasePlayer")
             {
-                AnimationManager.PlayRunAnimation();
+                AnimationManager?.PlayRunAnimation();
             }
             else
             {
-                AnimationManager.PlayWalkAnimation();
+                AnimationManager?.PlayWalkAnimation();
             }
-        }
-
-        void FlipCheck(Vector2 velocity) 
-        {
-            //assumes default flip is facing left
-            EnemyDataStore.VisionManager.UpdateFacingDirection(velocity);
-            AnimationManager.Sprite.FlipH = velocity.x > 0;
-            HitboxPivot.Scale =  velocity.x > 0 ? new Vector2(1,1): new Vector2(-1,1);
         }
 
         private void OnTargetLost(Node2D target)

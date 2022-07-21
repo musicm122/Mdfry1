@@ -49,56 +49,44 @@ namespace Mdfry1.Entities.EnemyState
 
         private void ChasePlayer(float delta)
         {
-            if (Nav != null)
-            {
-                var from = Nav.ToLocal(Enemy.GlobalPosition);
-                var to = Nav.ToLocal(PlayerRef.GlobalPosition);
-                var paths = Nav.GetSimplePath(from, to);
-
-                var enemyNavPath = new Stack<Vector2>(paths);
-                var distanceToWalk = Enemy.MaxSpeed * delta;
-
-                while (distanceToWalk > 0f && enemyNavPath.Count > 0)
-                {
-                    var nextPoint = Nav.ToGlobal(enemyNavPath.Peek());
-                    var globalDirection = Enemy.GlobalPosition.DirectionTo(nextPoint);
-                    var globalDistance = Enemy.GlobalPosition.DistanceTo(nextPoint);
-                    if (distanceToWalk <= globalDistance)
-                    {
-                        var globalDisplacement = globalDirection * distanceToWalk;
-                        var globalNewPosition = Enemy.GlobalPosition + globalDisplacement;
-                        var localNewPosition = Enemy.ToLocal(globalNewPosition);
-                        //VisionManager.UpdateFacingDirection(localNewPosition);
-                        Enemy.MoveAndSlide(globalDisplacement / delta);
-                        //Enemy.Move(globalDisplacement / delta);
-                    }
-                    else
-                    {
-                        _ = enemyNavPath.Pop();
-                        var globalNewPosition = nextPoint;
-                        var localNewPosition = Enemy.ToLocal(globalNewPosition);
-                        //VisionManager.UpdateFacingDirection(localNewPosition);
-                        if (Enemy.GetSlideCount() > 0)
-                        {
-                            Enemy.HandleMovableObstacleCollision(globalDirection);
-                        }
-
-                        Enemy.GlobalPosition = globalNewPosition;
-                    }
-
-                    distanceToWalk -= globalDistance;
-                }
-            }
-            else
+            if (Nav == null)
             {
                 Logger.Error("Navigation2D not found");
+                return;
             }
+            
+            var from = Nav.ToLocal(Enemy.GlobalPosition);
+            var to = Nav.ToLocal(PlayerRef.GlobalPosition);
+            var paths = Nav.GetSimplePath(from, to);
 
-            if (DataStore.CurrentCoolDownCounter > 0)
+            var enemyNavPath = new Stack<Vector2>(paths);
+            var distanceToWalk = Enemy.MaxSpeed * delta;
+
+            while (distanceToWalk > 0f && enemyNavPath.Count > 0)
             {
-                DataStore.CurrentCoolDownCounter -= delta;
-            }
+                var nextPoint = Nav.ToGlobal(enemyNavPath.Peek());
+                var globalDirection = Enemy.GlobalPosition.DirectionTo(nextPoint);
+                var globalDistance = Enemy.GlobalPosition.DistanceTo(nextPoint);
+                if (distanceToWalk <= globalDistance)
+                {
+                    var globalDisplacement = globalDirection * distanceToWalk;
+                    Enemy.MoveAndSlide(globalDisplacement / delta);
+                }
+                else
+                {
+                    _ = enemyNavPath.Pop();
+                    var globalNewPosition = nextPoint;
 
+                    if (Enemy.GetSlideCount() > 0)
+                    {
+                        Enemy.HandleMovableObstacleCollision(globalDirection);
+                    }
+
+                    Enemy.GlobalPosition = globalNewPosition;
+                }
+
+                distanceToWalk -= globalDistance;
+            }
             if (IsTargetVisible(PlayerRef.GlobalPosition))
             {
                 Logger.Debug("ChaseEnemyState: Player is visible ");
@@ -109,23 +97,13 @@ namespace Mdfry1.Entities.EnemyState
                     Enemy.AnimationManager.PlayAttackAnimation();
                 }
             }
-        }
 
-        private void UpdateFacingDir(Vector2 localNewPosition)
-        {
-            VisionManager.UpdateFacingDirection(Enemy.Velocity);
-            FlipCheck(Enemy.Velocity);
-        }
-        
-        void FlipCheck(Vector2 velocity) 
-        {
-            //assumes default flip is facing left
-            Enemy.AnimationManager.Sprite.FlipH = velocity.x > 0;
-            Enemy.HitboxPivot.Scale =  velocity.x > 0 ? new Vector2(1,1): new Vector2(-1,1);
+            if (DataStore.CurrentCoolDownCounter <= 0) return;
+            DataStore.CurrentCoolDownCounter -= delta;
         }
 
         private bool IsTargetVisible(Vector2 targetPosition) =>
-            this.Enemy.EnemyDataStore.VisionManager.CanSeeTarget();
+            VisionManager.CanSeeTarget();
 
         private bool IsInAttackRange(Vector2 targetPosition)
         {
@@ -134,8 +112,5 @@ namespace Mdfry1.Entities.EnemyState
             var isInRange = distance < Enemy.EnemyDataStore.AttackRange;
             return isInRange;
         }
-
-        private Stack<Vector2> GetTargetPath(Vector2 targetPosition) =>
-            new Stack<Vector2>(this.Nav.GetSimplePath(Enemy.GlobalPosition, targetPosition, false));
     }
 }

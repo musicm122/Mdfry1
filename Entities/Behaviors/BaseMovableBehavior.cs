@@ -71,6 +71,15 @@ namespace Mdfry1.Entities.Behaviors
         public virtual Vector2 GetFriction(Vector2 currentVelocity, float delta) =>
             currentVelocity.MoveToward(Vector2.Zero, Friction * delta);
 
+        public void MoveToward(Vector2 newPoint, float delta)
+        {
+            if (!CanMove) return;
+            OnMove?.Invoke(Velocity, delta);
+            Position.MoveToward(newPoint, MaxSpeed * delta);
+            if (GetSlideCount() <= 0) return;
+            HandleMovableObstacleCollision(Velocity);
+        }
+        
         public virtual void Move(float delta)
         {
             if (!CanMove) return;
@@ -84,6 +93,7 @@ namespace Mdfry1.Entities.Behaviors
                 Velocity = GetFriction(Velocity, delta);
                 OnIdle?.Invoke(Velocity, delta);
             }
+            
             MoveAndSlide(Velocity);
             if (GetSlideCount() <= 0) return;
             HandleMovableObstacleCollision(Velocity);

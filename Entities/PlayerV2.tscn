@@ -769,6 +769,7 @@ wait_time = 3.0
 
 [node name="Shootable" type="Node2D" parent="Behaviors"]
 script = ExtResource( 16 )
+MaxCooldown = 0.5
 
 [node name="Muzzle" type="Position2D" parent="Behaviors/Shootable"]
 position = Vector2( -10, 2 )

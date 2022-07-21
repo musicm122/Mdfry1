@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/PSF_C_Forest.tsx-699065f09bab9ce6fbe2cb2e99d1f7e2.res"
+
+[deps]
+
+source_file="res://Assets/tiled/PSF_C_Forest.tsx"
+dest_files=[ "res://.import/PSF_C_Forest.tsx-699065f09bab9ce6fbe2cb2e99d1f7e2.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

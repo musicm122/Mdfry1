@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/ModernDay_TileB.tsx-11d4470b5750d24c2d049b086bd8d69a.res"
+
+[deps]
+
+source_file="res://Assets/tiled/ModernDay_TileB.tsx"
+dest_files=[ "res://.import/ModernDay_TileB.tsx-11d4470b5750d24c2d049b086bd8d69a.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

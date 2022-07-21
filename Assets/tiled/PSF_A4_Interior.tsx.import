@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/PSF_A4_Interior.tsx-63a1581cc3c6e558e833411b76f63f0d.res"
+
+[deps]
+
+source_file="res://Assets/tiled/PSF_A4_Interior.tsx"
+dest_files=[ "res://.import/PSF_A4_Interior.tsx-63a1581cc3c6e558e833411b76f63f0d.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

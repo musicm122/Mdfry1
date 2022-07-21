@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/PSF_A2_Exterior.tsx-6786c806635185946ea0c8b9dfb27733.res"
+
+[deps]
+
+source_file="res://Assets/tiled/PSF_A2_Exterior.tsx"
+dest_files=[ "res://.import/PSF_A2_Exterior.tsx-6786c806635185946ea0c8b9dfb27733.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""

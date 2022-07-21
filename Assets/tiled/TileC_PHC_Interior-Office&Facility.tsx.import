@@ -1,0 +1,19 @@
+[remap]
+
+importer="vnen.tiled_tileset_importer"
+type="TileSet"
+path="res://.import/TileC_PHC_Interior-Office&Facility.tsx-69c3db08c7bb4c2c6d05885461d68d76.res"
+
+[deps]
+
+source_file="res://Assets/tiled/TileC_PHC_Interior-Office&Facility.tsx"
+dest_files=[ "res://.import/TileC_PHC_Interior-Office&Facility.tsx-69c3db08c7bb4c2c6d05885461d68d76.res" ]
+
+[params]
+
+custom_properties=true
+tile_metadata=false
+image_flags=7
+embed_internal_images=false
+save_tiled_properties=false
+post_import_script=""
