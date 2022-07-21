@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/Bullet.cs" type="Script" id=1]
 [ext_resource path="res://Entities/Components/HitBox.cs" type="Script" id=2]
 
 [sub_resource type="CircleShape2D" id=1]
 radius = 8.0
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -1.9802, 13.69, 0.194571, 14.7072, 2.08873, 13.6199, 0.180946, 12.2999 )
 
 [node name="Area2D" type="Area2D"]
 collision_layer = 16
@@ -29,9 +32,16 @@ color = Color( 0.419608, 0.45098, 0.478431, 1 )
 polygon = PoolVector2Array( -0.760514, -1.74284, -1.08296, 0.0181835, -0.766715, 1.84121, -0.00401855, 2.43649, 0.864091, 1.6924, 1.11832, -0.0190213, 0.820686, -1.76764, -0.0536249, -2.42493 )
 
 [node name="HitBox" type="Area2D" parent="."]
+visible = false
 collision_layer = 16
 script = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
 scale = Vector2( 0.277608, -0.30266 )
 shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 31
+position = Vector2( 0, -12 )
+occluder = SubResource( 2 )
+light_mask = 31

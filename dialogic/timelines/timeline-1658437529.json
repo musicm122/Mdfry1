@@ -1,19 +1,19 @@
 {
 	"events": [
 		{
-			"character": "character-1647639414.json",
+			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "1 Round Found"
+			"text": "Lamp Fluid Found"
 		},
 		{
-			"emit_signal": "AmmoFound1",
+			"emit_signal": "LampFluidFound",
 			"event_id": "dialogic_040"
 		}
 	],
 	"metadata": {
 		"dialogic-version": "1.4.1",
-		"file": "timeline-1658186557.json",
-		"name": "AmmoFound1"
+		"file": "timeline-1658437529.json",
+		"name": "LampFluidFound"
 	}
 }

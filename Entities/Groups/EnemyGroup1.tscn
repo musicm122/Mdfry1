@@ -1,0 +1,124 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Entities/Enemy1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Entities/EnemyV4.cs" type="Script" id=2]
+
+[node name="YSort" type="YSort"]
+position = Vector2( -510, -117 )
+
+[node name="Enemy2" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( 37, 78 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy3" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( -126, 269 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy4" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( -160, -26 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy5" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( -233, 171 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy6" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( 500, 445 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy7" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( 197, 483 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy8" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( -113, 526 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy9" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( 1063, 135 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )
+
+[node name="Enemy10" type="KinematicBody2D" parent="." groups=["Enemies"] instance=ExtResource( 1 )]
+position = Vector2( 839, 448 )
+collision_layer = 2
+collision_mask = 31
+script = ExtResource( 2 )
+__meta__ = {
+"_edit_group_": true
+}
+MoveMultiplier = 2.0
+MaxSpeed = 60.0
+ArrivalZoneRadius = 10
+EnclosureZone = Rect2( 8, 8, 10, 10 )

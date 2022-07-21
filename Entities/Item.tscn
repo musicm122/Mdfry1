@@ -1,8 +1,11 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/Examinable.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Scripts/Item/ItemBehavior.cs" type="Script" id=2]
 [ext_resource path="res://Assets/Art/Item/Flashlight.png" type="Texture" id=3]
+
+[sub_resource type="OccluderPolygon2D" id=1]
+polygon = PoolVector2Array( -5, 27, 0, 29, 4, 27, 0, 24 )
 
 [node name="Item" instance=ExtResource( 1 )]
 
@@ -13,5 +16,11 @@ script = ExtResource( 2 )
 texture = ExtResource( 3 )
 
 [node name="Tween" type="Tween" parent="Area2D" index="1"]
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="." index="1"]
+light_mask = 31
+position = Vector2( 0, -12 )
+occluder = SubResource( 1 )
+light_mask = 31
 
 [connection signal="tween_completed" from="Area2D/Tween" to="Area2D" method="OnTweenCompleted"]

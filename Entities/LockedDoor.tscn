@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Assets/Art/Item/!DoorsA.png" type="Texture" id=1]
 [ext_resource path="res://Entities/LockedDoor.cs" type="Script" id=2]
@@ -72,6 +72,9 @@ extents = Vector2( 8, 8 )
 [sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 10, 24 )
 
+[sub_resource type="OccluderPolygon2D" id=13]
+polygon = PoolVector2Array( -8, 26, -8, 29, 9, 29, 9, 26 )
+
 [node name="LockedDoor" type="Node2D"]
 script = ExtResource( 2 )
 
@@ -91,3 +94,9 @@ shape = SubResource( 1 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 12 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 31
+position = Vector2( 0, -12 )
+occluder = SubResource( 13 )
+light_mask = 31

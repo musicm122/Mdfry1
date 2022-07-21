@@ -16,6 +16,13 @@ namespace Mdfry1.Scripts.Item
             ImagePath = temp.ImagePath;
         }
 
+        public Item(string name, string description, string imagePath) : this()
+        {
+            Name = name;
+            Description = description;
+            ImagePath = imagePath;
+        }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string ImagePath { get; set; }

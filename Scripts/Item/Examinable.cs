@@ -9,7 +9,6 @@ namespace Mdfry1.Scripts.Item
 {
     public class Examinable : Node2D, IDebuggable<Node>
     {
-
         [Export]
         public bool IsDebugging { get; set; } = false;
 
@@ -38,7 +37,12 @@ namespace Mdfry1.Scripts.Item
 
         public bool ShouldRemove { get; set; }
 
-        public void DialogListener(System.Object value)
+        public virtual void OnDialogListener(string val)
+        {
+            
+        }
+
+        public virtual void DialogListener(System.Object value)
         {
             this.Print($"DialogListener called with arg {value}");
             this.Pause();
@@ -74,7 +78,7 @@ namespace Mdfry1.Scripts.Item
                     ShouldRemove = true;
                     break;
                 case "LighterFluidFound":
-                    GetTree().AddItem("LighterFluid");
+                    GetTree().AddItem("LampFluid");
                     ShouldRemove = true;
                     break;
                 case "KeyA":
@@ -91,6 +95,7 @@ namespace Mdfry1.Scripts.Item
                     GetTree().AddMission(val);
                     break;
             }
+            OnDialogListener(val);
             Task.Run(async () => await DialogComplete().ConfigureAwait(false));
         }
 
@@ -128,7 +133,6 @@ namespace Mdfry1.Scripts.Item
 
         protected virtual void OnInteract()
         {
-            this.PrintCaller();
             if (!Timeline.IsNullOrWhiteSpace())
             {
                 StartDialog(Timeline);
@@ -141,7 +145,6 @@ namespace Mdfry1.Scripts.Item
 
         private void RemoveItem()
         {
-            this.PrintCaller();
             this.Unpause();
             if (this.HasSignal(nameof(PlayerInteractingUnavailable)))
             {
@@ -160,7 +163,6 @@ namespace Mdfry1.Scripts.Item
 
         public virtual void OnExaminableAreaEntered(Node body)
         {
-            this.PrintCaller();
             if (body.IsPlayer() && this.HasSignal(nameof(PlayerInteractingAvailable)))
             {
                 EmitSignal(nameof(PlayerInteractingAvailable), this);
@@ -169,7 +171,6 @@ namespace Mdfry1.Scripts.Item
 
         public virtual void OnExaminableAreaExited(Node body)
         {
-            this.PrintCaller();
             if (body.IsPlayer() && this.HasSignal(nameof(PlayerInteractingUnavailable)))
             {
                 EmitSignal(nameof(PlayerInteractingUnavailable), this);

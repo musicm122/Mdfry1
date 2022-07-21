@@ -8,45 +8,26 @@ namespace Mdfry1.Scripts.Constants
 {
     public static class MasterItemList
     {
-
-        public static readonly Item.Item[] Items = {
-        new Item.Item(){
-            Name = "Foo's Glasses",
-            Description= "These are some thick lenses",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Flashlight",
-            Description= "Essential for seeing in the dark.",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Gas Mask",
-            Description= "Allows me to survive tear gas",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Broken cell phone",
-            Description= "Maybe it can be fixed",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Carton of Milk",
-            Description= "For use with treating pepper spray",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Survival Manual",
-            Description= "Basics on surviving.",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "HealthKit",
-            Description= "Heals damage",
-            ImagePath = ItemConstants.FlashlightImagePath},
-        new Item.Item(){
-            Name = "Ammo",
-            Description= "Ammo for your gun",
-            ImagePath = ItemConstants.PizzaImagePath},
-        new Item.Item(){
-            Name = "KeyA",
-            Description= "Opens 'A' doors",
-            ImagePath = ItemConstants.KeyImagePath},
-    };
+        public static readonly Item.Item[] Items =
+        {
+            new Item.Item(name: "Foo's Glasses", description: "These are some thick lenses",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Flashlight", description: "Essential for seeing in the dark.",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Gas Mask", description: "Allows me to survive tear gas",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Broken cell phone", description: "Maybe it can be fixed",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Carton of Milk", description: "For use with treating pepper spray",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Survival Manual", description: "Basics on surviving.",
+                imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "HealthKit", description: "Heals damage", imagePath: ItemConstants.FlashlightImagePath),
+            new Item.Item(name: "Ammo", description: "Ammo for your gun", imagePath: ItemConstants.PizzaImagePath),
+            new Item.Item(name: "KeyA", description: "Opens 'A' doors", imagePath: ItemConstants.KeyImagePath),
+            new Item.Item(name: "LampFluid", description: "Keeps the fire lit",
+                imagePath: ItemConstants.LampFluidImagePath),
+        };
 
         public static Item.Item GetItemByName(string name)
         {

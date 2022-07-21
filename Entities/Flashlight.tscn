@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Scripts/Item/Examinable.cs" type="Script" id=1]
 [ext_resource path="res://Assets/Art/Item/Flashlight.png" type="Texture" id=2]
@@ -6,6 +6,9 @@
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 16, 24 )
+
+[sub_resource type="OccluderPolygon2D" id=2]
+polygon = PoolVector2Array( -5, 27, 0, 29, 4, 27, 0, 24 )
 
 [node name="Flashlight" type="Node2D"]
 script = ExtResource( 1 )
@@ -23,3 +26,9 @@ texture = ExtResource( 2 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource( 1 )
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+light_mask = 31
+position = Vector2( 0, -12 )
+occluder = SubResource( 2 )
+light_mask = 31

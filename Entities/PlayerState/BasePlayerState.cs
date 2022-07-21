@@ -6,9 +6,4 @@ namespace Mdfry1.Entities.PlayerState
     {
         public virtual void HandleInput(PlayerV2 playerV2){}
     }
-
-    public class IdlePlayerState : BasePlayerState
-    {
-        
-    }
 }
