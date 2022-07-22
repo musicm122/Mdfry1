@@ -561,7 +561,7 @@ graph_offset = Vector2( 0, 74.7674 )
 [sub_resource type="AnimationNodeStateMachinePlayback" id=43]
 
 [sub_resource type="OccluderPolygon2D" id=81]
-polygon = PoolVector2Array( -10, 16, 0, 20, 10, 16, 0, 12 )
+polygon = PoolVector2Array( -4, 14, -2, 19, 2, 19, 3, 14, 0, 14 )
 
 [node name="PlayerRoot" type="KinematicBody2D"]
 collision_mask = 63
@@ -724,6 +724,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Timer" type="PanelContainer" parent="UI/Camera2D/CanvasLayer/Hud"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -86.0
+margin_bottom = 28.0
+
+[node name="Time Left" type="Label" parent="UI/Camera2D/CanvasLayer/Hud/Timer"]
+visible = false
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 83.0
+margin_bottom = 21.0
+text = "Time Left: 0"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tween" type="Tween" parent="UI/Camera2D"]
 playback_process_mode = 0
 
@@ -752,8 +770,12 @@ energy = 1.2
 script = ExtResource( 8 )
 
 [node name="ExaminableNotification" type="Sprite" parent="Behaviors/Interactable"]
+light_mask = 1023
 position = Vector2( -4.76837e-07, -35 )
 scale = Vector2( 0.23, 0.43 )
+texture = ExtResource( 14 )
+
+[node name="Light2D" type="Light2D" parent="Behaviors/Interactable/ExaminableNotification"]
 texture = ExtResource( 14 )
 
 [node name="Damagable" type="Node2D" parent="Behaviors"]
@@ -841,6 +863,7 @@ parameters/Walk/blend_position = Vector2( 0, 1 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 light_mask = 31
+position = Vector2( 0, -4 )
 occluder = SubResource( 81 )
 light_mask = 31
 

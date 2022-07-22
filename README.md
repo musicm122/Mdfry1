@@ -18,11 +18,11 @@ TODO:
  - [x] Player can shoot enemies 
  - [x] Player can hold ammo 
  - [x] Player can light candles
- - [] Player can hold lighter fluid
+ - [x] Player can hold lighter fluid
  - [] Player has a small shack 
     - [] Collision on environment
     - [] Environment Lighting
- - [] Lights burn out over time
+ - [x] Lights burn out over time
  - [] Enemy spawner that checks light value
  - [] Damage Effects
  - [] Sound Effects

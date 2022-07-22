@@ -8,6 +8,13 @@ namespace Mdfry1.Entities.Behaviors
 {
     public class PlayerMovableBehavior : BaseMovableBehavior
     {
+        
+        
+        [Export()]
+        public float MaxRollCooldown { get; set; } = 2f;
+        
+        public float CurrentRollCooldown { get; set; } = 0f;
+        
         public Action<Vector2> OnRoll { get; set; }
         public Action<Vector2> OnPhysicsProcessMovement { get; set; }
         
@@ -18,12 +25,13 @@ namespace Mdfry1.Entities.Behaviors
 
         public override void _Ready()
         {
-            _logger.Level = LogLevelOutput.Debug;
             base._Ready();
         }
 
         private Vector2 Roll()
         {
+            _logger.Debug("Rolling");
+            CurrentRollCooldown = MaxRollCooldown;
             var newVelocity = RollVector * RollSpeed;
             OnRoll?.Invoke(newVelocity);
             return newVelocity;
@@ -53,7 +61,14 @@ namespace Mdfry1.Entities.Behaviors
             }
             return currentVelocity;
         }
-        
+
+        private bool CanRoll()
+        {
+            var retval =CanMove && CurrentRollCooldown <= 0f;
+            return retval;
+        }
+
+
         public override void _PhysicsProcess(float delta)
         {
             if (!CanMove) return;
@@ -61,9 +76,15 @@ namespace Mdfry1.Entities.Behaviors
             
             var movementVector = InputUtils.GetTopDownWithDiagMovementInputStrengthVector();
             Velocity = MoveCheck(movementVector, Velocity, delta);
-            if (Input.IsActionPressed(InputAction.Roll))
+            if (CanRoll() && Input.IsActionPressed(InputAction.Roll))
             {
                 Velocity = Roll();
+            }
+
+            if (CurrentRollCooldown > 0f)
+            {
+                _logger.Debug("Roll Cooling Down with Remaining Time: " + CurrentRollCooldown);
+                CurrentRollCooldown -= delta;
             }
 
             Move(delta);
@@ -71,6 +92,8 @@ namespace Mdfry1.Entities.Behaviors
             {
                 this.HandleMovableObstacleCollision(Velocity);
             }
+
+            
         }
     }
 }

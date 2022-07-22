@@ -869,15 +869,13 @@ script = ExtResource( 6 )
 __meta__ = {
 "_edit_group_": true
 }
-IsDebugging = true
 MaxSpeed = 50.0
 ArrivalZoneRadius = 10
 EnclosureZone = Rect2( 8, 8, 10, 10 )
 
 [node name="Status" parent="." instance=ExtResource( 3 )]
-MaxHealth = 10
-CurrentHealth = 10
-IsDebugging = true
+MaxHealth = 3
+CurrentHealth = 3
 AttackRange = 60.0
 MaxCoolDownTime = 50.0
 
@@ -888,7 +886,6 @@ scale = Vector2( 2.22495, 0.834138 )
 collision_layer = 2
 collision_mask = 61
 script = ExtResource( 1 )
-IsDebugging = true
 EffectForce = 40.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxPiviot/HitBox"]
@@ -973,7 +970,7 @@ texture = SubResource( 5 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 14
+frame = 12
 __meta__ = {
 "_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpwbGF5ZXJ8PUFuaW1hdGlvblBsYXllcgpzb3VyY2V8PXJlczovL0Fzc2V0cy9BcnQvQ2hhcmFjdGVyL3BhY2ttb25zdGVycy9Nb25zdGVyM1BhY2suYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD0Kb19uYW1lfD0Kb25seV92aXNpYmxlfD1GYWxzZQpvX2V4X3B8PQo="
 }

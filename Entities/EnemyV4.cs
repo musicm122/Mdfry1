@@ -13,11 +13,13 @@ namespace Mdfry1.Entities
 {
     public class EnemyV4 : EnemyMovableBehavior, IEnemy
     {
-        [Export] public NodePath PatrolPath { get; set; }
+        [Export] 
+        public NodePath PatrolPath { get; set; }
         public Position2D HitboxPivot { get; set; }
 
-        [Export] public EnemyBehaviorStates DefaultState { get; set; } = EnemyBehaviorStates.Wander;
-
+        [Export] 
+        public EnemyBehaviorStates DefaultState { get; set; } = EnemyBehaviorStates.Wander;
+        
         public EnemyDataStore EnemyDataStore { get; set; }
 
         public IDamagableBehavior Damagable { get; private set; }

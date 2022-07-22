@@ -1,25 +1,58 @@
 using System;
 using System.Threading.Tasks;
 using Godot;
+using Godot.Collections;
 using Mdfry1.addons.dialogic.Other;
+using Mdfry1.Entities.Components;
 using Mdfry1.Scripts.Item;
 using Mdfry1.Scripts.Patterns.Logger;
 using Mdfry1.Scripts.Patterns.Logger.Implementation;
 using Mdfry1.Entities.Values;
+using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.GDUtils;
 
 
 namespace Mdfry1.Entities
 {
-    
     public class LampLight : Examinable
     {
+        public void EnableSpawning()
+        {
+            Spawner.EnableSpawning = true;
+        }
+        
+        public void DisableSpawning()
+        {
+            Spawner.EnableSpawning = true;
+        }
+        
+        public bool CanFlicker(int interval = 2) => new Random().Next() % interval == 0;
+        
+        [Export]
+        public LightLevel DefaultLightLevel { get; set; } = LightLevel.Low;
+        
+        [Export]
+        public bool IsFixedLightLevel = false;
+        
+        [Export()]
+        public Dictionary<LightLevel, float> SpawnRates { get; set; } = 
+            new()
+            {
+                {LightLevel.None, 1},
+                {LightLevel.Low, 3f},
+                {LightLevel.Medium, 5f},
+                {LightLevel.High, 20f}
+            };
+        
         private const string LampFluidItem = "LampFluid";
         protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Debug);
-        private Action<LightValue> OnLightLevelChanged { get; set; }
-        private Action<LightValue, float> OnTimerStarted { get; set; }
+        public Action<LightValue> OnLightLevelChanged { get; set; }
+        public Action<LightValue, float> OnTimerStarted { get; set; }
+        
         private Light2D Light { get; set; }
+        
+        public EnemySpawner Spawner { get; set; }
         
         public PlayerV2 PlayerV2 { get; set; }
         
@@ -31,12 +64,15 @@ namespace Mdfry1.Entities
         
         private LightValue _lightValue = AvailableLightValues.High;
         
-        private LightValue LightValue
+        public LightValue LightValue
         {
             get => _lightValue;
             set
             {
                 _lightValue = value;
+                _logger.Debug("LightValue changed to " + value);
+                Spawner.SpawnRate = SpawnRates[_lightValue.Level];
+                Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
                 OnLightLevelChanged?.Invoke(value);
             }
         }
@@ -45,9 +81,17 @@ namespace Mdfry1.Entities
         {
             InteractableArea = this.GetNode<Area2D>("Area2D");
             AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
+            Spawner = GetNode<EnemySpawner>("EnemySpawner");
+            Spawner.SpawnRate = SpawnRates[_lightValue.Level];
             Light = GetNode<Light2D>("Light2D");
-            Timer = GetNode<Timer>("Timer");
-            this.Timer.Connect("timeout", this, nameof(OnTimerTimeout));
+            LightValue = AvailableLightValues.Values.Find(v=>v.Level == DefaultLightLevel);
+            
+            if(!IsFixedLightLevel)
+            {
+                Timer = GetNode<Timer>("Timer");
+                this.Timer.Connect("timeout", this, nameof(OnTimerTimeout));
+            }
+            
             if (InteractableArea != null)
             {
                 RegisterInteractable(InteractableArea);
@@ -91,11 +135,19 @@ namespace Mdfry1.Entities
         
         public override void _Process(float delta)
         {
-            AnimatedSprite.Visible = (LightValue.Level != LightLevel.None);
-            Light.Energy = LightValue.GetEnergyFluctuation();
+            
             if (CanInteract && InputUtils.IsInteracting())
             {
                 OnInteract();
+            }
+        }
+
+        public override void _PhysicsProcess(float delta)
+        {
+            AnimatedSprite.Visible = (LightValue.Level != LightLevel.None);
+            if (CanFlicker(20))
+            {
+                Light.Energy = LightValue.GetEnergyFluctuation();
             }
         }
 
@@ -137,7 +189,6 @@ namespace Mdfry1.Entities
         }
         public override void StartDialog(string timeLine)
         {
-            this.Print($"{nameof(Examinable)} StartDialog(${timeLine}) called");
             EmitSignal(nameof(PlayerInteracting), this);
             CanInteract = false;
             var dialog = DialogicSharp.Start(timeLine);
@@ -148,13 +199,12 @@ namespace Mdfry1.Entities
             }
             else
             {
-                this.PrintError(result, $"{nameof(Examinable)} StartDialog(${timeLine}) failed");
+                this._logger.Error($"{nameof(Examinable)} StartDialog(${timeLine}) failed with error {result}");
             }
         }
 
         public override void DialogListener(object value)
         {
-            //base.DialogListener(value);
             this.Pause();
             var val = value.ToString();
             OnDialogListener(val);
@@ -171,8 +221,8 @@ namespace Mdfry1.Entities
         
         private async Task DialogComplete()
         {
-            this.Print($"Examinable.{nameof(DialogComplete)} called");
-            this.Print($"Examinable.ShouldRemove = {ShouldRemove}");
+            this._logger.Debug($"Examinable.{nameof(DialogComplete)} called");
+            this._logger.Debug($"Examinable.ShouldRemove = {ShouldRemove}");
             EmitSignal(nameof(PlayerInteractingComplete), this);
             await this.WaitForSeconds(0.2f).ConfigureAwait(false);
             this.Unpause();
@@ -223,7 +273,5 @@ namespace Mdfry1.Entities
             area2D.ConnectBodyEntered(this, nameof(OnExaminableAreaEntered));
             area2D.ConnectBodyExited(this, nameof(OnExaminableAreaExited));
         }
-
-        
     }
 }

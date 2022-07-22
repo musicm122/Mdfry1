@@ -12,7 +12,7 @@ namespace Mdfry1.Entities.Behaviors
 {
     public class DamagableBehavior : Node2D, IDebuggable<Node>, IDamagableBehavior
     {
-        private ILogger _logger;
+        private ILogger _logger = new GDLogger(LogLevelOutput.Warning);
         
         private static readonly List<string> DefaultDamagableNames = new List<string>{ "hitbox", "spikes" };
     
@@ -129,7 +129,6 @@ namespace Mdfry1.Entities.Behaviors
 
         public override void _Ready()
         {
-            this._logger = new GDLogger(level: LogLevelOutput.Debug);
             HurtBox = GetNode<Hurtbox>("Hurtbox");
         }
     }

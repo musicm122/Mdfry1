@@ -26,10 +26,6 @@ namespace Mdfry1.Entities.EnemyState
                 DataStore.Path = Enemy.GetNode<Path2D>(DataStore.PatrolPath);
                 DataStore.PatrolPoints = DataStore.Path.Curve.GetBakedPoints();
             }
-            else
-            {
-                this.Logger.Warning($"{Enemy.Name} PatrolPath is null");
-            }
         }
 
         private void Patrol(float delta)

@@ -10,7 +10,7 @@ namespace Mdfry1.Entities.Components
         [Export]
         public float InvincibleTime { get; set; } = 0.6f;
         
-        private ILogger _logger = new GDLogger(LogLevelOutput.Debug);
+        private ILogger _logger = new GDLogger(LogLevelOutput.Warning);
         
         [Export]
         public bool IsDebugging { get; set; } = false;

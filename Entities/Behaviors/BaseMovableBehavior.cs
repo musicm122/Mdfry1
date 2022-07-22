@@ -8,7 +8,7 @@ namespace Mdfry1.Entities.Behaviors
 {
     public abstract class BaseMovableBehavior : KinematicBody2D, IDebuggable<Node>, IMovableBehavior
     {
-        protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Debug);
+        protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Warning);
         
         public Action<Vector2, float> OnMove { get; set; }
         

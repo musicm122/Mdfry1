@@ -19,7 +19,7 @@ namespace Mdfry1.Entities.Behaviors
         public Action<Examinable> InteractingAvailableCallback { get; set; }
         public Action<Examinable> InteractingUnavailableCallback { get; set; }
 
-        public bool HasKey(Key key) => DataStore.Inventory.HasKey(key);
+        public bool HasKey(Key key) => DataStore.Inventory.HasKey(key) || key == Key.None;
         public bool HasItem(string itemName) => DataStore.Inventory.HasItem(itemName);
 
         [Export]
@@ -124,10 +124,11 @@ namespace Mdfry1.Entities.Behaviors
             this.Print($"Does player have key {lockedDoor.RequiredKey}", HasKey(lockedDoor.RequiredKey));
             this.Print($"lockedDoor.CurrentDoorState  = {lockedDoor.CurrentDoorState}");
 
-            if (HasKey(lockedDoor.RequiredKey) && lockedDoor.CurrentDoorState == DoorState.Locked)
+            if ((HasKey(lockedDoor.RequiredKey)) && lockedDoor.CurrentDoorState == DoorState.Locked)
             {
                 lockedDoor.CurrentDoorState = DoorState.Closed;
             }
+            
             this.InteractingCallback?.Invoke(lockedDoor);
         }
 

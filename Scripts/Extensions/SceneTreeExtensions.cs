@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Godot;
 using Mdfry1.Entities;
+using Mdfry1.Scenes.Level;
 using Mdfry1.Scripts.Constants;
 using Mdfry1.Scripts.Item;
 
@@ -11,6 +12,16 @@ namespace Mdfry1.Scripts.Extensions
         public static void AlertAllEnemies(this SceneTree tree)
         {
             tree.CallGroup(Groups.AllEnemies, "Alert");
+        }
+        
+        public static void EnableSpawners(this SceneTree tree)
+        {
+            tree.CallGroup(Groups.Spawner, "EnableSpawning");
+        }
+        
+        public static void DisableSpawners(this SceneTree tree)
+        {
+            tree.CallGroup(Groups.Spawner, "DisableSpawning");
         }
 
         public static void AddItem(this SceneTree tree, string name, int amt = 1)
@@ -69,6 +80,9 @@ namespace Mdfry1.Scripts.Extensions
 
         public static List<EnemyV4> GetEnemyNodes(this SceneTree tree) =>
             tree.Root.GetChildrenOfType<EnemyV4>();
+        
+        public static List<LampLight> GetLampLightNodes(this SceneTree tree) =>
+            tree.Root.GetChildrenOfType<LampLight>();
 
 
         public static (bool, List<Navigation2D>) GetNavigation2dNodes(this SceneTree tree)
@@ -81,6 +95,13 @@ namespace Mdfry1.Scripts.Extensions
         {
             var player = tree.GetPlayerNode();
             return player.Item2.GlobalPosition;
+        }
+        
+        public static (bool, DayNightCycle) GetDayNightCycle(this SceneTree tree)
+        {
+            var retval = tree.CurrentScene.FindNode("DayNightCycle");
+            
+            return retval != null ? (true, retval as DayNightCycle) : (false, null);
         }
     }
 }

@@ -4,6 +4,7 @@
     {
         KeyA,
         KeyB,
-        KeyC
+        KeyC,
+        None
     }
 }

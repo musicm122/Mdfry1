@@ -20,8 +20,7 @@ namespace Mdfry1.Entities
         [Signal]
         public delegate void DoorInteractionComplete(LockedDoor lockedDoor);
 
-        [Export]
-        public Key RequiredKey { get; set; }
+        [Export] public Key RequiredKey { get; set; } = Key.None;
 
         [Export]
         public DoorState CurrentDoorState { get; set; } = DoorState.Locked;

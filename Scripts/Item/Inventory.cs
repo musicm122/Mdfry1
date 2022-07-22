@@ -34,7 +34,7 @@ namespace Mdfry1.Scripts.Item
 
         public bool HasResource(string name) => Items.Any(item => item.Name == name);
 
-        public bool HasKey(Key key) => Items.Any(item => item.Name.ToLower() == (key.ToString().ToLower()));
+        public bool HasKey(Key key) => Items.Any(item => item.Name.ToLower() == (key.ToString().ToLower())) || key == Key.None;
 
         public void Add(string name, int amt)
         {
