@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Mdfry1.Entities;
 using Mdfry1.Scenes.Level;
@@ -80,6 +82,10 @@ namespace Mdfry1.Scripts.Extensions
 
         public static List<EnemyV4> GetEnemyNodes(this SceneTree tree) =>
             tree.Root.GetChildrenOfType<EnemyV4>();
+
+        public static int GetEnemyCount(this SceneTree tree) =>
+            tree.GetEnemyNodes().Count;
+            
         
         public static List<LampLight> GetLampLightNodes(this SceneTree tree) =>
             tree.Root.GetChildrenOfType<LampLight>();
@@ -100,8 +106,15 @@ namespace Mdfry1.Scripts.Extensions
         public static (bool, DayNightCycle) GetDayNightCycle(this SceneTree tree)
         {
             var retval = tree.CurrentScene.FindNode("DayNightCycle");
-            
             return retval != null ? (true, retval as DayNightCycle) : (false, null);
         }
+
+        public static int GetDayCount(this SceneTree tree)
+        {
+            var (hasNode, node) = tree.GetDayNightCycle();
+            return hasNode ? node.GetDay() : 0;
+        }
+        
+        
     }
 }

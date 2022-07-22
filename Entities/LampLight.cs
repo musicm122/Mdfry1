@@ -72,7 +72,8 @@ namespace Mdfry1.Entities
                 _lightValue = value;
                 _logger.Debug("LightValue changed to " + value);
                 Spawner.SpawnRate = SpawnRates[_lightValue.Level];
-                Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
+                Spawner.EnemySpawnState = EnemyBehaviorStates.ChasePlayer;
+                //Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
                 OnLightLevelChanged?.Invoke(value);
             }
         }

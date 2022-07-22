@@ -1,6 +1,7 @@
 using Godot;
 using Mdfry1.Entities;
 using Mdfry1.Entities.Components;
+using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
 
 namespace Mdfry1.Scripts.UI
@@ -13,9 +14,13 @@ namespace Mdfry1.Scripts.UI
         private string HealthBarDisplayPath { get; set; } = "./HealthPanel/HealthBar";
         private string GameOverPanelPath { get; set; } = "./GameOverPanel";
         
+        private string DeathTextPath { get; set; } = "./GameOverPanel/DeathText";
+        
+        
         private string AmmoDisplayPath { get; set; } = "./AmmoPanel/Ammo";
         public Label AmmoDisplay { get; set; }
         
+        public Label DeathText { get; set; }
 
         public Label HealthBarDisplay { get; set; }
 
@@ -27,6 +32,7 @@ namespace Mdfry1.Scripts.UI
         {
             HealthBarDisplay = GetNode<Label>(HealthBarDisplayPath);
             GameOverPanel = GetNode<PanelContainer>(GameOverPanelPath);
+            DeathText = GetNode<Label>(DeathTextPath);
             AmmoDisplay = GetNode<Label>(AmmoDisplayPath);
             GameOverPanel.Hide();
         }
@@ -49,6 +55,7 @@ namespace Mdfry1.Scripts.UI
             AmmoDisplay.Text = $"Ammo: {dataStore.GetAmmoCount().ToString()}";
             if (dataStore.PlayerStatus.CurrentHealth <= 0)
             {
+                DeathText.Text = $"You Died!\r\n You survived for {GetTree().GetDayCount().ToString()} Days!"; 
                 GameOverPanel.Show();
             }
         }

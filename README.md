@@ -38,3 +38,11 @@ https://malibudarby.itch.io/horror-city-tile-pack
 
 Monster Pack Animations by OneBitPudding
 https://opengameart.org/content/pixel-sci-fi-monster-animations
+
+
+Sound Effects
+https://opengameart.org/content/the-free-firearm-sound-library
+
+https://opengameart.org/content/swish-bamboo-stick-weapon-swhoshes
+
+https://opengameart.org/content/5-hit-sounds-dying

@@ -7,9 +7,20 @@ using Mdfry1.Scripts.Mission;
 
 namespace Mdfry1.Entities
 {
-
+  
     public class PlayerV2 : PlayerMovableBehavior
     {
+        public AudioStreamPlayer DeathClipPlayer { get; set; }
+
+        public AudioStreamPlayer TakeDamageClipPlayer { get; set; }
+        
+        public AudioStreamPlayer ShootClipPlayer { get; set; }
+        
+        public AudioStreamPlayer DashClipPlayer { get; set; }
+        
+        public AudioStreamPlayer EmptyClipPlayer { get; set; }
+        
+        
         public PlayerDataStore DataStore { get; set; }
 
         public IDamagableBehavior Damagable { get; private set; }
@@ -26,9 +37,19 @@ namespace Mdfry1.Entities
 
         public PlayerAnimationManager AnimationManager { get; set; }
 
+        void InitAudioStreams()
+        {
+            TakeDamageClipPlayer = GetNode<AudioStreamPlayer>("TakeDamageClipPlayer");
+            ShootClipPlayer= GetNode<AudioStreamPlayer>("ShootClipPlayer");
+            DashClipPlayer = GetNode<AudioStreamPlayer>("DashClipPlayer");
+            EmptyClipPlayer= GetNode<AudioStreamPlayer>("EmptyClipPlayer");
+            DeathClipPlayer = GetNode<AudioStreamPlayer>("DeathClipPlayer");
+        }
+
         public override void _Ready()
         {
             base._Ready();
+            InitAudioStreams();
             PlayerStatus = GetNode<Health>("Health");
             AnimationManager = GetNode<PlayerAnimationManager>("AnimationManager");
 
@@ -39,8 +60,8 @@ namespace Mdfry1.Entities
                 MissionManager = new MissionManager(),
                 
             };
-            //Note * for testing only
-            DataStore.Inventory.Add("Ammo", 100);
+            
+            DataStore.Inventory.Add("Ammo", 1);
             
             DataStore.GetFacingDirection += AnimationManager.GetFacingDirection;
             
@@ -72,17 +93,25 @@ namespace Mdfry1.Entities
             ShootableBehavior.Init(this.DataStore);
             ShootableBehavior.OnShootStart += OnShootStarted;
             ShootableBehavior.OnNoAmmo += OnShootStartedWithEmptyClip;
+            PlayerStatus.EmptyHealthBarCallback += OnDeath;
             
+        }
+
+        private void OnDeath()
+        {
+            DeathClipPlayer.Play();
         }
 
         private void OnShootStarted()
         {
+            ShootClipPlayer.Play();
             this.AnimationManager.PlayShootAnimation(Velocity);
             DataStore.DecrementAmmo();
             Ui.RefreshUI();
         }
         
         private void OnShootStartedWithEmptyClip(){
+            EmptyClipPlayer.Play();
             this.AnimationManager.PlayEmptyClipAnimation(Velocity);
         }
         
@@ -103,6 +132,7 @@ namespace Mdfry1.Entities
 
         private void OnRollAction(Vector2 velocity)
         {
+            DashClipPlayer.Play();
             AnimationManager?.PlayRollAnimation(velocity);
         }
 
@@ -118,6 +148,7 @@ namespace Mdfry1.Entities
 
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
+            TakeDamageClipPlayer.Play();
             MoveAndSlide(damageForce);
             Ui.RefreshUI();
         }

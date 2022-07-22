@@ -79,6 +79,7 @@ namespace Mdfry1.Entities.EnemyState
             
             if (IsInAttackRange(PlayerRef.GlobalPosition))
             {
+                Enemy.AttackClipPlayer.Play();
                 Enemy.AnimationManager.PlayAttackAnimation();
                 this.Enemy.EnemyDataStore.ResetCooldown();
             }

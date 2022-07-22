@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/U_19P.wav-d211228f8aaea7d36cc628745636dfbd.sample"
+
+[deps]
+
+source_file="res://Assets/Audio/SoundEffects/U_19P.wav"
+dest_files=[ "res://.import/U_19P.wav-d211228f8aaea7d36cc628745636dfbd.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/die1.mp3-e8fff16bc61852675c59d9c064c69e85.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/die1.mp3"
+dest_files=[ "res://.import/die1.mp3-e8fff16bc61852675c59d9c064c69e85.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

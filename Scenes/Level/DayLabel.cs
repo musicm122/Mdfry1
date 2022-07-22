@@ -8,6 +8,7 @@ namespace Mdfry1.Scenes.Level
         [Export]
         public NodePath DayNightCyclePath = new NodePath("/root/DayNightCycle");
         public DayNightCycle DayNightCycle { get; set; }
+        private string DayMessage { get; set; }
 
         public override void _Ready()
         {
@@ -17,8 +18,13 @@ namespace Mdfry1.Scenes.Level
 
         public void UpdateLabel(int day)
         {
-            Text = $"Day {day.ToString()}";
+            DayMessage = $"Day {day.ToString()}\r\n";
         }
 
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+            Text = $"{DayMessage}Total Time : {DayNightCycle.TotalTime.ToString()}";
+        }
     }
 }

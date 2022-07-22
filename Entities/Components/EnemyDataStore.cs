@@ -53,8 +53,11 @@ namespace Mdfry1.Entities.Components
             {
                 Logger.Debug("CurrentCoolDownCounter = "+ CurrentCoolDownCounter);
                 CurrentCoolDownCounter -= delta;
-                Cooldown.Text =
-                    $"Cooling Down in {CurrentCoolDownCounter.ToString(CultureInfo.InvariantCulture)} seconds";
+                if (IsDebugging)
+                {
+                    Cooldown.Text =
+                        $"Cooling Down in {CurrentCoolDownCounter.ToString(CultureInfo.InvariantCulture)} seconds";
+                }
             }
             else
             {

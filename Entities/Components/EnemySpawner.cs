@@ -13,10 +13,28 @@ namespace Mdfry1.Entities.Components
 {
     public class EnemySpawner : Node2D
     {
+
+        public static Color[] AvailableColors =
+        {
+            new Color("#27e217"),
+            new Color("#a300fe"),
+            new Color("#00ffc3"),
+            new Color("#ff282b"),
+            new Color("#ffffff")
+        };
+
+        private Color GetRandomColor()=>
+            AvailableColors[new Random().RandomInt(0, AvailableColors.Length - 1)];
+        
+        
         [Export]
         public bool EnableSpawning = true;
+
+        [Export] 
+        public int MaxSpawnCount { get; set; } = 10;
         
-        private int counter = 0;
+        public int EnemiesSpawnedCount = 0;
+        
         protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Debug);
         // [Export]
         // public float HighLightSpawnRate { get; set; } 
@@ -80,15 +98,37 @@ namespace Mdfry1.Entities.Components
             Owner.AddChild(enemy);
             OnSpawn?.Invoke(enemy);
         }
+        
+        public void SpawnTougher()
+        {
+            //var enemy = (EnemyV4)ResourceLoader.Load(EnemyToSpawnPath);
+            var enemy = (EnemyV4)GD.Load<PackedScene>(EnemyToSpawnPath).Instance();
+            enemy.EnemyDataStore.MaxHealth = new Random().RandomInt(4, 6);
+            enemy.EnemyDataStore.CurrentHealth = enemy.EnemyDataStore.MaxHealth;
+            enemy.Modulate = GetRandomColor();
+            enemy.DefaultState = EnemySpawnState;
+            enemy.GlobalPosition = SpawnPosition.Position;
+            Owner.AddChild(enemy);
+            OnSpawn?.Invoke(enemy);
+        }
 
         public override void _Process(float delta)
         {
-            if (!EnableSpawning) return;
+            if(GetTree().GetEnemyCount()>=MaxSpawnCount || !EnableSpawning ) return;
+            
             AccumulatedTime += delta;
             if (AccumulatedTime<=SpawnRate) return;
-            counter++;
-            Spawn();
-            _logger.Debug($"{Name} Spawning enemy # {counter.ToString()}");
+            EnemiesSpawnedCount++;
+            if (GetTree().GetDayCount() >= 1)
+            {
+                Spawn();
+            }
+            else
+            {
+                SpawnTougher();
+            }
+
+            _logger.Debug($"{Name} Spawning enemy # {EnemiesSpawnedCount.ToString()}");
             AccumulatedTime = 0f;
         }
     }

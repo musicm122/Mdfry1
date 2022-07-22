@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=2]
+[gd_scene load_steps=83 format=2]
 
 [ext_resource path="res://Entities/Components/PlayerHealth.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Components/Hurtbox.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Entities/PauseMenu.cs" type="Script" id=7]
 [ext_resource path="res://Entities/Behaviors/InteractableBehavior.cs" type="Script" id=8]
 [ext_resource path="res://Entities/Behaviors/DamagableBehavior.cs" type="Script" id=9]
+[ext_resource path="res://Assets/Audio/SoundEffects/Scream_Male_00.wav" type="AudioStream" id=10]
 [ext_resource path="res://Entities/Behaviors/FlashlightBehavior.cs" type="Script" id=11]
 [ext_resource path="res://Entities/Behaviors/UiBehavior.cs" type="Script" id=12]
 [ext_resource path="res://Entities/PlayerV2.cs" type="Script" id=13]
@@ -16,6 +17,10 @@
 [ext_resource path="res://Entities/PlayerAnimationManager.cs" type="Script" id=15]
 [ext_resource path="res://Entities/Behaviors/ShootBehavior.cs" type="Script" id=16]
 [ext_resource path="res://Assets/Art/Character/Horror City Battlers/Top Down/1X Size/MaleHero_GunB.png" type="Texture" id=17]
+[ext_resource path="res://Assets/Audio/SoundEffects/U_19P_mod.wav" type="AudioStream" id=18]
+[ext_resource path="res://Assets/Audio/SoundEffects/EmptyClip.wav" type="AudioStream" id=19]
+[ext_resource path="res://Assets/Audio/SoundEffects/swosh-01.wav" type="AudioStream" id=20]
+[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/hit1.mp3" type="AudioStream" id=21]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
@@ -854,12 +859,20 @@ parameters/Shoot/blend_position = Vector2( 0, 1 )
 parameters/Walk/blend_position = Vector2( 0, 1 )
 
 [node name="EmptyClipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 19 )
 
 [node name="ShootClipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 18 )
 
 [node name="DashClipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 20 )
 
 [node name="TakeDamageClipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 21 )
+volume_db = -66.255
+
+[node name="DeathClipPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 light_mask = 31

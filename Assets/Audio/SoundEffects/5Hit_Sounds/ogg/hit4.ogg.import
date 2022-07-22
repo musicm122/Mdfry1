@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/hit4.ogg-4ef2b34770f93b8473482454386a8500.oggstr"
+
+[deps]
+
+source_file="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit4.ogg"
+dest_files=[ "res://.import/hit4.ogg-4ef2b34770f93b8473482454386a8500.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

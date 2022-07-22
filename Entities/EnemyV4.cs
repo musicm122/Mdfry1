@@ -13,6 +13,15 @@ namespace Mdfry1.Entities
 {
     public class EnemyV4 : EnemyMovableBehavior, IEnemy
     {
+        
+        public BloodSpatter BloodSpatter { get; set; }
+        
+        public AudioStreamPlayer DeathClipPlayer { get; set; }
+
+        public AudioStreamPlayer TakeDamageClipPlayer { get; set; }
+        
+        public AudioStreamPlayer AttackClipPlayer { get; set; }
+        
         [Export] 
         public NodePath PatrolPath { get; set; }
         public Position2D HitboxPivot { get; set; }
@@ -33,6 +42,14 @@ namespace Mdfry1.Entities
         private readonly StateMachine _stateMachine = new();
 
         public EnemyAnimationManager AnimationManager { get; set; }
+
+        void InitAudioStreams()
+        {
+            TakeDamageClipPlayer = GetNode<AudioStreamPlayer>("TakeDamageClipPlayer");
+            DeathClipPlayer= GetNode<AudioStreamPlayer>("DeathClipPlayer");
+            AttackClipPlayer = GetNode<AudioStreamPlayer>("AttackClipPlayer");
+        }
+        
 
         public void Init()
         {
@@ -56,6 +73,8 @@ namespace Mdfry1.Entities
 
         public override void _Ready()
         {
+            InitAudioStreams();
+            BloodSpatter = GetNode<BloodSpatter>("BloodSpatter");
             HitboxPivot = GetNode<Position2D>("HitboxPiviot");
             AnimationManager = GetNode<EnemyAnimationManager>("AnimationManager");
             AnimationManager.Sprite = GetNode<Sprite>("Sprite");
@@ -73,6 +92,7 @@ namespace Mdfry1.Entities
             }
 
             EnemyDataStore.Cooldown = GetNode<Label>("Cooldown");
+            
             Cooldown = GetNode<Label>("Cooldown");
             EnemyDataStore.DebugLabel = this.GetNode<Label>("DebugLabel");
             Damagable = GetNode<DamagableBehavior>("Behaviors/Damagable");
@@ -96,7 +116,7 @@ namespace Mdfry1.Entities
 
         private void OnEmptyHealthBar()
         {
-            //todo: death animation and sound effect
+            DeathClipPlayer.Play();
             _logger.Debug(this.Name + " Died");
             AnimationManager.PlayDeathAnimation();
             this.QueueFree();
@@ -117,7 +137,12 @@ namespace Mdfry1.Entities
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
             _logger.Debug(this.Name + " took damage");
+            TakeDamageClipPlayer.Play();
             AnimationManager.PlayTakeDamageAnimation();
+            var bloodSpatter = (BloodSpatter)GD.Load<PackedScene>("res://Entities/Effects/BloodSpatter.tscn").Instance();
+            bloodSpatter.GlobalPosition = GlobalPosition;
+            GetTree().Root.AddChild(bloodSpatter);
+            
             MoveAndSlide(damageForce);
             Alert();
         }
@@ -150,7 +175,11 @@ namespace Mdfry1.Entities
         public override void _PhysicsProcess(float delta)
         {
             _stateMachine.Update(delta);
-            this.StateLabel.Text = _stateMachine.CurrentState.ToString();
+            if (IsDebugging)
+            {
+                this.StateLabel.Text = _stateMachine.CurrentState.ToString();
+            }
+
             if (EnemyDataStore.CurrentCoolDownCounter > 0)
             {
                 EnemyDataStore.CurrentCoolDownCounter -= delta;

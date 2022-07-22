@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Scripts.GDUtils;
@@ -90,6 +91,7 @@ namespace Mdfry1.Entities.Behaviors
             if (DataStore.PlayerStatus.IsDead())
             {
                 PauseMenu.IsPauseOptionEnabled = false;
+                
                 if (InputUtils.IsAnyKeyPressed())
                 {
                     this.Print("Reloading Scene");
