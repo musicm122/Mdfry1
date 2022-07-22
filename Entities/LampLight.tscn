@@ -39,6 +39,11 @@ animations = [ {
 "loop": true,
 "name": "default",
 "speed": 5.0
+}, {
+"frames": [  ],
+"loop": true,
+"name": "New Anim",
+"speed": 5.0
 } ]
 
 [sub_resource type="CircleShape2D" id=9]
@@ -65,7 +70,7 @@ shape = SubResource( 8 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 frames = SubResource( 2 )
-frame = 2
+animation = "New Anim"
 speed_scale = 0.5
 playing = true
 
