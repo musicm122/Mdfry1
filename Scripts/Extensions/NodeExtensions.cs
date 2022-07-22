@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using Godot;
-using TinyIoC;
 
 namespace Mdfry1.Scripts.Extensions
 {
@@ -14,9 +13,6 @@ namespace Mdfry1.Scripts.Extensions
             var temp = node.GetNode("/root/Global");
             return (Entities.Global)temp;
         }
-
-        public static TinyIoCContainer GetContainer(this Node node) => node.GetGlobal().Container;
-
 
         public static void DrawCircleArc(this Node2D node, Vector2 center, float radius, float angleFrom, float angleTo,
             Color color)

@@ -19,6 +19,7 @@ namespace Mdfry1.Entities
         public virtual void UpdateAnimationBlendPositions(Vector2 movementVector)
         {
             _logger.Debug("UpdateAnimationBlendPositions arg:" + movementVector.ToString());
+            
             UpdateAnimationBlendPosition("Idle", movementVector);
             UpdateAnimationBlendPosition("Walk", movementVector);
             

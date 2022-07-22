@@ -4,16 +4,16 @@
 			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "Hello"
+			"text": "You found [color=#efaca5]1 Round[/color]"
 		},
 		{
-			"emit_signal": "",
+			"emit_signal": "AmmoFound1",
 			"event_id": "dialogic_040"
 		}
 	],
 	"metadata": {
 		"dialogic-version": "1.4.1",
-		"file": "timeline-1647636744.json",
-		"name": "hello_world"
+		"file": "timeline-1658441111.json",
+		"name": "AmmoFound1"
 	}
 }

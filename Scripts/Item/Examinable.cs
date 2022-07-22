@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Godot;
 using Mdfry1.addons.dialogic.Other;
 using Mdfry1.Scripts.Extensions;
@@ -10,7 +11,7 @@ namespace Mdfry1.Scripts.Item
     public class Examinable : Node2D, IDebuggable<Node>
     {
         [Export]
-        public bool IsDebugging { get; set; } = false;
+        public bool IsDebugging { get; set; } 
 
         [Export]
         public string Timeline { get; set; }
@@ -61,8 +62,9 @@ namespace Mdfry1.Scripts.Item
                     GetTree().AddItem("HealthKit");
                     ShouldRemove = true;
                     break;
+                case "AmmoFound":
                 case "AmmoFound1":
-                    GetTree().AddItem("Ammo",1);
+                    GetTree().AddItem("Ammo");
                     ShouldRemove = true;
                     break;
                 case "AmmoFound5":
@@ -86,16 +88,15 @@ namespace Mdfry1.Scripts.Item
                     GetTree().AddItem("KeyA");
                     ShouldRemove = true;
                     break;
-                case "AmmoFound":
-                    GetTree().AddItem("Ammo");
-                    ShouldRemove = true;
-                    break;
                 case "Find the glasses":
                     this.Print("adding 'Find the glasses' mission");
                     GetTree().AddMission(val);
                     break;
+                default:
+                    OnDialogListener(val);
+                    break;
             }
-            OnDialogListener(val);
+            
             Task.Run(async () => await DialogComplete().ConfigureAwait(false));
         }
 
@@ -177,7 +178,7 @@ namespace Mdfry1.Scripts.Item
             }
         }
 
-        public virtual void ProcessLoop(float delta)
+        private void ProcessLoop(float delta)
         {
             if (CanInteract && InputUtils.IsInteracting())
             {
@@ -202,6 +203,10 @@ namespace Mdfry1.Scripts.Item
             if (InteractableArea != null)
             {
                 RegisterInteractable(InteractableArea);
+            }
+            else
+            {
+                throw new NullReferenceException("Missing required child 'Area2D' for examinable");
             }
         }
     }

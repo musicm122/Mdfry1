@@ -12,7 +12,7 @@ polygon = PoolVector2Array( -6, 16, 6, 16, 6, 15, -6, 15 )
 
 [node name="Ammo5" type="Node2D"]
 script = ExtResource( 3 )
-Timeline = "AmmoFound5"
+Timeline = "/Items/AmmoFound5"
 
 [node name="Area2D" type="Area2D" parent="."]
 script = ExtResource( 2 )

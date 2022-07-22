@@ -1,6 +1,6 @@
-﻿namespace Mdfry1.Entities.PlayerState;
-
-public class IdlePlayerState : BasePlayerState
+﻿namespace Mdfry1.Entities.PlayerState
 {
-        
+    public class IdlePlayerState : BasePlayerState
+    {
+    }
 }

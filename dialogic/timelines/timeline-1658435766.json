@@ -4,7 +4,11 @@
 			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "You don't have any lamp fluid"
+			"text": "You don't have any [color=#A5EFAC]lamp fluid[/color]"
+		},
+		{
+			"emit_signal": "",
+			"event_id": "dialogic_040"
 		}
 	],
 	"metadata": {

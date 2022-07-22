@@ -10,8 +10,9 @@ namespace Mdfry1.Entities
     {
         protected override void OnInteract()
         {
-            base.OnInteract();
             StartDialog(LampDialogInteractions.LampFluidFound);
+            base.OnInteract();
+            
         }
 
         public override void OnDialogListener(string val)

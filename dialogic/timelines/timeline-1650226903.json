@@ -1,10 +1,10 @@
 {
 	"events": [
 		{
-			"character": "character-1647639414.json",
+			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "A Health Kit Found"
+			"text": "A [color=#A5EFAC]Health Kit[/color] Found"
 		},
 		{
 			"emit_signal": "HealthKitFound",

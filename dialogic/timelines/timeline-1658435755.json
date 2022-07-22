@@ -7,7 +7,7 @@
 
 			],
 			"portrait": "",
-			"question": "Use lamp fluid?"
+			"question": "Use  [color=#A5EFAC]lamp fluid[/color]?"
 		},
 		{
 			"choice": "Yes",
@@ -17,7 +17,7 @@
 			"value": ""
 		},
 		{
-			"emit_signal": "UsingLighterFluid",
+			"emit_signal": "UsingLampFluid",
 			"event_id": "dialogic_040"
 		},
 		{
@@ -28,7 +28,15 @@
 			"value": ""
 		},
 		{
+			"emit_signal": "",
+			"event_id": "dialogic_040"
+		},
+		{
 			"event_id": "dialogic_013"
+		},
+		{
+			"emit_signal": "",
+			"event_id": "dialogic_040"
 		}
 	],
 	"metadata": {

@@ -4,7 +4,7 @@
 			"character": "",
 			"event_id": "dialogic_001",
 			"portrait": "",
-			"text": "Lamp Fluid Found"
+			"text": "[color=#A5EFAC]Lamp Fluid[/color]  Found"
 		},
 		{
 			"emit_signal": "LampFluidFound",
