@@ -5,3 +5,5 @@
 [node name="Node2D" type="Node2D"]
 
 [node name="terrance working map" parent="." instance=ExtResource( 1 )]
+
+[editable path="terrance working map"]

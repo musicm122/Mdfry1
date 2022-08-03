@@ -7,9 +7,9 @@
 [ext_resource path="res://Entities/Behaviors/DamagableBehavior.cs" type="Script" id=5]
 [ext_resource path="res://Entities/EnemyV4.cs" type="Script" id=6]
 [ext_resource path="res://Entities/EnemyAnimationManager.cs" type="Script" id=7]
-[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/die1.mp3" type="AudioStream" id=8]
-[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/hit5.mp3" type="AudioStream" id=9]
+[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit5.ogg" type="AudioStream" id=9]
 [ext_resource path="res://Entities/Effects/BloodSpatter.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/die1.ogg" type="AudioStream" id=11]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 7.56579, 28.7722 )
@@ -976,7 +976,7 @@ texture = SubResource( 5 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 14
+frame = 13
 __meta__ = {
 "_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpwbGF5ZXJ8PUFuaW1hdGlvblBsYXllcgpzb3VyY2V8PXJlczovL0Fzc2V0cy9BcnQvQ2hhcmFjdGVyL3BhY2ttb25zdGVycy9Nb25zdGVyM1BhY2suYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD0Kb19uYW1lfD0Kb25seV92aXNpYmxlfD1GYWxzZQpvX2V4X3B8PQo="
 }
@@ -1026,18 +1026,19 @@ parameters/Walk/blend_position = 0
 occluder = SubResource( 102 )
 
 [node name="DeathClipPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 8 )
-pitch_scale = 0.32
+stream = ExtResource( 11 )
+volume_db = -6.045
+pitch_scale = 0.53
 
 [node name="TakeDamageClipPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 9 )
-volume_db = -60.232
+volume_db = -9.23
 pitch_scale = 0.28
 
 [node name="AttackClipPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
-volume_db = 7.318
-pitch_scale = 0.2
+stream = ExtResource( 11 )
+volume_db = -9.588
+pitch_scale = 0.3
 
 [node name="BloodSpatter" parent="." instance=ExtResource( 10 )]
 

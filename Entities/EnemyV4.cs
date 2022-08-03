@@ -116,7 +116,11 @@ namespace Mdfry1.Entities
 
         private void OnEmptyHealthBar()
         {
-            DeathClipPlayer.Play();
+            if (!DeathClipPlayer.Playing)
+            {
+                DeathClipPlayer.Play();
+            }
+            
             _logger.Debug(this.Name + " Died");
             AnimationManager.PlayDeathAnimation();
             this.QueueFree();
@@ -125,19 +129,22 @@ namespace Mdfry1.Entities
         private void OnHurtboxInvincibilityEnded()
         {
             _logger.Debug(this.Name + " OnHurtboxInvincibilityEnded");
-            //todo: add invincibility end animation
         }
 
         private void OnHurtboxInvincibilityStarted()
         {
             _logger.Debug(this.Name + " OnHurtboxInvincibilityStarted");
-            //todo: add invincibility end animation
         }
 
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
             _logger.Debug(this.Name + " took damage");
-            TakeDamageClipPlayer.Play();
+            
+            if (!TakeDamageClipPlayer.Playing)
+            {
+                TakeDamageClipPlayer.Play();
+            }
+            
             AnimationManager.PlayTakeDamageAnimation();
             var bloodSpatter = (BloodSpatter)GD.Load<PackedScene>("res://Entities/Effects/BloodSpatter.tscn").Instance();
             bloodSpatter.GlobalPosition = GlobalPosition;

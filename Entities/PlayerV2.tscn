@@ -20,7 +20,7 @@
 [ext_resource path="res://Assets/Audio/SoundEffects/U_19P_mod.wav" type="AudioStream" id=18]
 [ext_resource path="res://Assets/Audio/SoundEffects/EmptyClip.wav" type="AudioStream" id=19]
 [ext_resource path="res://Assets/Audio/SoundEffects/swosh-01.wav" type="AudioStream" id=20]
-[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/hit1.mp3" type="AudioStream" id=21]
+[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit1.ogg" type="AudioStream" id=21]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )

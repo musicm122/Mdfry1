@@ -99,19 +99,30 @@ namespace Mdfry1.Entities
 
         private void OnDeath()
         {
-            DeathClipPlayer.Play();
+            if (!DeathClipPlayer.Playing)
+            {
+                DeathClipPlayer.Play();
+            }
         }
 
         private void OnShootStarted()
         {
-            ShootClipPlayer.Play();
+            if(!ShootClipPlayer.Playing)
+            {
+                ShootClipPlayer.Play();
+            }
+            
             this.AnimationManager.PlayShootAnimation(Velocity);
             DataStore.DecrementAmmo();
             Ui.RefreshUI();
         }
         
         private void OnShootStartedWithEmptyClip(){
-            EmptyClipPlayer.Play();
+            if (!EmptyClipPlayer.Playing)
+            {
+                EmptyClipPlayer.Play();   
+            }
+            
             this.AnimationManager.PlayEmptyClipAnimation(Velocity);
         }
         
@@ -132,7 +143,11 @@ namespace Mdfry1.Entities
 
         private void OnRollAction(Vector2 velocity)
         {
-            DashClipPlayer.Play();
+            if (!DashClipPlayer.Playing)
+            {
+                DashClipPlayer.Play();    
+            }
+            
             AnimationManager?.PlayRollAnimation(velocity);
         }
 
@@ -148,7 +163,11 @@ namespace Mdfry1.Entities
 
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
-            TakeDamageClipPlayer.Play();
+            if (!TakeDamageClipPlayer.Playing)
+            {
+                TakeDamageClipPlayer.Play();
+            }
+
             MoveAndSlide(damageForce);
             Ui.RefreshUI();
         }

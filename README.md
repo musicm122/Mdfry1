@@ -1,35 +1,47 @@
 # Mdfry1
-Mdfry1 Gamejam
+# Mdfry1 Gamejam
 
 https://itch.io/jam/mdfrys-horror-game-jam-1
 Theme:
-Your days are numbered
+"Your days are numbered"
 
-Small shack has surrounding candles  that go out over time.
-This is the only source of light for the player. 
+Small shack has surrounding candles  that go out over time. This is the only source of light for you after the sun sets. You must fend off enemies while keeping the light on.
 
-The player must fend off enemies while keeping the light on. 
+Struggle and live. 
+The dark attracts the beasts. 
+The bullets put them to sleep. 
+The light keeps them at bay. 
+How many days can you keep it up?
+
+----------------------
+## Controls
+
+----------------------
+
+Mouse to shoot
+
+wasd to move
+
+shift to dash
+
+space bar to interact with things
+
+enter to select things in ui
+
+esc to pause
+
+-------------
+
+## Source Code
 
 
-TODO:
+https://github.com/musicm122/Mdfry1​
 
-=========
 
- - [x] Player can shoot enemies 
- - [x] Player can hold ammo 
- - [x] Player can light candles
- - [x] Player can hold lighter fluid
- - [] Player has a small shack 
-    - [] Collision on environment
-    - [] Environment Lighting
- - [x] Lights burn out over time
- - [] Enemy spawner that checks light value
- - [] Damage Effects
- - [] Sound Effects
- - [] Music
- - [] Instructions on how to play
+-------------
+## Assets:
 
-# Assets:
+
 Slasher Forest Tile pack by Malibu Darby
 https://malibudarby.itch.io/slasher-forest-tile-pack
 
