@@ -1,28 +1,25 @@
-﻿using Godot;
+﻿using Common;
+using Common.Resources;
+using Godot;
+using Mdfry1.CustomResources;
 using Mdfry1.Entities.Behaviors;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Entities.Components;
 using Mdfry1.Scripts.Item;
+using Mdfry1.Scripts.Managers;
 using Mdfry1.Scripts.Mission;
 
 namespace Mdfry1.Entities
 {
-  
     public class PlayerV2 : PlayerMovableBehavior
     {
-        public AudioStreamPlayer DeathClipPlayer { get; set; }
-
-        public AudioStreamPlayer TakeDamageClipPlayer { get; set; }
-        
-        public AudioStreamPlayer ShootClipPlayer { get; set; }
-        
-        public AudioStreamPlayer DashClipPlayer { get; set; }
-        
-        public AudioStreamPlayer EmptyClipPlayer { get; set; }
-        
+        [Export(PropertyHint.ResourceType ,"PlayerAudioResource")]
+        public PlayerAudioResource AudioResource { get; set; }
         
         public PlayerDataStore DataStore { get; set; }
 
+        public IPlayAudio SoundPlayer { get; set; }
+        
         public IDamagableBehavior Damagable { get; private set; }
 
         public IInteractableBehavior Interactable { get; private set; }
@@ -37,19 +34,9 @@ namespace Mdfry1.Entities
 
         public PlayerAnimationManager AnimationManager { get; set; }
 
-        void InitAudioStreams()
-        {
-            TakeDamageClipPlayer = GetNode<AudioStreamPlayer>("TakeDamageClipPlayer");
-            ShootClipPlayer= GetNode<AudioStreamPlayer>("ShootClipPlayer");
-            DashClipPlayer = GetNode<AudioStreamPlayer>("DashClipPlayer");
-            EmptyClipPlayer= GetNode<AudioStreamPlayer>("EmptyClipPlayer");
-            DeathClipPlayer = GetNode<AudioStreamPlayer>("DeathClipPlayer");
-        }
-
         public override void _Ready()
         {
             base._Ready();
-            InitAudioStreams();
             PlayerStatus = GetNode<Health>("Health");
             AnimationManager = GetNode<PlayerAnimationManager>("AnimationManager");
 
@@ -62,8 +49,9 @@ namespace Mdfry1.Entities
             };
             
             DataStore.Inventory.Add("Ammo", 1);
-            
             DataStore.GetFacingDirection += AnimationManager.GetFacingDirection;
+            
+            SoundPlayer = GetNode<SoundPlayer>("Behaviors/SoundPlayer");
             
             Damagable = GetNode<DamagableBehavior>("Behaviors/Damagable");
             Damagable.Init(PlayerStatus);
@@ -99,30 +87,19 @@ namespace Mdfry1.Entities
 
         private void OnDeath()
         {
-            if (!DeathClipPlayer.Playing)
-            {
-                DeathClipPlayer.Play();
-            }
+            SoundPlayer.PlaySound(AudioResource.DeathClipPath);
         }
 
         private void OnShootStarted()
         {
-            if(!ShootClipPlayer.Playing)
-            {
-                ShootClipPlayer.Play();
-            }
-            
-            this.AnimationManager.PlayShootAnimation(Velocity);
+            SoundPlayer.PlaySound(AudioResource.AttackClipPath);
+            AnimationManager.PlayShootAnimation(Velocity);
             DataStore.DecrementAmmo();
             Ui.RefreshUI();
         }
         
         private void OnShootStartedWithEmptyClip(){
-            if (!EmptyClipPlayer.Playing)
-            {
-                EmptyClipPlayer.Play();   
-            }
-            
+            SoundPlayer.PlaySound(AudioResource.EmptyClipPath);
             this.AnimationManager.PlayEmptyClipAnimation(Velocity);
         }
         
@@ -143,11 +120,7 @@ namespace Mdfry1.Entities
 
         private void OnRollAction(Vector2 velocity)
         {
-            if (!DashClipPlayer.Playing)
-            {
-                DashClipPlayer.Play();    
-            }
-            
+            SoundPlayer.PlaySound(AudioResource.DashClipPath);
             AnimationManager?.PlayRollAnimation(velocity);
         }
 
@@ -163,11 +136,7 @@ namespace Mdfry1.Entities
 
         private void OnTakeDamage(Node sender, Vector2 damageForce)
         {
-            if (!TakeDamageClipPlayer.Playing)
-            {
-                TakeDamageClipPlayer.Play();
-            }
-
+            SoundPlayer.PlaySound(AudioResource.TakeDamageClipPath);
             MoveAndSlide(damageForce);
             Ui.RefreshUI();
         }

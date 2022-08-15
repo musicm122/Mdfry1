@@ -1,0 +1,12 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://CustomResources/PlayerAudioResource.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+TakeDamageClipPath = "res://Assets/Audio/SoundEffects/5Hit_Sounds/mp3/hit1.mp3"
+DeathClipPath = "res://Assets/Audio/SoundEffects/Scream_Male_00.wav"
+AttackClipPath = "res://Assets/Audio/SoundEffects/U_19P_mod.wav"
+ShootClipPath = "res://Assets/Audio/SoundEffects/U_19P_mod.wav"
+EmptyClipPath = "res://Assets/Audio/SoundEffects/EmptyClip.wav"
+DashClipPath = "res://Assets/Audio/SoundEffects/swosh-01.wav"

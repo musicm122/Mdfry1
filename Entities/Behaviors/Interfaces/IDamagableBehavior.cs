@@ -4,6 +4,7 @@ using Mdfry1.Entities.Components;
 
 namespace Mdfry1.Entities.Behaviors.Interfaces
 {
+
     public interface IDamagableBehavior
     {
         Action EmptyHealthBarCallback { get; set; }

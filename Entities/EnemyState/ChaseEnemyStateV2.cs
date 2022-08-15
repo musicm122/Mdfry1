@@ -79,11 +79,7 @@ namespace Mdfry1.Entities.EnemyState
             
             if (IsInAttackRange(PlayerRef.GlobalPosition))
             {
-                if (!Enemy.AttackClipPlayer.Playing)
-                {
-                    Enemy.AttackClipPlayer.Play();
-                }
-                
+                Enemy.SoundPlayer.PlaySound(Enemy.AudioResource.DeathClipPath);
                 Enemy.AnimationManager.PlayAttackAnimation();
                 this.Enemy.EnemyDataStore.ResetCooldown();
             }

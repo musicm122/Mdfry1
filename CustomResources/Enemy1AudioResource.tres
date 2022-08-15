@@ -1,0 +1,9 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://CustomResources/EntityAudioResource.cs" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+TakeDamageClipPath = "res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit5.ogg"
+DeathClipPath = "res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/die1.ogg"
+AttackClipPath = "res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/die1.ogg"

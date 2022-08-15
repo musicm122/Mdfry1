@@ -7,9 +7,9 @@
 [ext_resource path="res://Entities/Behaviors/DamagableBehavior.cs" type="Script" id=5]
 [ext_resource path="res://Entities/EnemyV4.cs" type="Script" id=6]
 [ext_resource path="res://Entities/EnemyAnimationManager.cs" type="Script" id=7]
-[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit5.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Entities/Behaviors/SoundPlayer.cs" type="Script" id=8]
 [ext_resource path="res://Entities/Effects/BloodSpatter.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/die1.ogg" type="AudioStream" id=11]
+[ext_resource path="res://CustomResources/Enemy1AudioResource.tres" type="Resource" id=12]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 7.56579, 28.7722 )
@@ -875,6 +875,7 @@ __meta__ = {
 MaxSpeed = 50.0
 ArrivalZoneRadius = 10
 EnclosureZone = Rect2( 8, 8, 10, 10 )
+AudioResource = ExtResource( 12 )
 
 [node name="Status" parent="." instance=ExtResource( 3 )]
 MaxHealth = 3
@@ -928,6 +929,9 @@ collision_mask = 16
 position = Vector2( 0, 1 )
 shape = SubResource( 4 )
 
+[node name="SoundPlayer" type="Node" parent="Behaviors"]
+script = ExtResource( 8 )
+
 [node name="Cooldown" type="Label" parent="."]
 visible = false
 margin_left = -24.0
@@ -976,7 +980,7 @@ texture = SubResource( 5 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 13
+frame = 12
 __meta__ = {
 "_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpwbGF5ZXJ8PUFuaW1hdGlvblBsYXllcgpzb3VyY2V8PXJlczovL0Fzc2V0cy9BcnQvQ2hhcmFjdGVyL3BhY2ttb25zdGVycy9Nb25zdGVyM1BhY2suYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD0Kb19uYW1lfD0Kb25seV92aXNpYmxlfD1GYWxzZQpvX2V4X3B8PQo="
 }
@@ -1024,21 +1028,6 @@ parameters/Walk/blend_position = 0
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource( 102 )
-
-[node name="DeathClipPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 11 )
-volume_db = -6.045
-pitch_scale = 0.53
-
-[node name="TakeDamageClipPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 9 )
-volume_db = -9.23
-pitch_scale = 0.28
-
-[node name="AttackClipPlayer" type="AudioStreamPlayer" parent="."]
-stream = ExtResource( 11 )
-volume_db = -9.588
-pitch_scale = 0.3
 
 [node name="BloodSpatter" parent="." instance=ExtResource( 10 )]
 

@@ -2,6 +2,8 @@
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mdfry1", "Mdfry1.csproj", "{58551B96-BD16-4EA9-AAA6-352D47223644}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Common", "Common\Common.fsproj", "{06957177-FA40-4D94-8E39-DA81861335A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -15,5 +17,11 @@ Global
 		{58551B96-BD16-4EA9-AAA6-352D47223644}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
 		{58551B96-BD16-4EA9-AAA6-352D47223644}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
 		{58551B96-BD16-4EA9-AAA6-352D47223644}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{06957177-FA40-4D94-8E39-DA81861335A4}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal

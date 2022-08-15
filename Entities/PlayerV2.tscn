@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=2]
+[gd_scene load_steps=85 format=2]
 
 [ext_resource path="res://Entities/Components/PlayerHealth.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Components/Hurtbox.tscn" type="PackedScene" id=2]
@@ -21,6 +21,8 @@
 [ext_resource path="res://Assets/Audio/SoundEffects/EmptyClip.wav" type="AudioStream" id=19]
 [ext_resource path="res://Assets/Audio/SoundEffects/swosh-01.wav" type="AudioStream" id=20]
 [ext_resource path="res://Assets/Audio/SoundEffects/5Hit_Sounds/ogg/hit1.ogg" type="AudioStream" id=21]
+[ext_resource path="res://Entities/Behaviors/SoundPlayer.cs" type="Script" id=22]
+[ext_resource path="res://CustomResources/PlayerAudioResource.tres" type="Resource" id=23]
 
 [sub_resource type="StyleBoxFlat" id=3]
 bg_color = Color( 0, 0, 0, 1 )
@@ -576,6 +578,7 @@ Friction = 800.0
 MoveMultiplier = 1.2
 MaxSpeed = 50.0
 RollSpeed = 250.0
+AudioResource = ExtResource( 23 )
 
 [node name="UI" type="Node2D" parent="."]
 script = ExtResource( 12 )
@@ -803,6 +806,9 @@ MaxCooldown = 0.5
 
 [node name="Muzzle" type="Position2D" parent="Behaviors/Shootable"]
 position = Vector2( -10, 2 )
+
+[node name="SoundPlayer" type="Node" parent="Behaviors"]
+script = ExtResource( 22 )
 
 [node name="Health" parent="." instance=ExtResource( 1 )]
 MaxHealth = 10

@@ -84,6 +84,10 @@ config/name="Mdfry1"
 run/main_scene="res://Scenes/LevelSelector.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+AudioManager="*res://Scripts/Managers/AudioManager.cs"
+
 [display]
 
 window/per_pixel_transparency/allowed=true

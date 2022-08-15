@@ -1,4 +1,6 @@
+using Common;
 using Godot;
+using Mdfry1.CustomResources;
 using Mdfry1.Entities.Behaviors;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Entities.Components;
@@ -14,13 +16,13 @@ namespace Mdfry1.Entities
     public class EnemyV4 : EnemyMovableBehavior, IEnemy
     {
         
+        [Export(PropertyHint.ResourceType ,"Enemy1AudioResource")]
+        public EntityAudioResource AudioResource { get; set; }
+        
+        public IPlayAudio SoundPlayer { get; set; }
+        
         public BloodSpatter BloodSpatter { get; set; }
         
-        public AudioStreamPlayer DeathClipPlayer { get; set; }
-
-        public AudioStreamPlayer TakeDamageClipPlayer { get; set; }
-        
-        public AudioStreamPlayer AttackClipPlayer { get; set; }
         
         [Export] 
         public NodePath PatrolPath { get; set; }
@@ -45,9 +47,9 @@ namespace Mdfry1.Entities
 
         void InitAudioStreams()
         {
-            TakeDamageClipPlayer = GetNode<AudioStreamPlayer>("TakeDamageClipPlayer");
-            DeathClipPlayer= GetNode<AudioStreamPlayer>("DeathClipPlayer");
-            AttackClipPlayer = GetNode<AudioStreamPlayer>("AttackClipPlayer");
+            // TakeDamageClipPlayer = GetNode<AudioStreamPlayer>("TakeDamageClipPlayer");
+            // DeathClipPlayer= GetNode<AudioStreamPlayer>("DeathClipPlayer");
+            // AttackClipPlayer = GetNode<AudioStreamPlayer>("AttackClipPlayer");
         }
         
 
@@ -73,7 +75,8 @@ namespace Mdfry1.Entities
 
         public override void _Ready()
         {
-            InitAudioStreams();
+            //InitAudioStreams();
+            SoundPlayer = GetNode<SoundPlayer>("Behaviors/SoundPlayer");
             BloodSpatter = GetNode<BloodSpatter>("BloodSpatter");
             HitboxPivot = GetNode<Position2D>("HitboxPiviot");
             AnimationManager = GetNode<EnemyAnimationManager>("AnimationManager");
@@ -116,11 +119,7 @@ namespace Mdfry1.Entities
 
         private void OnEmptyHealthBar()
         {
-            if (!DeathClipPlayer.Playing)
-            {
-                DeathClipPlayer.Play();
-            }
-            
+            SoundPlayer.PlaySound(AudioResource.DeathClipPath);
             _logger.Debug(this.Name + " Died");
             AnimationManager.PlayDeathAnimation();
             this.QueueFree();
@@ -140,10 +139,7 @@ namespace Mdfry1.Entities
         {
             _logger.Debug(this.Name + " took damage");
             
-            if (!TakeDamageClipPlayer.Playing)
-            {
-                TakeDamageClipPlayer.Play();
-            }
+            SoundPlayer.PlaySound(AudioResource.TakeDamageClipPath);
             
             AnimationManager.PlayTakeDamageAnimation();
             var bloodSpatter = (BloodSpatter)GD.Load<PackedScene>("res://Entities/Effects/BloodSpatter.tscn").Instance();
