@@ -78,11 +78,11 @@ namespace Mdfry1.Entities.EnemyState
             var avoidObstaclesSteeringVector = AvoidObstaclesSteering();
             steering += avoidObstaclesSteeringVector;
 
-            var clampedSteering = steering.Clamped(Agent.MaxSteering);
+            var clampedSteering = steering.LimitLength(Agent.MaxSteering);
             steering = clampedSteering;
 
             Agent.Velocity += steering;
-            Agent.Velocity = Agent.Velocity.Clamped(Agent.MaxSpeed);
+            Agent.Velocity = Agent.Velocity.LimitLength(Agent.MaxSpeed);
 
             Agent.Move(delta);
 

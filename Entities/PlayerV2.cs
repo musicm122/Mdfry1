@@ -1,6 +1,4 @@
-﻿using Common;
-using Common.Resources;
-using Godot;
+﻿using Godot;
 using Mdfry1.CustomResources;
 using Mdfry1.Entities.Behaviors;
 using Mdfry1.Entities.Behaviors.Interfaces;
@@ -18,7 +16,7 @@ namespace Mdfry1.Entities
         
         public PlayerDataStore DataStore { get; set; }
 
-        public IPlayAudio SoundPlayer { get; set; }
+        public Common.Manager.IPlayAudio SoundPlayer { get; set; }
         
         public IDamagableBehavior Damagable { get; private set; }
 

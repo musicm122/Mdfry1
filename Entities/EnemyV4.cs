@@ -1,4 +1,3 @@
-using Common;
 using Godot;
 using Mdfry1.CustomResources;
 using Mdfry1.Entities.Behaviors;
@@ -19,7 +18,7 @@ namespace Mdfry1.Entities
         [Export(PropertyHint.ResourceType ,"Enemy1AudioResource")]
         public EntityAudioResource AudioResource { get; set; }
         
-        public IPlayAudio SoundPlayer { get; set; }
+        public Common.Manager.IPlayAudio SoundPlayer { get; set; }
         
         public BloodSpatter BloodSpatter { get; set; }
         

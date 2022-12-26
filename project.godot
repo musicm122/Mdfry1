@@ -238,6 +238,7 @@ shoot={
 
 [mono]
 
+project/assembly_name="Mdfry1"
 profiler/enabled=true
 
 [physics]

@@ -96,7 +96,7 @@ namespace Mdfry1.Scripts.Item
                     OnDialogListener(val);
                     break;
             }
-            
+               
             Task.Run(async () => await DialogComplete().ConfigureAwait(false));
         }
 
