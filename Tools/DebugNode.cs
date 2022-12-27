@@ -1,16 +1,10 @@
-﻿using Godot;
+﻿using Core2D.Components;
+using Godot;
 
 namespace Mdfry1.Tools;
 
 [Tool]
-public class DebugNode : Node2D
+public class DebugNode : DebugDrawNode
 {
-    [Export] public float Radius { get; set; } = 10f;
 
-    [Export] public Color Color { get; set; } = new(255, 0, 0);
-
-    public override void _Draw()
-    {
-        DrawCircle(new Vector2(0, 0), Radius, Color);
-    }
 }
