@@ -1,107 +1,114 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using Mdfry1.Entities;
 
-namespace Mdfry1.Scripts.Mission
+namespace Mdfry1.Scripts.Mission;
+
+public class MissionManager : IMissionManager
 {
-    public class MissionManager : IMissionManager
+    public delegate void AddingMissionHandler(object sender, MissionManagerEventArgs args);
+
+    [Signal]
+    public delegate void RemovingMission(MissionElement mission);
+
+    public delegate void RemovingMissionHandler(object sender, MissionManagerEventArgs args);
+
+    private List<MissionElement> Missions { get; } = new();
+
+    public event EventHandler<MissionManagerEventArgs> AddMissionEvent;
+
+    public event EventHandler<MissionManagerEventArgs> RemoveMissionEvent;
+
+    public bool HasMission(string name)
     {
-        public delegate void AddingMissionHandler(object sender, MissionManagerEventArgs args);
+        return Missions.Any(item => item.Title == name);
+    }
 
-        public event System.EventHandler<MissionManagerEventArgs> AddMissionEvent;
-
-        public delegate void RemovingMissionHandler(object sender, MissionManagerEventArgs args);
-
-        public event System.EventHandler<MissionManagerEventArgs> RemoveMissionEvent;
-
-        protected virtual void RaiseAddingMission(MissionElement mission)
+    public void AddIfDNE(MissionElement mission)
+    {
+        if (!Missions.Contains(mission))
         {
-            AddMissionEvent?.Invoke(this, new MissionManagerEventArgs(mission));
+            RaiseAddingMission(mission);
+            Missions.Add(mission);
         }
+    }
 
-        protected virtual void RaiseRemovingMission(MissionElement mission)
+    public void Remove(MissionElement mission)
+    {
+        if (Missions.Contains(mission))
         {
-            RemoveMissionEvent?.Invoke(this, new MissionManagerEventArgs(mission));
+            RaiseRemovingMission(mission);
+            Missions.Remove(mission);
         }
+    }
 
-        [Signal]
-        public delegate void RemovingMission(MissionElement mission);
+    public void RemoveByTitle(string missionTitle)
+    {
+        var missionToRemove = Missions.Find(m => m.Title == missionTitle);
+        RaiseRemovingMission(missionToRemove);
+        Missions.Remove(missionToRemove);
+    }
 
-        private List<MissionElement> Missions { get; } = new List<MissionElement>();
-
-        public bool HasMission(string name) => Missions.Any(item => item.Title == name);
-
-        public void AddIfDNE(MissionElement mission)
-        {
-            if (!Missions.Contains(mission))
+    public string Display()
+    {
+        var retval = "Points of Interest:\r\n================\r\n";
+        if (Missions.Count > 0)
+            for (var i = 0; i < Missions.Count; i++)
             {
-                RaiseAddingMission(mission);
-                Missions.Add(mission);
+                if (Missions[i].IsComplete)
+                    retval += $"{Missions[i].Title} : (Complete)\r\n";
+                else
+                    retval += $"{Missions[i].Title} \r\n";
+                retval += Missions[i].Details + "\r\n";
+                retval += Missions[i].IsComplete;
             }
-        }
+        else
+            retval += "Empty";
 
-        public void Remove(MissionElement mission)
-        {
-            if (Missions.Contains(mission))
-            {
-                RaiseRemovingMission(mission);
-                Missions.Remove(mission);
-            }
-        }
+        return retval;
+    }
 
-        public void RemoveByTitle(string missionTitle)
-        {
-            var missionToRemove = Missions.Find(m => m.Title == missionTitle);
-            RaiseRemovingMission(missionToRemove);
-            Missions.Remove(missionToRemove);
-        }
+    public IEnumerable<string> Titles()
+    {
+        return Missions.Select(m => m.Title);
+    }
 
-        public string Display()
-        {
-            var retval = "Points of Interest:\r\n================\r\n";
-            if (Missions.Count > 0)
-            {
-                for (int i = 0; i < Missions.Count; i++)
-                {
-                    if (Missions[i].IsComplete)
-                    {
-                        retval += $"{Missions[i].Title} : (Complete)\r\n";
-                    }
-                    else
-                    {
-                        retval += $"{Missions[i].Title} \r\n";
-                    }
-                    retval += Missions[i].Details + "\r\n";
-                    retval += Missions[i].IsComplete;
-                }
-            }
-            else
-            {
-                retval += "Empty";
-            }
-            return retval;
-        }
+    public IEnumerable<string> Details()
+    {
+        return Missions.Select(m => m.Details);
+    }
 
-        public IEnumerable<string> Titles() => Missions.Select(m => m.Title);
+    public IEnumerable<MissionElement> Completed()
+    {
+        return Missions.Where(m => m.IsComplete);
+    }
 
-        public IEnumerable<string> Details() => Missions.Select(m => m.Details);
+    public IEnumerable<MissionElement> Uncompleted()
+    {
+        return Missions.Where(m => !m.IsComplete);
+    }
 
-        public IEnumerable<MissionElement> Completed() => Missions.Where(m => m.IsComplete);
+    public int Count()
+    {
+        return Missions.Count;
+    }
 
-        public IEnumerable<MissionElement> Uncompleted() => Missions.Where(m => !m.IsComplete);
+    public void EvaluateMissionsState(PlayerDataStore playerDataStore)
+    {
+        for (var i = 0; i < Missions.Count; i++)
+            if (Missions[i].EvaluateCompletionState(playerDataStore))
+                Missions[i].IsComplete = true;
+    }
 
-        public int Count() => Missions.Count;
+    protected virtual void RaiseAddingMission(MissionElement mission)
+    {
+        AddMissionEvent?.Invoke(this, new MissionManagerEventArgs(mission));
+    }
 
-        public void EvaluateMissionsState(PlayerDataStore playerDataStore)
-        {
-            for (int i = 0; i < Missions.Count; i++)
-            {
-                if (Missions[i].EvaluateCompletionState(playerDataStore))
-                {
-                    Missions[i].IsComplete = true;
-                }
-            }
-        }
+    protected virtual void RaiseRemovingMission(MissionElement mission)
+    {
+        RemoveMissionEvent?.Invoke(this, new MissionManagerEventArgs(mission));
     }
 }

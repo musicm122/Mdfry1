@@ -1,10 +1,11 @@
 ﻿using Godot;
 
-namespace Mdfry1.Entities.Components
+namespace Mdfry1.Entities.Components;
+
+public class Target : Node2D
 {
-    public class Target : Node2D
+    public Vector2 GetAimAtPoint()
     {
-        public Vector2 GetAimAtPoint() =>
-                (GlobalTransform.origin + Vector2.Up) * 1.5f;
+        return (GlobalTransform.origin + Vector2.Up) * 1.5f;
     }
 }

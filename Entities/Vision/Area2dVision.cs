@@ -4,82 +4,77 @@ using Mdfry1.Entities.Interfaces;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities.Vision
+namespace Mdfry1.Entities.Vision;
+
+public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
 {
-    public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
+    private bool LineOfSight { get; set; }
+
+
+    [Export] public bool IsDebugging { get; set; }
+    public Action<Node2D> OnTargetSeen { get; set; }
+    public Action<Node2D> OnTargetOutOfSight { get; set; }
+
+    public Node2D OldTarget { get; set; }
+    public Node2D NewTarget { get; set; }
+
+    public bool CanSeeTarget()
     {
-        public Action<Node2D> OnTargetSeen { get; set; }
-        public Action<Node2D> OnTargetOutOfSight { get; set; }
-
-
-        [Export] public bool IsDebugging { get; set; }
-
-        public Node2D OldTarget { get; set; }
-        public Node2D NewTarget { get; set; }
-
-        private bool LineOfSight { get; set; }
-
-        public override void _Ready()
+        var bodies = GetOverlappingBodies();
+        if (bodies == null || bodies.Count == 0) return false;
+        for (var i = 0; i < bodies.Count; i++)
         {
-            this.ConnectBodyEntered(this, nameof(OnVisionRadiusBodyEntered));
-            this.ConnectBodyExited(this, nameof(OnVisionRadiusBodyExit));
+            var body = (Node)bodies[i];
+            if (body.Name.ToLower().Contains("player")) return true;
         }
 
-        private void OnVisionRadiusBodyEntered(Node body)
-        {
-            if (!body.Name.ToLower().Contains("player")) return;
+        return false;
+    }
 
-            this.PrintCaller();
-            NewTarget = (Node2D)body;
-            LineOfSight = HasLineOfSight(NewTarget.Position);
-            if (!LineOfSight) return;
-            OnTargetSeen?.Invoke(NewTarget);
-            OldTarget = NewTarget;
-            NewTarget = null;
-        }
+    public void UpdateFacingDirection(Vector2 newVelocity)
+    {
+        Rotation = Position.AngleToPoint(newVelocity);
+    }
 
-        private void OnVisionRadiusBodyExit(Node body)
-        {
-            if (!body.Name.ToLower().Contains("player")) return;
-            this.PrintCaller();
-            if (OldTarget == null) return;
-            LineOfSight = HasLineOfSight(OldTarget.GlobalPosition);
-            if (!LineOfSight) return;
-            OnTargetOutOfSight?.Invoke(OldTarget);
-        }
+    public void LookAtPoint(Vector2 point)
+    {
+        LookAt(point);
+    }
 
-        public bool CanSeeTarget()
-        {
-            var bodies = GetOverlappingBodies();
-            if (bodies == null || bodies.Count == 0) return false;
-            for (int i = 0; i < bodies.Count; i++)
-            {
-                var body = (Node)bodies[i];
-                if (body.Name.ToLower().Contains("player"))
-                {
-                    return true;
-                }
-            }
+    public override void _Ready()
+    {
+        this.ConnectBodyEntered(this, nameof(OnVisionRadiusBodyEntered));
+        this.ConnectBodyExited(this, nameof(OnVisionRadiusBodyExit));
+    }
 
-            return false;
-        }
+    private void OnVisionRadiusBodyEntered(Node body)
+    {
+        if (!body.Name.ToLower().Contains("player")) return;
 
-        public bool HasLineOfSight(Vector2 point)
-        {
-            var spaceState = GetWorld2d().DirectSpaceState;
-            var result = spaceState.IntersectRay(GlobalTransform.origin, point, null, CollisionMask);
-            LineOfSight = result?.Count > 0;
-            return LineOfSight;
-        }
+        this.PrintCaller();
+        NewTarget = (Node2D)body;
+        LineOfSight = HasLineOfSight(NewTarget.Position);
+        if (!LineOfSight) return;
+        OnTargetSeen?.Invoke(NewTarget);
+        OldTarget = NewTarget;
+        NewTarget = null;
+    }
 
-        public void UpdateFacingDirection(Vector2 newVelocity)
-        {
-            this.Rotation = this.Position.AngleToPoint(newVelocity);
-        }
+    private void OnVisionRadiusBodyExit(Node body)
+    {
+        if (!body.Name.ToLower().Contains("player")) return;
+        this.PrintCaller();
+        if (OldTarget == null) return;
+        LineOfSight = HasLineOfSight(OldTarget.GlobalPosition);
+        if (!LineOfSight) return;
+        OnTargetOutOfSight?.Invoke(OldTarget);
+    }
 
-        public void LookAtPoint(Vector2 point)
-        {
-            this.LookAt(point);
-        }
+    public bool HasLineOfSight(Vector2 point)
+    {
+        var spaceState = GetWorld2d().DirectSpaceState;
+        var result = spaceState.IntersectRay(GlobalTransform.origin, point, null, CollisionMask);
+        LineOfSight = result?.Count > 0;
+        return LineOfSight;
     }
 }

@@ -1,10 +1,9 @@
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public static class LockedDoorTimelines
 {
-    public static class LockedDoorTimelines
-    {
-        public const string LockedDoorTimeline = "LockedDoor";
-        public const string UnlockedDoorTimeline = "UnlockedDoor";
-        public const string OpeningDoorTimeline = "OpeningDoor";
-        public const string ClosingDoorTimeline = "ClosingDoor";
-    }
+    public const string LockedDoorTimeline = "LockedDoor";
+    public const string UnlockedDoorTimeline = "UnlockedDoor";
+    public const string OpeningDoorTimeline = "OpeningDoor";
+    public const string ClosingDoorTimeline = "ClosingDoor";
 }

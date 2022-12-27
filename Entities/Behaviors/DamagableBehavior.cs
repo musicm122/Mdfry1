@@ -8,128 +8,132 @@ using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
 using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
-namespace Mdfry1.Entities.Behaviors
+namespace Mdfry1.Entities.Behaviors;
+
+public class DamagableBehavior : Node2D, IDebuggable<Node>, IDamagableBehavior
 {
-    public class DamagableBehavior : Node2D, IDebuggable<Node>, IDamagableBehavior
+    private static readonly List<string> DefaultDamagableNames = new() { "hitbox", "spikes" };
+    private readonly ILogger _logger = new GDLogger(LogLevelOutput.Warning);
+
+    [Export] public List<string> DamagableNames { get; set; } = DefaultDamagableNames;
+
+    public bool IsDead { get; set; }
+
+    private Health Status { get; set; }
+
+    private Hurtbox HurtBox { get; set; }
+
+    public Action<Node, Vector2> OnTakeDamage { get; set; }
+    public Action EmptyHealthBarCallback { get; set; }
+    public Action HurtboxInvincibilityStartedCallback { get; set; }
+    public Action HurtboxInvincibilityEndedCallback { get; set; }
+    public Action<int> HealthChangedCallback { get; set; }
+    public Action<int> MaxHealthChangedCallback { get; set; }
+
+    public void OnHurtboxAreaEntered(Node body)
     {
-        private ILogger _logger = new GDLogger(LogLevelOutput.Warning);
-        
-        private static readonly List<string> DefaultDamagableNames = new List<string>{ "hitbox", "spikes" };
-    
-        [Export] public List<string> DamagableNames { get; set; } = DamagableBehavior.DefaultDamagableNames;
-        
-        public bool IsDead { get; set; }
-
-        private Health Status { get; set; }
-
-        [Export]
-        public bool IsDebugging { get; set; }
-
-        private Hurtbox HurtBox { get; set; }
-
-        public Action<Node, Vector2> OnTakeDamage { get; set; }
-        public Action EmptyHealthBarCallback { get; set; }
-        public Action HurtboxInvincibilityStartedCallback { get; set; }
-        public Action HurtboxInvincibilityEndedCallback { get; set; }
-        public Action<int> HealthChangedCallback { get; set; }
-        public Action<int> MaxHealthChangedCallback { get; set; }
-
-        public bool IsDebugPrintEnabled() => IsDebugging;
-
-        public void OnHurtboxAreaEntered(Node body)
+        try
         {
-            try
-            {
-                this._logger.Debug($"OnHurtboxAreaEntered({body.Name})");
-                if(this.HurtBox.IsInvincible) return ;
-                if (!DamagableNames.Contains(body.Name.ToLower())) return;
-                this.HurtBox.StartInvincibility();
-                var hitBox = (HitBox)body;
-                var force = (this.GlobalPosition - hitBox.GlobalPosition) * hitBox.EffectForce;
-                OnTakeDamage?.Invoke(body, force);
-                this._logger.Debug($"OnHurtboxAreaEntered: hitBox.Damage={hitBox.Damage.ToString()}");
-                Status.CurrentHealth -= hitBox.Damage;
-                this._logger.Debug($"OnHurtboxAreaEntered: Current Health ={Status.CurrentHealth.ToString(CultureInfo.InvariantCulture)}");
-            }
-            catch (Exception e)
-            {
-                this._logger.Error(e);
-                throw;
-            }
+            _logger.Debug($"OnHurtboxAreaEntered({body.Name})");
+            if (HurtBox.IsInvincible) return;
+            if (!DamagableNames.Contains(body.Name.ToLower())) return;
+            HurtBox.StartInvincibility();
+            var hitBox = (HitBox)body;
+            var force = (GlobalPosition - hitBox.GlobalPosition) * hitBox.EffectForce;
+            OnTakeDamage?.Invoke(body, force);
+            _logger.Debug($"OnHurtboxAreaEntered: hitBox.Damage={hitBox.Damage.ToString()}");
+            Status.CurrentHealth -= hitBox.Damage;
+            _logger.Debug(
+                $"OnHurtboxAreaEntered: Current Health ={Status.CurrentHealth.ToString(CultureInfo.InvariantCulture)}");
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e);
+            throw;
+        }
+    }
+
+    public void OnEmptyHealthBar()
+    {
+        _logger.Debug($"{Name} OnEmptyHealthBar called");
+        IsDead = true;
+        EmptyHealthBarCallback?.Invoke();
+    }
+
+    public void OnHurtboxInvincibilityStarted()
+    {
+        _logger.Debug($"{Name} OnHurtboxInvincibilityStarted ");
+        HurtboxInvincibilityStartedCallback?.Invoke();
+    }
+
+    public void OnHurtboxInvincibilityEnded()
+    {
+        _logger.Debug($"{Name} OnHurtboxInvincibilityEnded ");
+        HurtboxInvincibilityEndedCallback?.Invoke();
+    }
+
+    public void OnHealthChanged(int health)
+    {
+        _logger.Debug($"{Name} OnHealthChanged {health.ToString()}");
+        HealthChangedCallback?.Invoke(health);
+    }
+
+    public void OnMaxHealthChanged(int health)
+    {
+        _logger.Debug($"{Name} OnMaxHealthChanged {health.ToString()}");
+        MaxHealthChangedCallback?.Invoke(health);
+    }
+
+    public void Init(Health status)
+    {
+        Status = status;
+        HurtBox = GetNode<Hurtbox>("Hurtbox");
+        RegisterHealthSignals();
+        RegisterHurtBoxSignals();
+    }
+
+    public override void _Ready()
+    {
+        HurtBox = GetNode<Hurtbox>("Hurtbox");
+    }
+
+    [Export] public bool IsDebugging { get; set; }
+
+    public bool IsDebugPrintEnabled()
+    {
+        return IsDebugging;
+    }
+
+    private void RegisterHealthSignals()
+    {
+        _logger.Debug($"{Name} RegisterHealthSignals called");
+        Status.Connect(nameof(Health.NoHealth), this, nameof(OnEmptyHealthBar));
+        Status.Connect(nameof(Health.HealthChanged), this, nameof(OnHealthChanged));
+        Status.Connect(nameof(Health.MaxHealthChanged), this, nameof(OnMaxHealthChanged));
+    }
+
+    private void RegisterHurtBoxSignals()
+    {
+        _logger.Debug($"{Name} RegisterHurtBoxSignals called");
+        if (!HurtBox.TryConnectSignal("area_entered", this, nameof(OnHurtboxAreaEntered)))
+        {
+            var arg = $"TryConnectSignal('area_entered', {Name}, {nameof(OnHurtboxAreaEntered)})";
+            _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
         }
 
-        public void OnEmptyHealthBar()
+        if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityStarted), this,
+                nameof(OnHurtboxInvincibilityStarted)))
         {
-            this._logger.Debug($"{Name} OnEmptyHealthBar called");
-            this.IsDead = true;
-            EmptyHealthBarCallback?.Invoke();
+            var arg =
+                $"TryConnectSignal({nameof(Hurtbox.InvincibilityStarted)}, {Name}, {nameof(OnHurtboxInvincibilityStarted)})";
+            _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
         }
 
-        public void OnHurtboxInvincibilityStarted()
+        if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityEnded), this, nameof(OnHurtboxInvincibilityEnded)))
         {
-            this._logger.Debug($"{Name} OnHurtboxInvincibilityStarted ");
-            HurtboxInvincibilityStartedCallback?.Invoke();
-        }
-
-        public void OnHurtboxInvincibilityEnded()
-        {
-            this._logger.Debug($"{Name} OnHurtboxInvincibilityEnded ");
-            HurtboxInvincibilityEndedCallback?.Invoke();
-        }
-
-        public void OnHealthChanged(int health)
-        {
-            this._logger.Debug($"{Name} OnHealthChanged {health.ToString()}");
-            HealthChangedCallback?.Invoke(health);
-        }
-
-        public void OnMaxHealthChanged(int health)
-        {
-            this._logger.Debug($"{Name} OnMaxHealthChanged {health.ToString()}");
-            MaxHealthChangedCallback?.Invoke(health);
-        }
-
-        private void RegisterHealthSignals()
-        {
-            this._logger.Debug($"{Name} RegisterHealthSignals called");
-            Status.Connect(nameof(Health.NoHealth), this, nameof(OnEmptyHealthBar));
-            Status.Connect(nameof(Health.HealthChanged), this, nameof(OnHealthChanged));
-            Status.Connect(nameof(Health.MaxHealthChanged), this, nameof(OnMaxHealthChanged));
-        }
-
-        private void RegisterHurtBoxSignals()
-        {
-            this._logger.Debug($"{Name} RegisterHurtBoxSignals called");
-            if (!HurtBox.TryConnectSignal("area_entered", this, nameof(OnHurtboxAreaEntered)))
-            {
-                var arg = $"TryConnectSignal('area_entered', {this.Name}, {nameof(OnHurtboxAreaEntered)})";
-                this._logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
-            }
-            
-            if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityStarted), this, nameof(OnHurtboxInvincibilityStarted)))
-            {
-                var arg = $"TryConnectSignal({nameof(Hurtbox.InvincibilityStarted)}, {this.Name}, {nameof(OnHurtboxInvincibilityStarted)})";
-                this._logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
-            }
-            
-            if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityEnded), this, nameof(OnHurtboxInvincibilityEnded)))
-            {
-                var arg = $"TryConnectSignal({nameof(Hurtbox.InvincibilityEnded)}, {this.Name}, {nameof(OnHurtboxInvincibilityEnded)})";
-                this._logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
-            }
-        }
-
-        public void Init(Health status)
-        {
-            Status = status;
-            HurtBox = GetNode<Hurtbox>("Hurtbox");
-            RegisterHealthSignals();
-            RegisterHurtBoxSignals();
-        }
-
-        public override void _Ready()
-        {
-            HurtBox = GetNode<Hurtbox>("Hurtbox");
+            var arg =
+                $"TryConnectSignal({nameof(Hurtbox.InvincibilityEnded)}, {Name}, {nameof(OnHurtboxInvincibilityEnded)})";
+            _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
         }
     }
 }

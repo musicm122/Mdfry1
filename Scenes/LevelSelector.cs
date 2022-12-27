@@ -1,33 +1,32 @@
 using Godot;
 using Mdfry1.Scripts.Extensions;
 
-namespace Mdfry1.Scenes
+namespace Mdfry1.Scenes;
+
+public class LevelSelector : Node
 {
-    public class LevelSelector : Node
+    [Export(PropertyHint.File, "*.tscn")]
+    public string PlayGameScene { get; set; } = "res://Scenes/Level/PrototypeMap.tscn";
+
+    public override void _Ready()
     {
-        [Export(PropertyHint.File, "*.tscn")]
-        public string PlayGameScene { get; set; } = "res://Scenes/Level/PrototypeMap.tscn";
-        
-        public override void _Ready()
-        {
-            Button interaction = GetNode<Button>("RootControl/VBoxContainer/PlayGame");
-            interaction.ConnectButtonPressed(this, nameof(OnInteractionButtonPressed));
+        var interaction = GetNode<Button>("RootControl/VBoxContainer/PlayGame");
+        interaction.ConnectButtonPressed(this, nameof(OnInteractionButtonPressed));
 
-            Button quit = GetNode<Button>("RootControl/VBoxContainer/Quit");
-            quit.ConnectButtonPressed(this, nameof(OnQuitButtonPressed));
+        var quit = GetNode<Button>("RootControl/VBoxContainer/Quit");
+        quit.ConnectButtonPressed(this, nameof(OnQuitButtonPressed));
 
-            interaction.GrabFocus();
-        }
+        interaction.GrabFocus();
+    }
 
-        public void OnInteractionButtonPressed()
-        {
-            GetTree().ChangeScene(PlayGameScene);
-        }
+    public void OnInteractionButtonPressed()
+    {
+        GetTree().ChangeScene(PlayGameScene);
+    }
 
 
-        public void OnQuitButtonPressed()
-        {
-            GetTree().Quit();
-        }
+    public void OnQuitButtonPressed()
+    {
+        GetTree().Quit();
     }
 }

@@ -1,8 +1,5 @@
-﻿namespace Mdfry1.Entities
-{
+﻿namespace Mdfry1.Entities;
 
-    public class EnemyAnimationManager : BaseEnemyAnimationManager
-    {
-        
-    }
+public class EnemyAnimationManager : BaseEnemyAnimationManager
+{
 }

@@ -3,51 +3,49 @@ using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.GDUtils;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public class InteractiveObject : Node2D, IDebuggable<Node>
 {
-    public class InteractiveObject : Node2D, IDebuggable<Node>
+    public bool CanInteract { get; set; }
+
+    public bool IsInteracting { get; set; }
+
+    [Export] public bool IsDebugging { get; set; }
+
+    public bool IsDebugPrintEnabled()
     {
-        [Export]
-        public bool IsDebugging { get; set; }
-
-        public bool IsDebugPrintEnabled() => IsDebugging;
-
-        public bool CanInteract { get; set; }
-
-        public bool IsInteracting { get; set; }
+        return IsDebugging;
+    }
 
 
-        public void OnEntered(Node body)
+    public void OnEntered(Node body)
+    {
+        CanInteract = body.IsPlayer();
+    }
+
+    public void OnExited(Node body)
+    {
+        CanInteract = !body.IsPlayer();
+    }
+
+    public virtual void OnInteract()
+    {
+        if (!IsInteracting)
         {
-            CanInteract = body.IsPlayer();
+            IsInteracting = true;
+            GD.Print("Interacting with thing");
+            OnInteractComplete();
         }
+    }
 
-        public void OnExited(Node body)
-        {
-            CanInteract = !body.IsPlayer();
-        }
+    public virtual void OnInteractComplete()
+    {
+        IsInteracting = false;
+    }
 
-        public virtual void OnInteract()
-        {
-            if (!IsInteracting)
-            {
-                IsInteracting = true;
-                GD.Print("Interacting with thing");
-                OnInteractComplete();
-            }
-        }
-
-        public virtual void OnInteractComplete()
-        {
-            IsInteracting = false;
-        }
-
-        public override void _Process(float delta)
-        {
-            if (CanInteract && InputUtils.IsInteracting())
-            {
-                OnInteract();
-            }
-        }
+    public override void _Process(float delta)
+    {
+        if (CanInteract && InputUtils.IsInteracting()) OnInteract();
     }
 }

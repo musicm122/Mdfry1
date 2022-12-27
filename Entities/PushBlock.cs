@@ -1,21 +1,21 @@
 using Godot;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public class PushBlock : KinematicBody2D, IDebuggable<Node>
 {
-    public class PushBlock : KinematicBody2D, IDebuggable<Node>
+    [Export] public bool CanBePushed { get; set; } = true;
+
+    [Export] public bool IsDebugging { get; set; }
+
+    public bool IsDebugPrintEnabled()
     {
-        [Export]
-        public bool IsDebugging { get; set; }
+        return IsDebugging;
+    }
 
-        [Export]
-        public bool CanBePushed {get;set;} = true;
-
-        public bool IsDebugPrintEnabled() => IsDebugging;
-
-        public void Push(Vector2 velocity)
-        {
-            MoveAndSlide(velocity);
-        }
+    public void Push(Vector2 velocity)
+    {
+        MoveAndSlide(velocity);
     }
 }

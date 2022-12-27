@@ -3,99 +3,94 @@ using Godot;
 using Mdfry1.Scripts.Patterns.Logger;
 using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public class BaseAnimationManager : Node
 {
+    protected readonly ILogger _logger = new GDLogger(LogLevelOutput.Warning);
 
-    public class BaseAnimationManager : Node
+    public Sprite Sprite { get; set; }
+    protected AnimationTree AnimationTree { get; set; }
+    protected AnimationPlayer BlinkAnimationPlayer { get; set; }
+    protected AnimationNodeStateMachinePlayback StateMachinePlayback { get; set; }
+
+
+    public virtual void UpdateAnimationBlendPositions(Vector2 movementVector)
     {
-        protected readonly ILogger _logger = new GDLogger(LogLevelOutput.Warning);
+        _logger.Debug("UpdateAnimationBlendPositions arg:" + movementVector);
 
-        public Sprite Sprite { get; set; }
-        protected AnimationTree AnimationTree { get; set; }
-        protected AnimationPlayer BlinkAnimationPlayer { get; set; }
-        protected AnimationNodeStateMachinePlayback StateMachinePlayback { get; set; }
+        UpdateAnimationBlendPosition("Idle", movementVector);
+        UpdateAnimationBlendPosition("Walk", movementVector);
+    }
+
+    protected void UpdateAnimationBlendPosition(string animationName, Vector2 movementVector)
+    {
+        AnimationTree.Set($"parameters/{animationName}/blend_position", movementVector);
+    }
+
+    protected void UpdateAnimationBlendPosition(string animationName, float xPos)
+    {
+        AnimationTree.Set($"parameters/{animationName}/blend_position", xPos);
+    }
+
+    public Vector2 GetFacingDirection()
+    {
+        return (Vector2)AnimationTree.Get("parameters/Idle/blend_position");
+    }
 
 
-        public virtual void UpdateAnimationBlendPositions(Vector2 movementVector)
+    protected void NavToAnimation(string animationName)
+    {
+        try
         {
-            _logger.Debug("UpdateAnimationBlendPositions arg:" + movementVector.ToString());
-            
-            UpdateAnimationBlendPosition("Idle", movementVector);
-            UpdateAnimationBlendPosition("Walk", movementVector);
-            
+            StateMachinePlayback.Travel(animationName);
         }
-
-        protected void UpdateAnimationBlendPosition(string animationName, Vector2 movementVector)
+        catch (Exception e)
         {
-            AnimationTree.Set($"parameters/{animationName}/blend_position", movementVector);
+            _logger.Error(e);
+            throw;
         }
-        
-        protected void UpdateAnimationBlendPosition(string animationName, float xPos)
+    }
+
+    public void StartBlinkAnimation()
+    {
+        try
         {
-            AnimationTree.Set($"parameters/{animationName}/blend_position", xPos);
+            BlinkAnimationPlayer.Play("Start");
         }
-
-        public Vector2 GetFacingDirection()
-            => (Vector2)AnimationTree.Get($"parameters/Idle/blend_position");
-
-
-        protected void NavToAnimation(string animationName)
+        catch (Exception e)
         {
-            try
-            {
-                StateMachinePlayback.Travel(animationName);
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-                throw;
-            }
-            
+            _logger.Error(e);
+            throw;
         }
+    }
 
-        public void StartBlinkAnimation()
+    public void StopBlinkAnimation()
+    {
+        try
         {
-            try
-            {
-                BlinkAnimationPlayer.Play("Start");
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-                throw;
-            }
-            
+            BlinkAnimationPlayer.Play("Stop");
         }
-
-        public void StopBlinkAnimation()
+        catch (Exception e)
         {
-            try
-            {
-                BlinkAnimationPlayer.Play("Stop");
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-                throw;
-            }
-            
+            _logger.Error(e);
+            throw;
         }
+    }
 
-        public override void _Ready()
+    public override void _Ready()
+    {
+        try
         {
-            try
-            {
-                AnimationTree = GetNode<AnimationTree>("AnimationTree");
-                AnimationTree.Active = true;
-                StateMachinePlayback = (AnimationNodeStateMachinePlayback)AnimationTree.Get("parameters/playback");
-                BlinkAnimationPlayer = GetNode<AnimationPlayer>("./BlinkAnimationPlayer");
-            }
-            catch (Exception e)
-            {
-                _logger.Error(e);
-                throw;
-            }
-            
+            AnimationTree = GetNode<AnimationTree>("AnimationTree");
+            AnimationTree.Active = true;
+            StateMachinePlayback = (AnimationNodeStateMachinePlayback)AnimationTree.Get("parameters/playback");
+            BlinkAnimationPlayer = GetNode<AnimationPlayer>("./BlinkAnimationPlayer");
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e);
+            throw;
         }
     }
 }

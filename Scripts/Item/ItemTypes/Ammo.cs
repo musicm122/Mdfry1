@@ -1,12 +1,10 @@
-﻿namespace Mdfry1.Scripts.Item.ItemTypes
-{
-    public static class AmmoType
-    {
-        public const string Bullet = "Bullet"; 
-    }
+﻿namespace Mdfry1.Scripts.Item.ItemTypes;
 
-    public class Ammo : Item
-    {
-        
-    }
+public static class AmmoType
+{
+    public const string Bullet = "Bullet";
+}
+
+public class Ammo : Item
+{
 }

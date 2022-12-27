@@ -2,19 +2,18 @@ using Godot;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities.Components
+namespace Mdfry1.Entities.Components;
+
+public class HitBox : Area2D, IDebuggable<Node>, IHitBox
 {
-    public class HitBox : Area2D, IDebuggable<Node>, IHitBox
+    [Export] public bool IsDebugging { get; set; }
+
+    public bool IsDebugPrintEnabled()
     {
-        [Export]
-        public bool IsDebugging { get; set; } = false;
-
-        public bool IsDebugPrintEnabled() => IsDebugging;
-
-        [Export]
-        public int Damage { get; set; } = 1;
-
-        [Export]
-        public float EffectForce { get; set; } = 50f;
+        return IsDebugging;
     }
+
+    [Export] public int Damage { get; set; } = 1;
+
+    [Export] public float EffectForce { get; set; } = 50f;
 }

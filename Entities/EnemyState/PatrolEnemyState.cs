@@ -4,50 +4,46 @@ using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.StateMachine;
 
-namespace Mdfry1.Entities.EnemyState
+namespace Mdfry1.Entities.EnemyState;
+
+public class PatrolEnemyState : State
 {
-    public class PatrolEnemyState : State
+    public PatrolEnemyState(EnemyV4 enemy)
     {
-        private EnemyV4 Enemy { get; set; }
+        Name = EnemyBehaviorStates.Patrol.GetDescription();
+        Enemy = enemy;
 
-        private EnemyDataStore DataStore => this.Enemy.EnemyDataStore;
+        OnEnter += () => Logger.Debug("PatrolEnemyState OnEnter called");
+        OnExit += () => Logger.Debug("PatrolEnemyState Exit called");
+        OnFrame += Patrol;
 
-        public PatrolEnemyState(EnemyV4 enemy)
+        if (DataStore.PatrolPath != null)
         {
-            this.Name = EnemyBehaviorStates.Patrol.GetDescription();
-            Enemy = enemy;
+            DataStore.Path = Enemy.GetNode<Path2D>(DataStore.PatrolPath);
+            DataStore.PatrolPoints = DataStore.Path.Curve.GetBakedPoints();
+        }
+    }
 
-            this.OnEnter += () => this.Logger.Debug("PatrolEnemyState OnEnter called");
-            this.OnExit += () => this.Logger.Debug("PatrolEnemyState Exit called");
-            this.OnFrame += Patrol;
+    private EnemyV4 Enemy { get; }
 
-            if (DataStore.PatrolPath != null)
-            {
-                DataStore.Path = Enemy.GetNode<Path2D>(DataStore.PatrolPath);
-                DataStore.PatrolPoints = DataStore.Path.Curve.GetBakedPoints();
-            }
+    private EnemyDataStore DataStore => Enemy.EnemyDataStore;
+
+    private void Patrol(float delta)
+    {
+        if (DataStore.PatrolPath == null || !Enemy.CanMove) return;
+
+        var target = DataStore.PatrolPoints[DataStore.PatrolIndex];
+
+        if (Enemy.Position.DistanceTo(target) <= 1)
+        {
+            DataStore.PatrolIndex = Mathf.Wrap(DataStore.PatrolIndex + 1, 0, DataStore.PatrolPoints.Length);
+            target = DataStore.PatrolPoints[DataStore.PatrolIndex];
         }
 
-        private void Patrol(float delta)
-        {
-            if (DataStore.PatrolPath == null || !Enemy.CanMove) return;
+        Enemy.Velocity = (target - Enemy.Position).Normalized() * Enemy.MaxSpeed;
 
-            var target = DataStore.PatrolPoints[DataStore.PatrolIndex];
+        if (Enemy.GetSlideCount() > 0) Enemy.HandleMovableObstacleCollision(Enemy.Velocity);
 
-            if (Enemy.Position.DistanceTo(target) <= 1)
-            {
-                DataStore.PatrolIndex = Mathf.Wrap(DataStore.PatrolIndex + 1, 0, DataStore.PatrolPoints.Length);
-                target = DataStore.PatrolPoints[DataStore.PatrolIndex];
-            }
-
-            Enemy.Velocity = (target - Enemy.Position).Normalized() * Enemy.MaxSpeed;
-
-            if (Enemy.GetSlideCount() > 0)
-            {
-                Enemy.HandleMovableObstacleCollision(Enemy.Velocity);
-            }
-
-            Enemy.Velocity = Enemy.MoveAndSlide(Enemy.Velocity);
-        }
+        Enemy.Velocity = Enemy.MoveAndSlide(Enemy.Velocity);
     }
 }

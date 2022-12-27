@@ -9,16 +9,16 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Resources.fs" />
+        <Compile Include="Resources.fs"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Reference Include="GodotSharp">
-        <HintPath>..\.mono\assemblies\Debug\GodotSharp.dll</HintPath>
-      </Reference>
-      <Reference Include="GodotSharpEditor">
-        <HintPath>..\.mono\assemblies\Debug\GodotSharpEditor.dll</HintPath>
-      </Reference>
+        <Reference Include="GodotSharp">
+            <HintPath>..\.mono\assemblies\Debug\GodotSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="GodotSharpEditor">
+            <HintPath>..\.mono\assemblies\Debug\GodotSharpEditor.dll</HintPath>
+        </Reference>
     </ItemGroup>
 
 </Project>

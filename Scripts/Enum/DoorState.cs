@@ -1,7 +1,8 @@
-﻿namespace Mdfry1.Scripts.Enum
+﻿namespace Mdfry1.Scripts.Enum;
+
+public enum DoorState
 {
-    public enum DoorState
-    {
-        Locked, Closed, Opened 
-    }
+    Locked,
+    Closed,
+    Opened
 }

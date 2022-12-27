@@ -1,11 +1,10 @@
 using Godot;
-using System;
 using Mdfry1.Scripts.Extensions;
 
 public class BloodSpatter : CPUParticles2D
 {
     public Timer Timer { get; set; }
-    
+
     // Declare member variables here. Examples:
     // private int a = 2;
     // private string b = "text";
@@ -19,21 +18,15 @@ public class BloodSpatter : CPUParticles2D
         Emitting = true;
     }
 
-    void SetDirection()
+    private void SetDirection()
     {
         var playerPos = GetTree().GetPlayerGlobalPosition();
-        if (playerPos.x > GlobalPosition.x)
-        {
-            Direction = new Vector2(-1,Direction.y);
-        }
-        
-        if (playerPos.x < GlobalPosition.x)
-        {
-            Direction = new Vector2(1,Direction.y);
-        }
+        if (playerPos.x > GlobalPosition.x) Direction = new Vector2(-1, Direction.y);
+
+        if (playerPos.x < GlobalPosition.x) Direction = new Vector2(1, Direction.y);
     }
 
-    void OnTimeout()
+    private void OnTimeout()
     {
         QueueFree();
     }

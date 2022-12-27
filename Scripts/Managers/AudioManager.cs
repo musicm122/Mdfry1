@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
+﻿namespace Mdfry1.Scripts.Managers;
 
-namespace Mdfry1.Scripts.Managers
+public class AudioManager : Common.Manager.AudioManager
 {
-    public class AudioManager :Common.Manager.AudioManager
-    {
-    }
 }

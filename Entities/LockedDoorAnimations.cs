@@ -1,9 +1,8 @@
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public static class LockedDoorAnimations
 {
-    public static class LockedDoorAnimations
-    {
-        public const string ClosedAnimation = "Close";
-        public const string OpenAnimation = "Open";
-        public const string IdleAnimation = "Idle";
-    }
+    public const string ClosedAnimation = "Close";
+    public const string OpenAnimation = "Open";
+    public const string IdleAnimation = "Idle";
 }

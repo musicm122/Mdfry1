@@ -1,4 +1,10 @@
-namespace Mdfry1.Scripts.Enum
+namespace Mdfry1.Scripts.Enum;
+
+public enum CameraState
 {
-    public enum CameraState { Idle, Warning, Aggro, Damaged, Stun }
+    Idle,
+    Warning,
+    Aggro,
+    Damaged,
+    Stun
 }

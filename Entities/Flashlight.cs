@@ -1,6 +1,5 @@
-﻿namespace Mdfry1.Entities
+﻿namespace Mdfry1.Entities;
+
+public class Flashlight : InteractiveObject
 {
-    public class Flashlight : InteractiveObject
-    {
-    }
 }

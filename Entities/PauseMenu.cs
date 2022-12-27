@@ -5,107 +5,91 @@ using Mdfry1.Scripts.Item;
 using Mdfry1.Scripts.Mission;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public class PauseMenu : Control, IDebuggable<Node>
 {
-    public class PauseMenu : Control, IDebuggable<Node>
+    [Export] private readonly float PauseToggleCooldownWaitTime = 1.0f;
+
+    private float AccumulatorPauseToggleCooldown;
+    private bool CanTogglePause = true;
+
+    [Export] public bool IsPauseOptionEnabled { get; set; } = true;
+
+    [Export] private string InventoryDisplayPath { get; set; } = "./InventoryPanel/InventoryDisplay";
+
+    [Export] private string MissionManagerDisplayPath { get; set; } = "./MissionPanel/MissionDisplay";
+
+    [Export] private string TitleDisplayPath { get; set; } = "./TitlePanel/Title";
+
+
+    public Label InventoryDisplay { get; set; }
+    public Label MissionDisplay { get; set; }
+    public Label TitleDisplay { get; set; }
+
+    public bool IsHidden { get; set; }
+
+    [Export] public bool IsDebugging { get; set; }
+
+    public bool IsDebugPrintEnabled()
     {
-        [Export]
-        public bool IsPauseOptionEnabled { get; set; } = true;
+        return IsDebugging;
+    }
 
-        [Export]
-        public bool IsDebugging { get; set; } = false;
+    public override void _Ready()
+    {
+        TitleDisplay = GetNode<Label>(TitleDisplayPath);
+        InventoryDisplay = GetNode<Label>(InventoryDisplayPath);
+        MissionDisplay = GetNode<Label>(MissionManagerDisplayPath);
 
-        public bool IsDebugPrintEnabled() => IsDebugging;
+        if (TitleDisplay == null) this.Print("TitleDisplay is null");
+        if (InventoryDisplay == null) this.Print("InventoryDisplay is null");
+        if (MissionDisplay == null) this.Print("MissionDisplay is null");
+    }
 
-        [Export]
-        private string InventoryDisplayPath { get; set; } = "./InventoryPanel/InventoryDisplay";
-
-        [Export]
-        private string MissionManagerDisplayPath { get; set; } = "./MissionPanel/MissionDisplay";
-
-        [Export]
-        private string TitleDisplayPath { get; set; } = "./TitlePanel/Title";
-
-        
-        public Label InventoryDisplay { get; set; }
-        public Label MissionDisplay { get; set; }
-        public Label TitleDisplay { get; set; }
-
-        public bool IsHidden { get; set; }
-
-        [Export]
-        private readonly float PauseToggleCooldownWaitTime = 1.0f;
-
-        private float AccumulatorPauseToggleCooldown = 0.0f;
-        private bool CanTogglePause = true;
-
-        public override void _Ready()
+    public override void _Process(float delta)
+    {
+        if (!IsPauseOptionEnabled) return;
+        if (Input.IsActionPressed(InputAction.Pause))
         {
-            TitleDisplay = GetNode<Label>(TitleDisplayPath);
-            InventoryDisplay = GetNode<Label>(InventoryDisplayPath);
-            MissionDisplay = GetNode<Label>(MissionManagerDisplayPath);
-            
-            if (TitleDisplay == null)
+            if (CanTogglePause)
             {
-                this.Print("TitleDisplay is null");
-            }
-            if (InventoryDisplay == null)
-            {
-                this.Print("InventoryDisplay is null");
-            }
-            if (MissionDisplay == null)
-            {
-                this.Print("MissionDisplay is null");
-            }
-        }
-
-        public override void _Process(float delta)
-        {
-            if (!IsPauseOptionEnabled) return;
-            if (Input.IsActionPressed(InputAction.Pause))
-            {
-                if (CanTogglePause)
-                {
-                    this.Print("Can toggle pause yet, time left ");
-                    CanTogglePause = false;
-                    TogglePauseMenu();
-                    AccumulatorPauseToggleCooldown = PauseToggleCooldownWaitTime;
-                }
-                else
-                {
-                    this.Print("Cannot toggle pause yet, time left ", AccumulatorPauseToggleCooldown);
-                }
-            }
-            if (AccumulatorPauseToggleCooldown > 0)
-            {
-                AccumulatorPauseToggleCooldown -= delta;
+                this.Print("Can toggle pause yet, time left ");
+                CanTogglePause = false;
+                TogglePauseMenu();
+                AccumulatorPauseToggleCooldown = PauseToggleCooldownWaitTime;
             }
             else
             {
-                CanTogglePause = true;
+                this.Print("Cannot toggle pause yet, time left ", AccumulatorPauseToggleCooldown);
             }
         }
 
-        private void TogglePauseMenu()
-        {
-            this.Print("Toggling Pause Menu");
-            this.TogglePause();
-            if (this.IsPaused())
-            {
-                this.Print("Should be showing Pause Menu");
-                Show();
-            }
-            else
-            {
-                this.Print("Should be hiding Pause Menu");
-                Hide();
-            }
-        }
+        if (AccumulatorPauseToggleCooldown > 0)
+            AccumulatorPauseToggleCooldown -= delta;
+        else
+            CanTogglePause = true;
+    }
 
-        public void RefreshUI(Inventory inventory, MissionManager missionManager)
+    private void TogglePauseMenu()
+    {
+        this.Print("Toggling Pause Menu");
+        this.TogglePause();
+        if (this.IsPaused())
         {
-            InventoryDisplay.Text = inventory.Display();
-            MissionDisplay.Text = missionManager.Display();
+            this.Print("Should be showing Pause Menu");
+            Show();
         }
+        else
+        {
+            this.Print("Should be hiding Pause Menu");
+            Hide();
+        }
+    }
+
+    public void RefreshUI(Inventory inventory, MissionManager missionManager)
+    {
+        InventoryDisplay.Text = inventory.Display();
+        MissionDisplay.Text = missionManager.Display();
     }
 }

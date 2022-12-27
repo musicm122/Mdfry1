@@ -1,13 +1,13 @@
 using Godot;
 
-namespace Mdfry1.Scripts.Patterns.Logger
+namespace Mdfry1.Scripts.Patterns.Logger;
+
+public interface IDebuggable<T> where T : Node
 {
-    public interface IDebuggable<T> where T : Node
+    [Export] bool IsDebugging { get; set; }
+
+    bool IsDebugPrintEnabled()
     {
-        bool IsDebugPrintEnabled() => IsDebugging;
-        
-        
-        [Export]
-        bool IsDebugging { get; set; }
+        return IsDebugging;
     }
 }

@@ -3,118 +3,115 @@ using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Item;
 using Mdfry1.Scripts.Patterns.Logger;
 
-namespace Mdfry1.Entities
+namespace Mdfry1.Entities;
+
+public class LockedDoor : Examinable
 {
-    public class LockedDoor : Examinable
+    //private const string OnInteractingWithDoorMessage = "Interacting with door...";
+
+    [Signal]
+    public delegate void DoorInteraction(LockedDoor lockedDoor);
+
+    [Signal]
+    public delegate void DoorInteractionComplete(LockedDoor lockedDoor);
+
+    private const string OpeningDoorMessage = "Opening Door";
+    private const string ClosingDoorMessage = "Closing Door";
+    private const string DoorIsClosedMessage = "Door is now closed";
+    private const string DoorIsNowOpenedMessage = "Door is now opened";
+
+    [Export] public Key RequiredKey { get; set; } = Key.None;
+
+    [Export] public DoorState CurrentDoorState { get; set; } = DoorState.Locked;
+
+    public AnimatedSprite Sprite { get; set; }
+
+    public CollisionShape2D Collider { get; set; }
+
+    public void OpenDoor()
     {
-        private const string OpeningDoorMessage = "Opening Door";
-        private const string ClosingDoorMessage = "Closing Door";
-        private const string DoorIsClosedMessage = "Door is now closed";
-        private const string DoorIsNowOpenedMessage = "Door is now opened";
+        this.Print(OpeningDoorMessage);
+        StartDialog(LockedDoorTimelines.OpeningDoorTimeline);
+        Sprite.Play(LockedDoorAnimations.OpenAnimation);
+        CurrentDoorState = DoorState.Opened;
+        //Collider.Disabled = true;
+        this.Print(DoorIsNowOpenedMessage);
+    }
 
-        //private const string OnInteractingWithDoorMessage = "Interacting with door...";
+    public void CloseDoor()
+    {
+        this.Print(ClosingDoorMessage);
+        StartDialog(LockedDoorTimelines.ClosingDoorTimeline);
+        Sprite.Play(LockedDoorAnimations.ClosedAnimation);
+        CurrentDoorState = DoorState.Closed;
+        //Collider.Disabled = false;
+        this.Print(DoorIsClosedMessage);
+    }
 
-        [Signal]
-        public delegate void DoorInteraction(LockedDoor lockedDoor);
+    public void StartLockedDoorNotification()
+    {
+        this.Print($"Door is locked and requires {RequiredKey}");
+        StartDialog(LockedDoorTimelines.LockedDoorTimeline);
+    }
 
-        [Signal]
-        public delegate void DoorInteractionComplete(LockedDoor lockedDoor);
-
-        [Export] public Key RequiredKey { get; set; } = Key.None;
-
-        [Export]
-        public DoorState CurrentDoorState { get; set; } = DoorState.Locked;
-
-        public AnimatedSprite Sprite { get; set; }
-
-        public CollisionShape2D Collider { get; set; }
-
-        public void OpenDoor()
+    public void SetColliderState(DoorState state)
+    {
+        switch (state)
         {
-            this.Print(OpeningDoorMessage);
-            StartDialog(LockedDoorTimelines.OpeningDoorTimeline);
-            Sprite.Play(LockedDoorAnimations.OpenAnimation);
-            CurrentDoorState = DoorState.Opened;
-            //Collider.Disabled = true;
-            this.Print(DoorIsNowOpenedMessage);
-        }
-
-        public void CloseDoor()
-        {
-            this.Print(ClosingDoorMessage);
-            StartDialog(LockedDoorTimelines.ClosingDoorTimeline);
-            Sprite.Play(LockedDoorAnimations.ClosedAnimation);
-            CurrentDoorState = DoorState.Closed;
-            //Collider.Disabled = false;
-            this.Print(DoorIsClosedMessage);
-        }
-
-        public void StartLockedDoorNotification()
-        {
-            this.Print($"Door is locked and requires {RequiredKey}");
-            StartDialog(LockedDoorTimelines.LockedDoorTimeline);
-        }
-
-        public void SetColliderState(DoorState state)
-        {
-            switch (state)
-            {
-                case DoorState.Locked:
-                case DoorState.Closed:
-                    Collider.Disabled = false;
-                    break;
-                case DoorState.Opened:
-                    Collider.Disabled = true;
-                    break;
-            }
-        }
-
-        public override void _Ready()
-        {
-            base._Ready();
-            Sprite = GetNode<AnimatedSprite>("AnimatedSprite");
-            Sprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
-            Collider = GetNode<CollisionShape2D>("Collider/ColliderShape2d");
-            if (CurrentDoorState == DoorState.Closed || CurrentDoorState == DoorState.Locked)
-            {
+            case DoorState.Locked:
+            case DoorState.Closed:
                 Collider.Disabled = false;
-            }
+                break;
+            case DoorState.Opened:
+                Collider.Disabled = true;
+                break;
         }
+    }
 
-        private void OnAnimationFinished()
+    public override void _Ready()
+    {
+        base._Ready();
+        Sprite = GetNode<AnimatedSprite>("AnimatedSprite");
+        Sprite.Connect("animation_finished", this, nameof(OnAnimationFinished));
+        Collider = GetNode<CollisionShape2D>("Collider/ColliderShape2d");
+        if (CurrentDoorState == DoorState.Closed || CurrentDoorState == DoorState.Locked) Collider.Disabled = false;
+    }
+
+    private void OnAnimationFinished()
+    {
+        if (Sprite.Animation == LockedDoorAnimations.OpenAnimation)
         {
-            if (Sprite.Animation == LockedDoorAnimations.OpenAnimation)
-            {
-                Sprite.Stop();
-                Sprite.Frame = 3;
-            }
-            if (Sprite.Animation == LockedDoorAnimations.ClosedAnimation)
-            {
-                Sprite.Stop();
-                Sprite.Frame = 3;
-            }
+            Sprite.Stop();
+            Sprite.Frame = 3;
         }
 
-        protected override void OnInteract()
+        if (Sprite.Animation == LockedDoorAnimations.ClosedAnimation)
         {
-            this.Print($"LockedDoor.OnOnInteract called with the current door state set to {CurrentDoorState}");
-            EmitSignal(nameof(DoorInteraction), this);
-            switch (CurrentDoorState)
-            {
-                case DoorState.Locked:
-                    StartLockedDoorNotification();
-                    break;
-
-                case DoorState.Closed:
-                    OpenDoor();
-                    break;
-
-                case DoorState.Opened:
-                    CloseDoor();
-                    break;
-            }
-            SetColliderState(CurrentDoorState);
-            EmitSignal(nameof(DoorInteractionComplete), this);
+            Sprite.Stop();
+            Sprite.Frame = 3;
         }
+    }
+
+    protected override void OnInteract()
+    {
+        this.Print($"LockedDoor.OnOnInteract called with the current door state set to {CurrentDoorState}");
+        EmitSignal(nameof(DoorInteraction), this);
+        switch (CurrentDoorState)
+        {
+            case DoorState.Locked:
+                StartLockedDoorNotification();
+                break;
+
+            case DoorState.Closed:
+                OpenDoor();
+                break;
+
+            case DoorState.Opened:
+                CloseDoor();
+                break;
+        }
+
+        SetColliderState(CurrentDoorState);
+        EmitSignal(nameof(DoorInteractionComplete), this);
     }
 }

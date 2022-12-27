@@ -1,10 +1,9 @@
-﻿namespace Mdfry1.Scripts.Enum
+﻿namespace Mdfry1.Scripts.Enum;
+
+public enum Key
 {
-    public enum Key
-    {
-        KeyA,
-        KeyB,
-        KeyC,
-        None
-    }
+    KeyA,
+    KeyB,
+    KeyC,
+    None
 }

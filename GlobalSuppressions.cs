@@ -5,4 +5,6 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-[assembly: SuppressMessage("Design", "RCS1170:Use read-only auto-implemented property.", Justification = "<Pending>", Scope = "module")]
+[assembly:
+    SuppressMessage("Design", "RCS1170:Use read-only auto-implemented property.", Justification = "<Pending>",
+        Scope = "module")]

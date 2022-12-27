@@ -1,6 +1,7 @@
-﻿namespace Mdfry1.Entities.Behaviors
+﻿using Common.Manager;
+
+namespace Mdfry1.Entities.Behaviors;
+
+public class SoundPlayer : AudioService
 {
-    public class SoundPlayer : Common.Manager.AudioService
-    {
-    }
 }
