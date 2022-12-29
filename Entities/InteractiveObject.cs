@@ -1,3 +1,4 @@
+using Core.Input;
 using Godot;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.GDUtils;
@@ -46,6 +47,6 @@ public class InteractiveObject : Node2D, IDebuggable<Node>
 
     public override void _Process(float delta)
     {
-        if (CanInteract && InputUtils.IsInteracting()) OnInteract();
+        if (CanInteract && PlayerActions.isInteracting()) OnInteract();
     }
 }

@@ -51,7 +51,7 @@ public class PauseMenu : Control, IDebuggable<Node>
     public override void _Process(float delta)
     {
         if (!IsPauseOptionEnabled) return;
-        if (Input.IsActionPressed(InputAction.Pause))
+        if (Input.IsActionPressed(InputConstants.Pause))
         {
             if (CanTogglePause)
             {

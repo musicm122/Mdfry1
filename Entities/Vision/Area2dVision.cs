@@ -43,8 +43,8 @@ public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
 
     public override void _Ready()
     {
-        this.ConnectBodyEntered(this, nameof(OnVisionRadiusBodyEntered));
-        this.ConnectBodyExited(this, nameof(OnVisionRadiusBodyExit));
+        this.TryConnectSignal(Signals.Area2D.BodyEntered, this, nameof(OnVisionRadiusBodyEntered));
+        this.TryConnectSignal(Signals.Area2D.BodyExited, this, nameof(OnVisionRadiusBodyExit));
     }
 
     private void OnVisionRadiusBodyEntered(Node body)

@@ -1,3 +1,4 @@
+using Core.Input;
 using Godot;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Scripts.GDUtils;
@@ -88,7 +89,7 @@ public class UiBehavior : Node2D, IDebuggable<Node>, IUiBehavior
         {
             PauseMenu.IsPauseOptionEnabled = false;
 
-            if (InputUtils.IsAnyKeyPressed())
+            if (PlayerActions.isAnyKeyPressed())
             {
                 this.Print("Reloading Scene");
                 GetTree().ReloadCurrentScene();

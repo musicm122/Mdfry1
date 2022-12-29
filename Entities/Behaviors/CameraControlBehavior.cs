@@ -85,10 +85,10 @@ public class CameraControlBehavior : Camera2D, IDebuggable<Node>, IMovableCamera
 
     public override void _UnhandledInput(InputEvent inputEvent)
     {
-        var upStrength = inputEvent.GetActionStrength(InputAction.CameraUp);
-        var downStrength = inputEvent.GetActionStrength(InputAction.CameraDown);
-        var leftStrength = inputEvent.GetActionStrength(InputAction.CameraLeft);
-        var rightStrength = inputEvent.GetActionStrength(InputAction.CameraRight);
+        var upStrength = inputEvent.GetActionStrength(InputConstants.CameraUp);
+        var downStrength = inputEvent.GetActionStrength(InputConstants.CameraDown);
+        var leftStrength = inputEvent.GetActionStrength(InputConstants.CameraLeft);
+        var rightStrength = inputEvent.GetActionStrength(InputConstants.CameraRight);
 
 
         _logger.Debug(
@@ -120,6 +120,6 @@ public class CameraControlBehavior : Camera2D, IDebuggable<Node>, IMovableCamera
             SetPan(newOffset);
         }
 
-        if (inputEvent.IsActionPressed(InputAction.CameraReset)) ResetCamera();
+        if (inputEvent.IsActionPressed(InputConstants.CameraReset)) ResetCamera();
     }
 }

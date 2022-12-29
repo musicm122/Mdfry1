@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Core.Input;
 using Godot;
 using Godot.Collections;
 using Mdfry1.addons.dialogic.Other;
@@ -129,7 +130,7 @@ public class LampLight : Examinable
 
     public override void _Process(float delta)
     {
-        if (CanInteract && InputUtils.IsInteracting()) OnInteract();
+        if (CanInteract && PlayerActions.isInteracting()) OnInteract();
     }
 
     public override void _PhysicsProcess(float delta)
@@ -235,7 +236,7 @@ public class LampLight : Examinable
 
     private void RegisterInteractable(Area2D area2D)
     {
-        area2D.ConnectBodyEntered(this, nameof(OnExaminableAreaEntered));
-        area2D.ConnectBodyExited(this, nameof(OnExaminableAreaExited));
+        area2D.TryConnectSignal(Signals.Area2D.BodyEntered, this, nameof(OnExaminableAreaEntered));
+        area2D.TryConnectSignal(Signals.Area2D.BodyExited, this, nameof(OnExaminableAreaExited));
     }
 }

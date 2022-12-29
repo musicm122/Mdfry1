@@ -1,6 +1,8 @@
 ﻿namespace Core.Input
 
-    module InputAction = 
+    open Common.Extensions
+    open Godot
+    module InputConstants = 
 
         [<Literal>]
         let Shoot = "shoot"
@@ -51,3 +53,44 @@
             CameraRight
             CameraReset
         |]
+
+    module PlayerActions =
+        let isShooting() =
+            Input.IsActionJustPressed InputConstants.Shoot
+        
+        let isInteracting() =
+            Input.IsActionJustPressed InputConstants.Interact
+        
+        let isAnyKeyPressed() =
+            InputConstants.AllInputs
+            |> Array.exists Input.IsActionJustPressed
+    
+    module CameraMovement =
+        let getCameraMovementInput speed = 
+            let mutable velocity = Vector2.Zero
+
+            if Input.IsActionPressed(InputConstants.CameraRight) && Input.IsActionPressed(InputConstants.CameraUp) then
+                velocity<-velocity.AddToX 0.5f 
+                velocity<-velocity.SubFromY 0.5f
+
+            if Input.IsActionPressed(InputConstants.CameraRight) && Input.IsActionPressed(InputConstants.CameraDown) then
+                velocity<-velocity.AddToX 0.5f
+                velocity<-velocity.AddToY 0.5f
+            
+            if Input.IsActionPressed(InputConstants.CameraLeft) && Input.IsActionPressed(InputConstants.CameraUp) then
+                velocity<-velocity.SubFromX 0.5f
+                velocity<-velocity.SubFromY 0.5f 
+
+            if Input.IsActionPressed(InputConstants.CameraLeft) && Input.IsActionPressed(InputConstants.CameraDown) then
+                velocity<-velocity.SubFromX 0.5f 
+                velocity<-velocity.AddToY 0.5f 
+                       
+            if Input.IsActionPressed(InputConstants.CameraRight) then velocity <- velocity.AddToX 1f
+            if Input.IsActionPressed(InputConstants.CameraLeft) then  velocity <- velocity.SubFromX 1f
+            if Input.IsActionPressed(InputConstants.CameraUp) then  velocity <- velocity.SubFromY 1f
+            if Input.IsActionPressed(InputConstants.CameraDown) then velocity <- velocity.AddToY 1f
+
+            velocity.Normalized() * speed;
+        
+        let isCameraReset() =    
+            Input.IsActionJustPressed InputConstants.CameraReset

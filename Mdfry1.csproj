@@ -22,6 +22,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj" />
         <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Core2D\Core2D.fsproj" />
+        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\CoreUI\CoreUI.fsproj" />
         <ProjectReference Include="Common\Core.fsproj" />
     </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 using System;
+using Common.Uti;
 using Core.Input;
 using Godot;
 using Mdfry1.Scripts.Constants;
@@ -69,11 +70,11 @@ public class PlayerMovableBehavior : BaseMovableBehavior
     public override void _PhysicsProcess(float delta)
     {
         if (!CanMove) return;
-        IsRunning = Input.IsActionPressed(InputAction.Run);
+        IsRunning = Input.IsActionPressed(InputConstants.Run);
 
-        var movementVector = InputUtils.GetTopDownWithDiagMovementInputStrengthVector();
+        var movementVector = InputUtil.GetTopDownWithDiagMovementInputStrengthVector();
         Velocity = MoveCheck(movementVector, Velocity, delta);
-        if (CanRoll() && Input.IsActionPressed(InputAction.Roll)) Velocity = Roll();
+        if (CanRoll() && Input.IsActionPressed(InputConstants.Roll)) Velocity = Roll();
 
         if (CurrentRollCooldown > 0f)
         {

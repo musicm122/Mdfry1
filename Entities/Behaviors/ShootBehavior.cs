@@ -1,4 +1,5 @@
 ﻿using System;
+using Core.Input;
 using Godot;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Scripts.GDUtils;
@@ -69,7 +70,7 @@ public class ShootBehavior : Node2D, IDebuggable<Node>, IShootableBehavior
     public override void _PhysicsProcess(float delta)
     {
         base._PhysicsProcess(delta);
-        if (!CanShoot() || !InputUtils.IsShooting())
+        if (!CanShoot() || !PlayerActions.isShooting())
         {
             CooldownAcc -= delta;
         }

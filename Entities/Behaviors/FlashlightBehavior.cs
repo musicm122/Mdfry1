@@ -35,7 +35,7 @@ public class FlashlightBehavior : Node2D, IDebuggable<Node>, IFlashlightBehavior
 
     public override void _PhysicsProcess(float delta)
     {
-        if (Input.IsActionJustPressed(InputAction.ToggleFlashlight) && HasFlashlight) ToggleFlashlight();
+        if (Input.IsActionJustPressed(InputConstants.ToggleFlashlight) && HasFlashlight) ToggleFlashlight();
     }
 
     private void ToggleFlashlight()
