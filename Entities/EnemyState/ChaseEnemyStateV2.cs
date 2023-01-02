@@ -86,7 +86,7 @@ public class ChaseEnemyStateV2 : State
 
     private Stack<Vector2> GetTargetPath(Vector2 targetPosition)
     {
-        return new(Nav.GetSimplePath(Enemy.GlobalPosition, targetPosition));
+        return new Stack<Vector2>(Nav.GetSimplePath(Enemy.GlobalPosition, targetPosition));
     }
 
     private void SetDebugLabel()

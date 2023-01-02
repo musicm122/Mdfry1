@@ -1,7 +1,6 @@
 using Core.Input;
 using Godot;
 using Mdfry1.Entities.Behaviors.Interfaces;
-using Mdfry1.Scripts.Constants;
 using Mdfry1.Scripts.Patterns.Logger;
 
 namespace Mdfry1.Entities.Behaviors;

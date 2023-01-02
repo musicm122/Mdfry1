@@ -2,8 +2,6 @@ using System;
 using Common.Uti;
 using Core.Input;
 using Godot;
-using Mdfry1.Scripts.Constants;
-using Mdfry1.Scripts.GDUtils;
 
 namespace Mdfry1.Entities.Behaviors;
 

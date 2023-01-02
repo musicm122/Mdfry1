@@ -8,7 +8,7 @@ public static class MasterMissionList
     public static readonly List<MissionElement> Missions =
         new()
         {
-            new(
+            new MissionElement(
                 "Find the glasses",
                 "Find Foo's missing specs.",
                 playerState => playerState.Inventory.HasItem("Foo's Glasses"))

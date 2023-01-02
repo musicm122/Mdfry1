@@ -23,9 +23,13 @@ public class DayNightCycle : CanvasModulate
 
     [Export] private Color _eveningColor = new("#ff3300");
 
-    private LogLevelOutput _logLevel = LogLevelOutput.Debug;
+    [Export] private LogLevelOutput _logLevel = LogLevelOutput.Debug;
 
-    [Export] private Color _nightColor = new("#091d3a");
+    [Export(PropertyHint.ColorNoAlpha)] private Color _nightColor = new("#091d3a");
+
+    [Export(PropertyHint.Range, "1,60")] public float DayInSeconds { get; set; } = 40f;
+
+    [Export(PropertyHint.Range, "0.01,1")] public float ThresholdForSpawning { get; set; } = 0.35f;
 
     [Export]
     public LogLevelOutput LogLevel
@@ -70,11 +74,10 @@ public class DayNightCycle : CanvasModulate
     /// <returns></returns>
     private bool ToggleSpawnCheck()
     {
-        const float dayInSec = 40f;
         const float thresholdForSpawning = 0.35f;
         _logger.Debug(
-            $" ({TotalTime.ToString(CultureInfo.InvariantCulture)} / {dayInSec.ToString(CultureInfo.InvariantCulture)}) : {TotalTime / dayInSec} : > {thresholdForSpawning.ToString(CultureInfo.InvariantCulture)}");
-        return TotalTime / dayInSec > thresholdForSpawning;
+            $" ({TotalTime.ToString(CultureInfo.InvariantCulture)} / {DayInSeconds.ToString(CultureInfo.InvariantCulture)}) : {TotalTime / DayInSeconds} : > {thresholdForSpawning.ToString(CultureInfo.InvariantCulture)}");
+        return TotalTime / DayInSeconds > thresholdForSpawning;
     }
 
     public override void _Process(float delta)

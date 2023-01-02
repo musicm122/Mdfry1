@@ -8,6 +8,7 @@ using Mdfry1.Entities.EnemyState;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Entities.Vision;
 using Mdfry1.Scripts.Enum;
+using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.StateMachine;
 
 namespace Mdfry1.Entities;
@@ -61,6 +62,7 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
         //InitAudioStreams();
         SoundPlayer = GetNode<SoundPlayer>("Behaviors/SoundPlayer");
         BloodSpatter = GetNode<BloodSpatter>("BloodSpatter");
+
         HitboxPivot = GetNode<Position2D>("HitboxPiviot");
         AnimationManager = GetNode<EnemyAnimationManager>("AnimationManager");
         AnimationManager.Sprite = GetNode<Sprite>("Sprite");
@@ -141,6 +143,8 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
 
         AnimationManager.PlayTakeDamageAnimation();
         var bloodSpatter = (BloodSpatter)GD.Load<PackedScene>("res://Entities/Effects/BloodSpatter.tscn").Instance();
+
+        bloodSpatter.TargetGlobalPosition = GetTree().GetPlayerGlobalPosition();
         bloodSpatter.GlobalPosition = GlobalPosition;
         GetTree().Root.AddChild(bloodSpatter);
 

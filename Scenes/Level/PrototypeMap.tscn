@@ -60,6 +60,7 @@ polygon = PoolVector2Array( -96, -8, -24, -8, 0, 120, -96, 120 )
 material = SubResource( 14 )
 color = Color( 0.0117647, 0, 0.054902, 0.980392 )
 script = ExtResource( 10 )
+DayInSeconds = 11.584
 LogLevel = 3
 
 [node name="DebugLabel" type="Label" parent="DayNightCycle" index="0"]

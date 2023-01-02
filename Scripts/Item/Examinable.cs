@@ -4,7 +4,6 @@ using Core.Input;
 using Godot;
 using Mdfry1.addons.dialogic.Other;
 using Mdfry1.Scripts.Extensions;
-using Mdfry1.Scripts.GDUtils;
 using Mdfry1.Scripts.Patterns.Logger;
 
 namespace Mdfry1.Scripts.Item;
@@ -160,7 +159,7 @@ public class Examinable : Node2D, IDebuggable<Node>
 
     private void ProcessLoop(float delta)
     {
-        if (CanInteract &&  PlayerActions.isInteracting()) OnInteract();
+        if (CanInteract && PlayerActions.isInteracting()) OnInteract();
     }
 
     public override void _Process(float delta)

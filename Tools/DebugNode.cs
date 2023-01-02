@@ -6,5 +6,4 @@ namespace Mdfry1.Tools;
 [Tool]
 public class DebugNode : DebugDrawNode
 {
-
 }

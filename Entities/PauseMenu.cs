@@ -1,6 +1,5 @@
 using Core.Input;
 using Godot;
-using Mdfry1.Scripts.Constants;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Item;
 using Mdfry1.Scripts.Mission;

@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Input.fs" />
+        <Compile Include="Input.fs"/>
     </ItemGroup>
 
     <ItemGroup>
@@ -22,7 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj" />
+        <ProjectReference Include="..\..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj"/>
     </ItemGroup>
 
 </Project>

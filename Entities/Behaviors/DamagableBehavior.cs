@@ -121,19 +121,7 @@ public class DamagableBehavior : Node2D, IDebuggable<Node>, IDamagableBehavior
             _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
         }
 
-        if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityStarted), this,
-                nameof(OnHurtboxInvincibilityStarted)))
-        {
-            var arg =
-                $"TryConnectSignal({nameof(Hurtbox.InvincibilityStarted)}, {Name}, {nameof(OnHurtboxInvincibilityStarted)})";
-            _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
-        }
-
-        if (!HurtBox.TryConnectSignal(nameof(Hurtbox.InvincibilityEnded), this, nameof(OnHurtboxInvincibilityEnded)))
-        {
-            var arg =
-                $"TryConnectSignal({nameof(Hurtbox.InvincibilityEnded)}, {Name}, {nameof(OnHurtboxInvincibilityEnded)})";
-            _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
-        }
+        HurtBox.OnInvincibleStartedEventHandler.AddHandler((_, _) => OnHurtboxInvincibilityStarted());
+        HurtBox.OnInvincibleEndedEventHandler.AddHandler((_, _) => OnHurtboxInvincibilityStarted());
     }
 }

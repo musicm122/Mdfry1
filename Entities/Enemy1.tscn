@@ -909,10 +909,10 @@ polygon = PoolVector2Array( -8, -16, -8, 24, 0, 24, 8, 24, 7.99999, -6.26688, 8,
 [node name="Vision" parent="." instance=ExtResource( 4 )]
 rotation = 3.14159
 cast_to = Vector2( -300, 0 )
-IsDebugging = false
 ConeAngle = 0.8
 AngleBetweenRays = 0.05
 MaxViewDistance = 300.0
+IsDebugging = false
 
 [node name="Behaviors" type="Node2D" parent="."]
 
@@ -980,7 +980,7 @@ texture = SubResource( 5 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 12
+frame = 13
 __meta__ = {
 "_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpwbGF5ZXJ8PUFuaW1hdGlvblBsYXllcgpzb3VyY2V8PXJlczovL0Fzc2V0cy9BcnQvQ2hhcmFjdGVyL3BhY2ttb25zdGVycy9Nb25zdGVyM1BhY2suYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD0Kb19uYW1lfD0Kb25seV92aXNpYmxlfD1GYWxzZQpvX2V4X3B8PQo="
 }
