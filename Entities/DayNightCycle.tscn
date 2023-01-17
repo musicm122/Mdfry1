@@ -1,0 +1,36 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Scenes/Level/DayNightCycle.cs" type="Script" id=1]
+
+[sub_resource type="Shader" id=13]
+code = "shader_type canvas_item;
+
+uniform float saturation;
+
+void fragment() {
+    vec4 tex_color = texture(TEXTURE, UV);
+
+    COLOR.rgb = mix(vec3(dot(tex_color.rgb, vec3(0.299, 0.587, 0.114))), tex_color.rgb, saturation);
+	COLOR.a = tex_color.a;
+}"
+
+[sub_resource type="ShaderMaterial" id=14]
+shader = SubResource( 13 )
+shader_param/saturation = 800.0
+
+[node name="DayNightCycle" type="CanvasModulate"]
+material = SubResource( 14 )
+color = Color( 0.0117647, 0, 0.054902, 0.980392 )
+script = ExtResource( 1 )
+DayInSeconds = 4.633
+LogLevel = 3
+TimeScale = 0.2
+
+[node name="DebugLabel" type="Label" parent="."]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -40.0
+margin_top = -14.0
+text = "Debug Label"
