@@ -15,7 +15,21 @@ public class PlayerV2 : PlayerMovableBehavior
     public PlayerAudioResource AudioResource { get; set; }
 
     public PlayerDataStore DataStore { get; set; }
-
+    
+    [Export]
+    public int MaxHealth
+    {
+        get => PlayerStatus.MaxHealth;
+        set => PlayerStatus.MaxHealth = value;
+    } 
+    
+    [Export]
+    public int CurrentHealth
+    {
+        get => PlayerStatus.CurrentHealth;
+        set => PlayerStatus.CurrentHealth = value;
+    } 
+    
     public IPlayAudio SoundPlayer { get; set; }
 
     public IDamagableBehavior Damagable { get; private set; }
@@ -27,7 +41,7 @@ public class PlayerV2 : PlayerMovableBehavior
     public IFlashlightBehavior Flashlight { get; private set; }
 
     public IShootableBehavior ShootableBehavior { get; private set; }
-
+    
     public Health PlayerStatus { get; set; }
 
     public PlayerAnimationManager AnimationManager { get; set; }
@@ -37,7 +51,7 @@ public class PlayerV2 : PlayerMovableBehavior
         base._Ready();
         PlayerStatus = GetNode<Health>("Health");
         AnimationManager = GetNode<PlayerAnimationManager>("AnimationManager");
-
+        
         DataStore = new PlayerDataStore
         {
             PlayerStatus = PlayerStatus,

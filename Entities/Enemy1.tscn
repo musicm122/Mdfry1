@@ -980,7 +980,7 @@ texture = SubResource( 5 )
 flip_h = true
 hframes = 8
 vframes = 7
-frame = 13
+frame = 12
 __meta__ = {
 "_editor_description_": "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpwbGF5ZXJ8PUFuaW1hdGlvblBsYXllcgpzb3VyY2V8PXJlczovL0Fzc2V0cy9BcnQvQ2hhcmFjdGVyL3BhY2ttb25zdGVycy9Nb25zdGVyM1BhY2suYXNlcHJpdGUKbGF5ZXJ8PQpvcF9leHB8PUZhbHNlCm9fZm9sZGVyfD0Kb19uYW1lfD0Kb25seV92aXNpYmxlfD1GYWxzZQpvX2V4X3B8PQo="
 }

@@ -22,6 +22,8 @@ public class LampLight : Examinable
 
     [Export] public bool IsFixedLightLevel;
 
+    [Export] public bool SpawnerEnabled { get; set; } = true;
+
     [Export] public LightLevel DefaultLightLevel { get; set; } = LightLevel.Low;
 
     [Export]
@@ -56,9 +58,12 @@ public class LampLight : Examinable
         {
             _lightValue = value;
             _logger.Debug("LightValue changed to " + value);
-            Spawner.SpawnRate = SpawnRates[_lightValue.Level];
-            Spawner.EnemySpawnState = EnemyBehaviorStates.ChasePlayer;
-            //Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
+            if (SpawnerEnabled)
+            {
+                Spawner.SpawnRate = SpawnRates[_lightValue.Level];
+                Spawner.EnemySpawnState = EnemyBehaviorStates.ChasePlayer;
+                //Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
+            }
             OnLightLevelChanged?.Invoke(value);
         }
     }
@@ -70,7 +75,7 @@ public class LampLight : Examinable
 
     public void DisableSpawning()
     {
-        Spawner.EnableSpawning = true;
+        Spawner.EnableSpawning = false;
     }
 
     public bool CanFlicker(int interval = 2)
@@ -86,10 +91,10 @@ public class LampLight : Examinable
         Spawner.SpawnRate = SpawnRates[_lightValue.Level];
         Light = GetNode<Light2D>("Light2D");
         LightValue = AvailableLightValues.Values.Find(v => v.Level == DefaultLightLevel);
+        Timer = GetNode<Timer>("Timer");
 
         if (!IsFixedLightLevel)
         {
-            Timer = GetNode<Timer>("Timer");
             Timer.Connect("timeout", this, nameof(OnTimerTimeout));
         }
 
@@ -134,8 +139,16 @@ public class LampLight : Examinable
 
     public override void _PhysicsProcess(float delta)
     {
-        AnimatedSprite.Visible = LightValue.Level != LightLevel.None;
-        if (CanFlicker(20)) Light.Energy = LightValue.GetEnergyFluctuation();
+        try
+        {
+            AnimatedSprite.Visible = LightValue.Level != LightLevel.None;
+            if (CanFlicker(20)) Light.Energy = LightValue.GetEnergyFluctuation();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     protected override void OnInteract()

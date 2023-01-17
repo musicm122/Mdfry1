@@ -1,4 +1,5 @@
-﻿using Godot;
+﻿using System;
+using Godot;
 
 namespace Mdfry1.Entities;
 
@@ -22,7 +23,15 @@ public class BaseEnemyAnimationManager : BaseAnimationManager
 
     public virtual void PlayDeathAnimation()
     {
-        NavToAnimation("Death");
+        try
+        {
+            NavToAnimation("Death");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public virtual void PlayRunAnimation()
@@ -43,7 +52,15 @@ public class BaseEnemyAnimationManager : BaseAnimationManager
 
     public virtual void PlayTakeDamageAnimation()
     {
-        NavToAnimation("TakeDamage");
+        try
+        {
+            NavToAnimation("TakeDamage");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public override void _Ready()

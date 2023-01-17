@@ -675,7 +675,6 @@ editor_draw_limits = true
 script = ExtResource( 5 )
 MinZoom = 0.2
 MaxZoom = 0.5
-ZoomFactor = 0.1
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI/Camera2D"]
 

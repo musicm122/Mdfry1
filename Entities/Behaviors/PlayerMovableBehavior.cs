@@ -67,20 +67,29 @@ public class PlayerMovableBehavior : BaseMovableBehavior
 
     public override void _PhysicsProcess(float delta)
     {
-        if (!CanMove) return;
-        IsRunning = Input.IsActionPressed(InputConstants.Run);
-
-        var movementVector = InputUtil.GetTopDownWithDiagMovementInputStrengthVector();
-        Velocity = MoveCheck(movementVector, Velocity, delta);
-        if (CanRoll() && Input.IsActionPressed(InputConstants.Roll)) Velocity = Roll();
-
-        if (CurrentRollCooldown > 0f)
+        try
         {
-            _logger.Debug("Roll Cooling Down with Remaining Time: " + CurrentRollCooldown);
-            CurrentRollCooldown -= delta;
-        }
+            if (!CanMove) return;
+            IsRunning = Input.IsActionPressed(InputConstants.Run);
 
-        Move(delta);
-        if (GetSlideCount() > 0) HandleMovableObstacleCollision(Velocity);
+            var movementVector = InputUtil.GetTopDownWithDiagMovementInputStrengthVector();
+            Velocity = MoveCheck(movementVector, Velocity, delta);
+            if (CanRoll() && Input.IsActionPressed(InputConstants.Roll)) Velocity = Roll();
+
+            if (CurrentRollCooldown > 0f)
+            {
+                _logger.Debug("Roll Cooling Down with Remaining Time: " + CurrentRollCooldown);
+                CurrentRollCooldown -= delta;
+            }
+
+            Move(delta);
+            if (GetSlideCount() > 0) HandleMovableObstacleCollision(Velocity);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

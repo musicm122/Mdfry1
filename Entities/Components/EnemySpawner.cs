@@ -108,17 +108,26 @@ public class EnemySpawner : Node2D
 
     public override void _Process(float delta)
     {
-        if (GetTree().GetEnemyCount() >= MaxSpawnCount || !EnableSpawning) return;
+        try
+        {
+            if (GetTree().GetEnemyCount() >= MaxSpawnCount || !EnableSpawning) return;
 
-        AccumulatedTime += delta;
-        if (AccumulatedTime <= SpawnRate) return;
-        EnemiesSpawnedCount++;
-        if (GetTree().GetDayCount() >= 1)
-            Spawn();
-        else
-            SpawnTougher();
+            AccumulatedTime += delta;
+            if (AccumulatedTime <= SpawnRate) return;
+            EnemiesSpawnedCount++;
+            if (GetTree().GetDayCount() >= 1)
+                Spawn();
+            else
+                SpawnTougher();
 
-        _logger.Debug($"{Name} Spawning enemy # {EnemiesSpawnedCount.ToString()}");
-        AccumulatedTime = 0f;
+            _logger.Debug($"{Name} Spawning enemy # {EnemiesSpawnedCount.ToString()}");
+            AccumulatedTime = 0f;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+        
     }
 }

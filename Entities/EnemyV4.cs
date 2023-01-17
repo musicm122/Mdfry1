@@ -1,3 +1,4 @@
+using System;
 using Common.Manager;
 using Godot;
 using Mdfry1.CustomResources;
@@ -16,6 +17,10 @@ namespace Mdfry1.Entities;
 public class EnemyV4 : EnemyMovableBehavior, IEnemy
 {
     private readonly StateMachine _stateMachine = new();
+
+    [Export] private bool BloodSpatterEnabled { get; set; } 
+    [Export] private bool SoundEnabled { get; set; } 
+
 
     [Export(PropertyHint.ResourceType, "Enemy1AudioResource")]
     public EntityAudioResource AudioResource { get; set; }
@@ -100,14 +105,23 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
 
     public override void _PhysicsProcess(float delta)
     {
-        _stateMachine.Update(delta);
-        if (IsDebugging) StateLabel.Text = _stateMachine.CurrentState.ToString();
+        try
+        {
+            _stateMachine.Update(delta);
+            if (IsDebugging) StateLabel.Text = _stateMachine.CurrentState.ToString();
 
-        if (EnemyDataStore.CurrentCoolDownCounter > 0)
-            EnemyDataStore.CurrentCoolDownCounter -= delta;
-        else
-            // We have lost our target and need to return to our default state. This could be more robust in the future. 
-            _stateMachine.TransitionTo(DefaultState);
+            if (EnemyDataStore.CurrentCoolDownCounter > 0)
+                EnemyDataStore.CurrentCoolDownCounter -= delta;
+            else
+                // We have lost our target and need to return to our default state. This could be more robust in the future. 
+                _stateMachine.TransitionTo(DefaultState);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
     }
 
     private void InitAudioStreams()
@@ -119,7 +133,11 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
 
     private void OnEmptyHealthBar()
     {
-        SoundPlayer.PlaySound(AudioResource.DeathClipPath);
+        if (SoundEnabled)
+        {
+            SoundPlayer.PlaySound(AudioResource.DeathClipPath);
+        }
+
         _logger.Debug(Name + " Died");
         AnimationManager.PlayDeathAnimation();
         QueueFree();
@@ -138,16 +156,19 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
     private void OnTakeDamage(Node sender, Vector2 damageForce)
     {
         _logger.Debug(Name + " took damage");
-
-        SoundPlayer.PlaySound(AudioResource.TakeDamageClipPath);
+        if (SoundEnabled)
+        {
+            SoundPlayer.PlaySound(AudioResource.TakeDamageClipPath);
+        }
 
         AnimationManager.PlayTakeDamageAnimation();
         var bloodSpatter = (BloodSpatter)GD.Load<PackedScene>("res://Entities/Effects/BloodSpatter.tscn").Instance();
-
-        bloodSpatter.TargetGlobalPosition = GetTree().GetPlayerGlobalPosition();
-        bloodSpatter.GlobalPosition = GlobalPosition;
-        GetTree().Root.AddChild(bloodSpatter);
-
+        if (BloodSpatterEnabled)
+        {
+            bloodSpatter.TargetGlobalPosition = GetTree().GetPlayerGlobalPosition();
+            bloodSpatter.GlobalPosition = GlobalPosition;
+            GetTree().Root.AddChild(bloodSpatter);
+        }
         MoveAndSlide(damageForce);
         Alert();
     }
