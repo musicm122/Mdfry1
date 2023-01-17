@@ -19,6 +19,8 @@ public class DayNightCycle : CanvasModulate
         Level = LogLevelOutput.Debug
     };
 
+    [Export] private bool IsEnemySpawningEnabled { get; set; } = true;
+    
     [Export] private Color _dayColor = new("#ffffff");
 
     [Export] private Color _eveningColor = new("#ff3300");
@@ -74,10 +76,10 @@ public class DayNightCycle : CanvasModulate
     /// <returns></returns>
     private bool ToggleSpawnCheck()
     {
-        const float thresholdForSpawning = 0.35f;
+        if (!IsEnemySpawningEnabled) return false; 
         _logger.Debug(
-            $" ({TotalTime.ToString(CultureInfo.InvariantCulture)} / {DayInSeconds.ToString(CultureInfo.InvariantCulture)}) : {TotalTime / DayInSeconds} : > {thresholdForSpawning.ToString(CultureInfo.InvariantCulture)}");
-        return TotalTime / DayInSeconds > thresholdForSpawning;
+            $" ({TotalTime.ToString(CultureInfo.InvariantCulture)} / {DayInSeconds.ToString(CultureInfo.InvariantCulture)}) : {TotalTime / DayInSeconds} : > {ThresholdForSpawning.ToString(CultureInfo.InvariantCulture)}");
+        return TotalTime / DayInSeconds > this.ThresholdForSpawning;
     }
 
     public override void _Process(float delta)
