@@ -23,6 +23,10 @@ public class LampLight : Examinable
     [Export] public bool IsFixedLightLevel;
 
     [Export] public bool SpawnerEnabled { get; set; } = true;
+    
+    [Export(PropertyHint.File, "*.tscn")] 
+    public string EnemyToSpawnPath { get; set; } = "res://Entities/Enemy1.tscn";
+
 
     [Export] public LightLevel DefaultLightLevel { get; set; } = LightLevel.Low;
 
@@ -88,6 +92,7 @@ public class LampLight : Examinable
         InteractableArea = GetNode<Area2D>("Area2D");
         AnimatedSprite = GetNode<AnimatedSprite>("AnimatedSprite");
         Spawner = GetNode<EnemySpawner>("EnemySpawner");
+        Spawner.EnemyToSpawnPath = this.EnemyToSpawnPath;
         Spawner.SpawnRate = SpawnRates[_lightValue.Level];
         Light = GetNode<Light2D>("Light2D");
         LightValue = AvailableLightValues.Values.Find(v => v.Level == DefaultLightLevel);

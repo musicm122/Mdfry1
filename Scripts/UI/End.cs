@@ -2,7 +2,7 @@ using CoreUI;
 
 namespace Mdfry1.Scripts.UI;
 
-public class End : EndFS
+public class End : EndFs
 {
 }
 

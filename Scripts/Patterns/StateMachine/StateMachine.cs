@@ -18,31 +18,6 @@ public class StateMachine
     // The state that we'll start in.
     private State InitialState { get; set; }
 
-    public State CreateState(string name)
-    {
-        // Create the state
-        var newState = new State
-        {
-            // Give it a name
-            Name = name
-        };
-
-        // If this is the first state, it will be our initial state
-        if (_states.Count == 0) InitialState = newState;
-
-        // Add it to the dictionary
-        _states[name] = newState;
-
-        // And return it, so that it can be further configured
-        return newState;
-    }
-
-    // Creates, registers and returns a new named state.
-    public State CreateState<T>(T enumVal) where T : struct, System.Enum
-    {
-        return CreateState(enumVal.GetDescription());
-    }
-
     public State AddState(State newState)
     {
         // If this is the first state, it will be our initial state
@@ -52,7 +27,6 @@ public class StateMachine
         _states[newState.Name] = newState;
         return newState;
     }
-
 
     // Updates the current state.
     public void Update(float delta)

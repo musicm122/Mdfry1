@@ -115,6 +115,7 @@ position = Vector2( -1, 27 )
 shape = SubResource( 9 )
 
 [node name="EnemySpawner" parent="." instance=ExtResource( 5 )]
+EnemyToSpawnPath = "res://Entities/EnemyV3.tscn"
 
 [node name="SpawnArea" type="Area2D" parent="EnemySpawner"]
 
