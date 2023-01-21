@@ -9,8 +9,8 @@
     </PropertyGroup>
     <ItemGroup>
 
-        <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
-        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1"/>
+        <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Roslynator.Analyzers">
@@ -20,9 +20,9 @@
         </PackageReference>
     </ItemGroup>
     <ItemGroup>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj"/>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Core2D\Core2D.fsproj"/>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\CoreUI\CoreUI.fsproj"/>
-        <ProjectReference Include="Common\Core.fsproj"/>
+        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj" />
+        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Core2D\Core2D.fsproj" />
+        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\CoreUI\CoreUI.fsproj" />
+        <ProjectReference Include="Common\Core.fsproj" />
     </ItemGroup>
 </Project>
