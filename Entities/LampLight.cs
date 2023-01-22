@@ -23,9 +23,41 @@ public class LampLight : Examinable
     [Export] public bool IsFixedLightLevel;
 
     [Export] public bool SpawnerEnabled { get; set; } = true;
+
+    [Export]
+    public int MaxSpawnCount
+    {
+        get => Spawner.MaxSpawnCount;
+        set => Spawner.MaxSpawnCount = value;
+    }
+
+    [Export(PropertyHint.File, "*.tscn")]
+    public string EnemyToSpawnPath
+    {
+        get => Spawner != null ? Spawner.EnemyToSpawnPath : string.Empty;
+        set {
+            if (Spawner?.EnemyToSpawnPath != null)
+            {
+                Spawner.EnemyToSpawnPath = value;
+            }
+        }
+    }
     
-    [Export(PropertyHint.File, "*.tscn")] 
-    public string EnemyToSpawnPath { get; set; } = "res://Entities/Enemy1.tscn";
+    // [Export(PropertyHint.File, "*.tscn")]
+    // public string EnemyToSpawnPath
+    // {
+    //     get =>
+    //         Spawner != null ? Spawner.EnemyToSpawnPath : string.Empty;
+    //         
+    //     set => 
+    //
+    //         if (Spawner != null) {
+    //             Spawner.EnemyToSpawnPath = value;
+    //         }else{
+    //             Spawner.EnemyToSpawnPath = string.Empty;
+    //         }
+    // }
+    //
 
 
     [Export] public LightLevel DefaultLightLevel { get; set; } = LightLevel.Low;
@@ -68,6 +100,7 @@ public class LampLight : Examinable
                 Spawner.EnemySpawnState = EnemyBehaviorStates.ChasePlayer;
                 //Spawner.EnemySpawnState = _lightValue.Level == LightLevel.None ? EnemyBehaviorStates.ChasePlayer : EnemyBehaviorStates.Wander;
             }
+
             OnLightLevelChanged?.Invoke(value);
         }
     }

@@ -240,5 +240,12 @@ EnemyToSpawnPath = "res://Entities/EnemyV3.tscn"
 position = Vector2( 1903, 1311 )
 IsDebugging = true
 EnemyToSpawnPath = "res://Entities/EnemyV3.tscn"
+DefaultLightLevel = 0
+SpawnRates = {
+0: 3.0,
+1: 6.0,
+2: 9.0,
+3: 12.0
+}
 
 [editable path="NavTilemap"]

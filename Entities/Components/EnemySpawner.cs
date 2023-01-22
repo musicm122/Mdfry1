@@ -86,6 +86,11 @@ public class EnemySpawner : Node2D
     public void Spawn()
     {
         //var enemy = (EnemyV4)ResourceLoader.Load(EnemyToSpawnPath);
+        if (string.IsNullOrWhiteSpace(EnemyToSpawnPath))
+        {
+            return;
+        }
+
         var enemy = (EnemyV4)GD.Load<PackedScene>(EnemyToSpawnPath).Instance();
         enemy.DefaultState = EnemySpawnState;
         enemy.GlobalPosition = SpawnPosition.Position;
@@ -96,6 +101,11 @@ public class EnemySpawner : Node2D
     public void SpawnTougher()
     {
         //var enemy = (EnemyV4)ResourceLoader.Load(EnemyToSpawnPath);
+        if (string.IsNullOrWhiteSpace(EnemyToSpawnPath))
+        {
+            return;
+        }
+
         var enemy = (EnemyV4)GD.Load<PackedScene>(EnemyToSpawnPath).Instance();
         enemy.EnemyDataStore.MaxHealth = new Random().RandomInt(4, 6);
         enemy.EnemyDataStore.CurrentHealth = enemy.EnemyDataStore.MaxHealth;
@@ -128,6 +138,5 @@ public class EnemySpawner : Node2D
             Console.WriteLine(e);
             throw;
         }
-        
     }
 }
