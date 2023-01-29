@@ -1,4 +1,5 @@
 ﻿using System;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Constants;
 
 namespace Mdfry1.Scripts.Item;
@@ -29,8 +30,7 @@ public class Item
     public string Description { get; set; }
     public string ImagePath { get; set; }
 
-    public string ImagePathLookup(string name)
-    {
-        return ItemConstants.ItemImagePaths[name.ToLowerInvariant()];
-    }
+    public string ImagePathLookup(string name) =>
+        ItemConstants.ItemImagePaths[name.ToLowerInvariant()];
+    
 }

@@ -1,4 +1,5 @@
 using Godot;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Item;
 
@@ -8,10 +9,8 @@ public static class MasterItemList
 {
     public static readonly Item.Item[] Items =
     {
-        new("Foo's Glasses", "These are some thick lenses",
-            ItemConstants.FlashlightImagePath),
-        new("Flashlight", "Essential for seeing in the dark.",
-            ItemConstants.FlashlightImagePath),
+        new("Foo's Glasses", "These are some thick lenses", ItemConstants.FlashlightImagePath),
+        new("Flashlight", "Essential for seeing in the dark.", ItemConstants.FlashlightImagePath),
         new("Gas Mask", "Allows me to survive tear gas",
             ItemConstants.FlashlightImagePath),
         new("Broken cell phone", "Maybe it can be fixed",
