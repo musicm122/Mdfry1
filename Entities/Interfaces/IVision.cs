@@ -11,10 +11,8 @@ public interface IVision
     public Node2D OldTarget { get; set; }
     public Node2D NewTarget { get; set; }
 
-    public bool CanCheckFrame(int interval = 2)
-    {
-        return new Random().Next() % interval == 0;
-    }
+    public bool CanCheckFrame(int interval = 2) =>
+        new Random().Next() % interval == 0;
 
     void UpdateFacingDirection(Vector2 newVelocity);
     void LookAtPoint(Vector2 point);

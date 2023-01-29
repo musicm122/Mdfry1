@@ -9,8 +9,7 @@ namespace Mdfry1.Entities.Vision;
 public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
 {
     private bool LineOfSight { get; set; }
-
-
+    
     [Export] public bool IsDebugging { get; set; }
     public Action<Node2D> OnTargetSeen { get; set; }
     public Action<Node2D> OnTargetOutOfSight { get; set; }
@@ -70,7 +69,7 @@ public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
         OnTargetOutOfSight?.Invoke(OldTarget);
     }
 
-    public bool HasLineOfSight(Vector2 point)
+    private bool HasLineOfSight(Vector2 point)
     {
         var spaceState = GetWorld2d().DirectSpaceState;
         var result = spaceState.IntersectRay(GlobalTransform.origin, point, null, CollisionMask);

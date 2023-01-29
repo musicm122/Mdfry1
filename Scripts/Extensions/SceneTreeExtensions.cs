@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Godot;
 using Mdfry1.Entities;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scenes.Level;
 using Mdfry1.Scripts.Constants;
 using Mdfry1.Scripts.Item;

@@ -3,6 +3,7 @@ using Common.Constants;
 using Godot;
 using Mdfry1.Entities.Interfaces;
 using Mdfry1.Entities.Vision;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
@@ -23,7 +24,7 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
 
     private Label DebugLabel { get; set; }
 
-    public CameraState CurrentState { get; set; } = CameraState.Idle;
+    public States.CameraState CurrentState { get; set; } = States.CameraState.Idle;
 
     public IVision VisionManager { get; set; }
 
@@ -51,11 +52,9 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
         DebugLabel = GetNode<Label>("DebugLabel");
         VisionManager = GetNode<RaycastVision>("Pivot/RayCast2D");
         CameraSprite = GetNode<Polygon2D>("Polygon2D");
-        if (VisionManager != null)
-        {
-            VisionManager.OnTargetSeen += OnTargetDetection;
-            VisionManager.OnTargetOutOfSight += OnTargetLost;
-        }
+        if (VisionManager == null) return;
+        VisionManager.OnTargetSeen += OnTargetDetection;
+        VisionManager.OnTargetOutOfSight += OnTargetLost;
     }
 
     private void OnTargetLost(Node2D player)
@@ -68,7 +67,7 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
     public void OnTargetDetection(Node2D player)
     {
         PlayerRef = player;
-        CurrentState = CameraState.Aggro;
+        CurrentState = States.CameraState.Aggro;
     }
 
     private void OnIdle(float delta)
@@ -127,25 +126,26 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
     public void Alert()
     {
         (_, PlayerRef) = GetTree().GetPlayerNode();
-        CurrentState = CameraState.Aggro;
+        CurrentState = States.CameraState.Aggro;
     }
 
     public override void _PhysicsProcess(float delta)
     {
         switch (CurrentState)
         {
-            case CameraState.Warning:
+            case States.CameraState.Warning:
                 OnWarning(delta);
                 break;
-            case CameraState.Aggro:
+            case States.CameraState.Aggro:
                 OnAggro(delta);
                 break;
-            case CameraState.Damaged:
+            case States.CameraState.Damaged:
                 OnDamaged(delta);
                 break;
-            case CameraState.Stun:
+            case States.CameraState.Stun:
                 OnStun(delta);
                 break;
+            case States.CameraState.Idle:
             default:
                 OnIdle(delta);
                 break;
@@ -154,7 +154,7 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
         if (CurrentCoolDownCounter > 0)
             CurrentCoolDownCounter -= delta;
         else
-            CurrentState = CameraState.Idle;
+            CurrentState = States.CameraState.Idle;
 
         if (IsDebugging)
             DebugLabel.Text =
