@@ -14,7 +14,6 @@ type IVision =
     abstract member OnTargetOutOfSight: (Node2D -> unit)
     abstract member CanCheckFrames: int -> bool
     abstract member UpdateFacingDirection: Vector2 -> unit
-    abstract member LookAtPoint: Vector2 -> unit
     abstract member CanSeeTarget: Node2D -> SightState
     abstract member OldTarget: Node2D option with get, set
     abstract member NewTarget: Node2D option with get, set
@@ -69,9 +68,10 @@ type Area2dVision() =
 
 
     interface IVision with
-        member this.CanCheckFrames(var0) = failwith "todo"
+        member this.CanCheckFrames(interval:int) =
+            (System.Random().Next(0) % interval) = 0
+
         member this.CanSeeTarget(var0) = failwith "todo"
-        member this.LookAtPoint(var0) = failwith "todo"
         member this.NewTarget = failwith "todo"
 
         member this.NewTarget
@@ -84,15 +84,24 @@ type Area2dVision() =
 
         member this.OnTargetOutOfSight = failwith "todo"
         member this.OnTargetSeen = failwith "todo"
-        member this.UpdateFacingDirection(var0) = failwith "todo"
+        member this.UpdateFacingDirection(newVelocity) =
+            this.Rotation <- this.Position.AngleToPoint(newVelocity)
 
 type RaycastVision() =
     inherit RayCast2D()
+    
+    [<Export>]
+    member val private Targets: string[] = [| "player" |] with get, set
+
+
+    member this.Vision
+        with private get (): IVision = (this :> IVision)
 
     interface IVision with
-        member this.CanCheckFrames(var0) = failwith "todo"
+        member this.CanCheckFrames(interval:int) =
+            (System.Random().Next(0) % interval) = 0
+            
         member this.CanSeeTarget(var0) = failwith "todo"
-        member this.LookAtPoint(var0) = failwith "todo"
         member this.NewTarget = failwith "todo"
 
         member this.NewTarget

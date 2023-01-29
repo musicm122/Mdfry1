@@ -15,7 +15,6 @@ public interface IVision
         new Random().Next() % interval == 0;
 
     void UpdateFacingDirection(Vector2 newVelocity);
-    void LookAtPoint(Vector2 point);
 
     bool CanSeeTarget();
 }
