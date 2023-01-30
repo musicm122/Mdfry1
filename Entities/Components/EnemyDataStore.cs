@@ -10,7 +10,7 @@ public class EnemyDataStore : Health
 {
     [Export] public float AttackRange { get; set; }
 
-    public IVision VisionManager { get; set; }
+    public Mdfry1.Logic.Sight.IVision VisionManager { get; set; }
 
     public ILogger Logger { get; set; } = new GDLogger(LogLevelOutput.Warning);
     public NodePath PatrolPath { get; private set; }

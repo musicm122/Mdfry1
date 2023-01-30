@@ -2,7 +2,7 @@
 using Common.Constants;
 using Godot;
 using Mdfry1.Entities.Interfaces;
-using Mdfry1.Entities.Vision;
+//using Mdfry1.Entities.Vision;
 using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
@@ -26,7 +26,7 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
 
     public States.CameraState CurrentState { get; set; } = States.CameraState.Idle;
 
-    public IVision VisionManager { get; set; }
+    public Mdfry1.Logic.Sight.IVision VisionManager { get; set; }
 
     public Node2D PlayerRef { get; set; }
 
@@ -50,7 +50,7 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
     public override void _Ready()
     {
         DebugLabel = GetNode<Label>("DebugLabel");
-        VisionManager = GetNode<RaycastVision>("Pivot/RayCast2D");
+        VisionManager = GetNode<Mdfry1.Logic.Sight.RaycastVision>("Pivot/RayCast2D");
         CameraSprite = GetNode<Polygon2D>("Polygon2D");
         if (VisionManager == null) return;
         VisionManager.OnTargetSeen += OnTargetDetection;

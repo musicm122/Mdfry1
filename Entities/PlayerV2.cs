@@ -11,6 +11,8 @@ namespace Mdfry1.Entities;
 
 public class PlayerV2 : PlayerMovableBehavior
 {
+    public int InitialAmmoAmount = 1000;
+    
     [Export(PropertyHint.ResourceType, "PlayerAudioResource")]
     public PlayerAudioResource AudioResource { get; set; }
 
@@ -59,7 +61,7 @@ public class PlayerV2 : PlayerMovableBehavior
             MissionManager = new MissionManager()
         };
 
-        DataStore.Inventory.Add("Ammo", 1);
+        DataStore.Inventory.Add("Ammo", InitialAmmoAmount);
         DataStore.GetFacingDirection += AnimationManager.GetFacingDirection;
 
         SoundPlayer = GetNode<SoundPlayer>("Behaviors/SoundPlayer");

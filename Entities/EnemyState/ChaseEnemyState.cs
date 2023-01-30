@@ -29,7 +29,7 @@ public class ChaseEnemyState : State
     private EnemyV4 Enemy { get; }
     private PlayerV2 PlayerRef { get; }
     private EnemyDataStore DataStore => Enemy.EnemyDataStore;
-    private IVision VisionManager => Enemy.EnemyDataStore.VisionManager;
+    private Mdfry1.Logic.Sight.IVision VisionManager => Enemy.EnemyDataStore.VisionManager;
 
     private void OnEnterState()
     {

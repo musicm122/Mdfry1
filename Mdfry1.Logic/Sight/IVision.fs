@@ -1,5 +1,6 @@
 ﻿namespace Mdfry1.Logic.Sight
 
+open System
 open Godot
 open Common
 
@@ -11,12 +12,12 @@ type SightState =
     | NoKnownTarget = 3
 
 type IVision =
-    abstract member OnTargetSeen: (Node2D -> unit) option with get, set
-    abstract member OnTargetOutOfSight: (Node2D -> unit) option with get, set
+    abstract member OnTargetSeen: System.Action<Node2D> with get, set
+    abstract member OnTargetOutOfSight: System.Action<Node2D> with get, set
     abstract member CanCheckFrames: int -> bool
     abstract member UpdateFacingDirection: Vector2 -> unit
-    abstract member CanSeeTarget:unit -> bool
-    
+    abstract member CanSeeTarget: unit -> bool
+
     abstract member OldTarget: Node2D option with get, set
     abstract member NewTarget: Node2D option with get, set
 
@@ -24,7 +25,7 @@ type RaycastVision() =
     inherit RayCast2D()
 
     member this.IsTrackedTarget(body: Node2D) =
-        this.Targets |> Array.contains (body.Name.Trim().ToLowerInvariant())
+        not (isNull(body)) &&  (this.Targets |> Array.contains (body.Name.Trim().ToLowerInvariant()))
 
     member val private LineOfSight: bool = false with get, set
 
@@ -67,12 +68,16 @@ type RaycastVision() =
         | Some newT, _ ->
             this.Vision.NewTarget <- Some newT
             this.CanSeeTarget <- true
-            this.Vision.OnTargetSeen |> Option.map (fun onSeen -> onSeen newT) |> ignore
+
+            if this.Vision.OnTargetSeen <> null then
+                this.Vision.OnTargetSeen.Invoke(newT)
+
             ()
         | None, Some oldT ->
             this.CanSeeTarget <- false
-            this.Vision.OnTargetOutOfSight
-            |> Option.map (fun onOutOfSight -> onOutOfSight oldT)
+
+            if this.Vision.OnTargetOutOfSight <> null then
+                this.Vision.OnTargetOutOfSight.Invoke(oldT)
             |> ignore
 
             ()
@@ -93,12 +98,11 @@ type RaycastVision() =
         member this.CanCheckFrames(interval: int) =
             (System.Random().Next(0) % interval) = 0
 
-        member this.CanSeeTarget() =
-            this.CanSeeTarget
+        member this.CanSeeTarget() = this.CanSeeTarget
         member val NewTarget: Node2D option = None with get, set
         member val OldTarget: Node2D option = None with get, set
-        member val OnTargetSeen: (Node2D -> unit) option = None with get, set
-        member val OnTargetOutOfSight: (Node2D -> unit) option = None with get, set
+        member val OnTargetOutOfSight: Action<Node2D> = null with get, set
+        member val OnTargetSeen: Action<Node2D> = null with get, set
 
         member this.UpdateFacingDirection newVelocity =
             this.Rotation <- this.Position.AngleToPoint(newVelocity.Normalized())

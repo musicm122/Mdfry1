@@ -7,10 +7,12 @@ using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Entities.Components;
 using Mdfry1.Entities.EnemyState;
 using Mdfry1.Entities.Interfaces;
-using Mdfry1.Entities.Vision;
+//using Mdfry1.Entities.Vision;
+using Mdfry1.Logic.Sight;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.StateMachine;
+using Microsoft.FSharp.Core;
 
 namespace Mdfry1.Entities;
 
@@ -80,6 +82,11 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
 
         if (EnemyDataStore.VisionManager != null)
         {
+            //var onTargetDetectionOption = new FSharpOption<Action<Node2D>>(OnTargetDetection);
+            //var b = FSharpOption.Some<Action<Node2D>>(OnTargetDetection);
+            //var b = FSharpOption.Some(onTargetDetectionOption);
+            //var onTargetDetectionOption = new FSharpOption<FSharpFunc<Node2D, Unit>>(OnTargetDetection);
+            //EnemyDataStore.VisionManager.OnTargetSeen
             EnemyDataStore.VisionManager.OnTargetSeen += OnTargetDetection;
             EnemyDataStore.VisionManager.OnTargetOutOfSight += OnTargetLost;
         }
