@@ -2,116 +2,103 @@
 
 open Godot
 open Common
-open Common.Extensions
 
+//todo: look at refactoring canSeeTarget to return  SightState instead of bool
 type SightState =
-    | Blocked
-    | CanSee
-    | TooFarAway
+    | Blocked = 0
+    | Visible = 1
+    | TooFarAway = 2
+    | NoKnownTarget = 3
 
 type IVision =
-    abstract member OnTargetSeen: (Node2D -> unit)
-    abstract member OnTargetOutOfSight: (Node2D -> unit)
+    abstract member OnTargetSeen: (Node2D -> unit) option with get, set
+    abstract member OnTargetOutOfSight: (Node2D -> unit) option with get, set
     abstract member CanCheckFrames: int -> bool
     abstract member UpdateFacingDirection: Vector2 -> unit
-    abstract member CanSeeTarget: Node2D -> SightState
+    abstract member CanSeeTarget:unit -> bool
+    
     abstract member OldTarget: Node2D option with get, set
     abstract member NewTarget: Node2D option with get, set
 
-type Area2dVision() =
-    inherit Area2D()
-    //Some(this.Vision.OnTargetSeen) |> Option.iter (fun onSeen -> onSeen (newTarget))
+type RaycastVision() =
+    inherit RayCast2D()
 
-    [<Export>]
-    member val private Targets: string[] = [| "player" |] with get, set
+    member this.IsTrackedTarget(body: Node2D) =
+        this.Targets |> Array.contains (body.Name.Trim().ToLowerInvariant())
 
     member val private LineOfSight: bool = false with get, set
 
-    member this.Vision
-        with private get (): IVision = (this :> IVision)
+    member val private CanSeeTarget = false with get, set
 
-    member this.TargetInLineOfSight(body: Node2D) : bool =
-        this.Targets |> Array.contains (body.Name.Trim().ToLowerInvariant())
-        && this.HasLineOfSight(body.Position)
+    [<Export>]
+    member val StartDirection = Vector2.Up with get, set
 
-    member private this.OnVisionRadiusBodyEntered(node: Node) =
-        let hasLineOfSight = this.TargetInLineOfSight(node :?> Node2D)
+    [<Export>]
+    member val ConeAngle = Mathf.Deg2Rad(30f) with get, set
 
-        if hasLineOfSight then
-            this.LineOfSight <- true
-            let newTarget = (node :?> Node2D)
-            this.Vision.NewTarget <- Some newTarget
-            Some(this.Vision.OnTargetSeen) |> Option.iter (fun onSeen -> onSeen (newTarget))
-            this.Vision.OldTarget <- None
+    [<Export>]
+    member val AngleBetweenRays = Mathf.Deg2Rad(5f) with get, set
 
-    member private this.OnVisionRadiusBodyExit(body: Node) =
-        match this.Vision.OldTarget with
-        | Some oldTarget ->
-            let isTarget = this.Targets |> Array.contains (body.Name.Trim().ToLowerInvariant())
-            let node = body :?> Node2D
-            // Not sure this exit code worked before since old code passed in global position for exit and local position for entrance.
-            let hasLineOfSight = this.TargetInLineOfSight(oldTarget)
+    [<Export>]
+    member val MaxViewDistance = 100f with get, set
 
-            if isTarget && not hasLineOfSight then
-                Some this.Vision.OnTargetOutOfSight
-                |> Option.iter (fun onOutOfSight -> onOutOfSight (oldTarget))
-        | _ -> ()
+    [<Export>]
+    member val FrameCheckInterval = 2 with get, set
 
-    override this._Ready() =
-        match this.ConnectBodyEntered this (nameof (this.OnVisionRadiusBodyEntered)) with
-        | err when err <> Error.Ok -> failwithf "Signal: OnVisionRadiusBodyEntered failed to be connected"
-        | _ -> ()
-
-        match this.ConnectBodyExited this (nameof (this.OnVisionRadiusBodyExit)) with
-        | err when err <> Error.Ok -> failwithf "Signal: OnVisionRadiusBodyExit failed to be connected"
-        | _ -> ()
-
-
-    interface IVision with
-        member this.CanCheckFrames(interval:int) =
-            (System.Random().Next(0) % interval) = 0
-
-        member this.CanSeeTarget(var0) = failwith "todo"
-        member this.NewTarget = failwith "todo"
-
-        member this.NewTarget
-            with set value = failwith "todo"
-
-        member this.OldTarget = failwith "todo"
-
-        member this.OldTarget
-            with set value = failwith "todo"
-
-        member this.OnTargetOutOfSight = failwith "todo"
-        member this.OnTargetSeen = failwith "todo"
-        member this.UpdateFacingDirection(newVelocity) =
-            this.Rotation <- this.Position.AngleToPoint(newVelocity)
-
-type RaycastVision() =
-    inherit RayCast2D()
-    
     [<Export>]
     member val private Targets: string[] = [| "player" |] with get, set
 
-
     member this.Vision
         with private get (): IVision = (this :> IVision)
 
+    member this.GenerateSightRays() =
+        this.GenerateRayCasts this.ConeAngle this.AngleBetweenRays this.StartDirection this.MaxViewDistance
+
+    member this.GetTargetCollider() : Node2D option =
+        this.GetChildrenOfTypeAsArray<RayCast2D>()
+        |> Array.map (fun (ray: RayCast2D) -> ray.GetCollider() :?> Node2D)
+        |> Array.tryFind (this.IsTrackedTarget)
+
+    member this.FlushVisionCheck() =
+        let newTarget = this.GetTargetCollider()
+        let oldTarget = this.Vision.OldTarget
+
+        match (newTarget, oldTarget) with
+        | Some newT, _ ->
+            this.Vision.NewTarget <- Some newT
+            this.CanSeeTarget <- true
+            this.Vision.OnTargetSeen |> Option.map (fun onSeen -> onSeen newT) |> ignore
+            ()
+        | None, Some oldT ->
+            this.CanSeeTarget <- false
+            this.Vision.OnTargetOutOfSight
+            |> Option.map (fun onOutOfSight -> onOutOfSight oldT)
+            |> ignore
+
+            ()
+        | _ -> ()
+
+        this.Vision.OldTarget <- newTarget
+        this.Vision.NewTarget <- None
+
+    override this._Ready() = this.GenerateSightRays()
+
+    override this._PhysicsProcess _ =
+        if not (this.Vision.CanCheckFrames this.FrameCheckInterval) then
+            ()
+
+        this.FlushVisionCheck()
+
     interface IVision with
-        member this.CanCheckFrames(interval:int) =
+        member this.CanCheckFrames(interval: int) =
             (System.Random().Next(0) % interval) = 0
-            
-        member this.CanSeeTarget(var0) = failwith "todo"
-        member this.NewTarget = failwith "todo"
 
-        member this.NewTarget
-            with set value = failwith "todo"
+        member this.CanSeeTarget() =
+            this.CanSeeTarget
+        member val NewTarget: Node2D option = None with get, set
+        member val OldTarget: Node2D option = None with get, set
+        member val OnTargetSeen: (Node2D -> unit) option = None with get, set
+        member val OnTargetOutOfSight: (Node2D -> unit) option = None with get, set
 
-        member this.OldTarget = failwith "todo"
-
-        member this.OldTarget
-            with set value = failwith "todo"
-
-        member this.OnTargetOutOfSight = failwith "todo"
-        member this.OnTargetSeen = failwith "todo"
-        member this.UpdateFacingDirection(var0) = failwith "todo"
+        member this.UpdateFacingDirection newVelocity =
+            this.Rotation <- this.Position.AngleToPoint(newVelocity.Normalized())
