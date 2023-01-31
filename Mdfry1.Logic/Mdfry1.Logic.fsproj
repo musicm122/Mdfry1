@@ -6,11 +6,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Compile Include="Library.fs"/>
-        <Compile Include="Constants.fs"/>
-        <Compile Include="Sight\IVision.fs"/>
+        <Compile Include="Library.fs" />
+        <Compile Include="Constants.fs" />
+        <Compile Include="Sight\IVision.fs" />
 
-        <Compile Include="Enemy\SecurityCamera.fs"/>
+        <Compile Include="Enemy\SecurityCamera.fs" />
+
+        <Compile Include="Movement\IMovableBehavior.fs" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,7 +25,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj"/>
+        <ProjectReference Include="..\..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj" />
     </ItemGroup>
 
 </Project>

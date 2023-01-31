@@ -6,7 +6,7 @@ using Mdfry1.Scripts.Patterns.Logger.Implementation;
 
 namespace Mdfry1.Entities.Behaviors;
 
-public abstract class BaseMovableBehavior : KinematicBody2D, IDebuggable<Node>, IMovableBehavior
+public abstract class BaseMovableBehavior : KinematicBody2D, IDebuggable<Node>, Mdfry1.Entities.Behaviors.Interfaces.IMovableBehavior
 {
     protected ILogger _logger { get; set; } = new GDLogger(LogLevelOutput.Warning);
 
