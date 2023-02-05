@@ -1,5 +1,17 @@
 ﻿namespace Mdfry1.Logic
 
-module Say =
-    let hello name =
-        printfn "Hello %s" name
+open Common.Interfaces
+open Common.Manager
+open Common.Services
+
+module ServicesImpl =
+    let db = JsonItemDatabase("foo")
+    let Services = {
+        Logger = Log.Logger
+        Pauser = failwith "todo"
+        AudioManager = failwith "todo"
+        DialogManager =  new DialogManager()
+        Database = db
+        InventoryManager = InventoryManager(db)
+    }
+       
