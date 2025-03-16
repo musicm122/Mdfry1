@@ -23,13 +23,13 @@
 <!--        </Reference>-->
 <!--    </ItemGroup>-->
 
-    <!--    <ItemGroup>-->
-<!--        <PackageReference Include="Roslynator.Analyzers">-->
-<!--            <Version>2.2.0</Version>-->
-<!--            <PrivateAssets>all</PrivateAssets>-->
-<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
-<!--        </PackageReference>-->
-<!--    </ItemGroup>-->
+    <ItemGroup>
+        <PackageReference Include="Roslynator.Analyzers">
+            <Version>2.2.0</Version>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 <!--    <ItemGroup>-->
 <!--        <Reference Include="GodotSharp">-->
 <!--            <HintPath>..\..\Assemblies\.mono\assemblies\Debug\GodotSharp.dll</HintPath>-->

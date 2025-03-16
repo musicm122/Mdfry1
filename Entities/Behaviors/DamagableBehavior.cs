@@ -7,6 +7,8 @@ using Mdfry1.Entities.Components;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
 using Mdfry1.Scripts.Patterns.Logger.Implementation;
+using Microsoft.FSharp.Control;
+using Microsoft.FSharp.Core;
 
 namespace Mdfry1.Entities.Behaviors;
 
@@ -120,8 +122,13 @@ public class DamagableBehavior : Node2D, IDebuggable<Node>, IDamagableBehavior
             var arg = $"TryConnectSignal('area_entered', {Name}, {nameof(OnHurtboxAreaEntered)})";
             _logger.Error($"Attempt to register Hurtbox's signal with args {arg} failed");
         }
-
-        HurtBox.OnInvincibleStartedEventHandler.AddHandler((_, _) => OnHurtboxInvincibilityStarted());
+        
+        /*
+         this warning is a f# to C# issue. 
+         if I don't tell the compiler what type it is then it won't yell at me.
+         https://stackoverflow.com/questions/55330154/how-to-adapt-actionstring-into-fsharpfuncstring-unit 
+        */
+        HurtBox.OnInvincibleStartedEventHandler.AddHandler((_, _) =>OnHurtboxInvincibilityStarted());
         HurtBox.OnInvincibleEndedEventHandler.AddHandler((_, _) => OnHurtboxInvincibilityStarted());
     }
 }

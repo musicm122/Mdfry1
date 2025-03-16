@@ -24,7 +24,7 @@ public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
         for (var i = 0; i < bodies.Count; i++)
         {
             var body = (Node)bodies[i];
-            if (body.Name.ToLower().Contains("player")) return true;
+            if (body.Name.Contains("player", StringComparison.OrdinalIgnoreCase)) return true;
         }
 
         return false;
@@ -48,7 +48,7 @@ public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
 
     private void OnVisionRadiusBodyEntered(Node body)
     {
-        if (!body.Name.ToLower().Contains("player")) return;
+        if (!body.Name.Contains("player", StringComparison.OrdinalIgnoreCase)) return;
 
         this.PrintCaller();
         NewTarget = (Node2D)body;
@@ -61,7 +61,7 @@ public class Area2dVision : Area2D, IDebuggable<Node2D>, IVision
 
     private void OnVisionRadiusBodyExit(Node body)
     {
-        if (!body.Name.ToLower().Contains("player")) return;
+        if (!body.Name.Contains("player", StringComparison.CurrentCultureIgnoreCase)) return;
         this.PrintCaller();
         if (OldTarget == null) return;
         LineOfSight = HasLineOfSight(OldTarget.GlobalPosition);

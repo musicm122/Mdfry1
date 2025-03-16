@@ -25,7 +25,7 @@ public class Inventory : IInventory
 
     public bool HasKey(Key key)
     {
-        return Items.Any(item => item.Name.ToLower() == key.ToString().ToLower()) || key == Key.None;
+        return Items.Any(item => string.Equals(item.Name, key.ToString(), StringComparison.OrdinalIgnoreCase)) || key == Key.None;
     }
 
     public void Add(string name, int amt)
@@ -117,15 +117,11 @@ public class Inventory : IInventory
 
     public bool RemoveItemIfExists(string itemName)
     {
-        if (Items.Any(i => i.Name.Trim().Equals(itemName.Trim())))
-        {
-            var item = Items.First(i => i.Name == itemName);
-            RaiseRemovingItem(item);
-            Items.Remove(item);
-            return true;
-        }
-
-        return false;
+        if (!Items.Any(i => i.Name.Trim().Equals(itemName.Trim()))) return false;
+        var item = Items.First(i => i.Name == itemName);
+        RaiseRemovingItem(item);
+        Items.Remove(item);
+        return true;
     }
 
     protected virtual void RaiseAddingItem(Item item)

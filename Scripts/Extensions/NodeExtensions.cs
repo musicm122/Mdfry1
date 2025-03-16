@@ -99,7 +99,7 @@ public static class NodeExtensions
 
     public static bool IsPlayer(this Node node)
     {
-        return node.Name.ToLower().Contains("player");
+        return node.Name.Contains("player", StringComparison.OrdinalIgnoreCase);
     }
 
     public static void Pause(this Node node)

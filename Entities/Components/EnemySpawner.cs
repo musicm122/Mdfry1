@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Enum;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
@@ -71,6 +72,13 @@ public class EnemySpawner : Node2D
     {
         SpawnPosition = GetNode<Area2D>("./SpawnArea");
         AccumulatedTime = 0f;
+        AddToGroup(Groups.Spawner);
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        RemoveFromGroup(Groups.Spawner);
     }
 
     public void SpawnAtPosition(Position2D pos, Node2D parent)
@@ -120,7 +128,8 @@ public class EnemySpawner : Node2D
     {
         try
         {
-            if (GetTree().GetEnemyCount() >= MaxSpawnCount || !EnableSpawning) return;
+            var enemyCount = GetTree().GetEnemyCount();
+            if (enemyCount >= MaxSpawnCount || !EnableSpawning) return;
 
             AccumulatedTime += delta;
             if (AccumulatedTime <= SpawnRate) return;
