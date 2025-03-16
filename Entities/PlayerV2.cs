@@ -5,6 +5,7 @@ using Mdfry1.CustomResources;
 using Mdfry1.Entities.Behaviors;
 using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Entities.Components;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Item;
 using Mdfry1.Scripts.Mission;
 
@@ -96,6 +97,16 @@ public class PlayerV2 : PlayerMovableBehavior
         ShootableBehavior.OnShootStart += OnShootStarted;
         ShootableBehavior.OnNoAmmo += OnShootStartedWithEmptyClip;
         PlayerStatus.EmptyHealthBarCallback += OnDeath;
+        AddToGroup(Groups.Player);
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        RemoveFromGroup(Groups.Player);
+        ShootableBehavior.OnShootStart -= OnShootStarted;
+        ShootableBehavior.OnNoAmmo -= OnShootStartedWithEmptyClip;
+        PlayerStatus.EmptyHealthBarCallback -= OnDeath;
     }
 
     private void OnDeath()

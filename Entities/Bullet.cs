@@ -1,6 +1,7 @@
 using System;
 using Godot;
 using Mdfry1.Entities.Components;
+using Mdfry1.Logic.Constants;
 
 namespace Mdfry1.Entities
 {

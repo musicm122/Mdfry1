@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Core.Input;
 using Godot;
 using Mdfry1.addons.dialogic.Other;
+using Mdfry1.Logic.Constants;
 using Mdfry1.Scripts.Extensions;
 using Mdfry1.Scripts.Patterns.Logger;
 
@@ -175,10 +176,18 @@ public class Examinable : Node2D, IDebuggable<Node>
 
     public override void _Ready()
     {
+        AddToGroup(Groups.Examinable);
         InteractableArea = GetNode<Area2D>("Area2D");
         if (InteractableArea != null)
             RegisterInteractable(InteractableArea);
         else
             throw new NullReferenceException("Missing required child 'Area2D' for examinable");
+    }
+
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        RemoveFromGroup(Groups.Examinable);
+
     }
 }

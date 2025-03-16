@@ -55,6 +55,13 @@ public class SecurityCamera : Node2D, IDebuggable<Node2D>
         if (VisionManager == null) return;
         VisionManager.OnTargetSeen += OnTargetDetection;
         VisionManager.OnTargetOutOfSight += OnTargetLost;
+        AddToGroup(Groups.SecurityCamera);
+    }
+    
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        RemoveFromGroup(Groups.SecurityCamera);
     }
 
     private void OnTargetLost(Node2D player)

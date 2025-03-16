@@ -49,7 +49,7 @@ public class ShootBehavior : Node2D, IDebuggable<Node>, IShootableBehavior
         var instance = (Bullet)rawInstance;
         instance.OnCollision += node =>
         {
-            if (!node.Name.ToLower().Contains("enemy")) return;
+            if (!node.Name.Contains("enemy", StringComparison.OrdinalIgnoreCase)) return;
             OnBulletCollision?.Invoke(node);
         };
         return instance;

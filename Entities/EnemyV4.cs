@@ -8,6 +8,7 @@ using Mdfry1.Entities.Behaviors.Interfaces;
 using Mdfry1.Entities.Components;
 using Mdfry1.Entities.EnemyState;
 using Mdfry1.Entities.Interfaces;
+using Mdfry1.Logic.Constants;
 //using Mdfry1.Entities.Vision;
 using Mdfry1.Logic.Sight;
 using Mdfry1.Scripts.Enum;
@@ -63,7 +64,16 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
         if (EnemyDataStore.CurrentCoolDownCounter <= 0f) _stateMachine.TransitionTo(DefaultState);
 
         _stateMachine.TransitionTo(DefaultState);
+        AddToGroup(Groups.AllEnemies);
+        AddToGroup(Groups.Movable);
     }
+    public override void _ExitTree()
+    {
+        base._ExitTree();
+        RemoveFromGroup(Groups.AllEnemies);
+        RemoveFromGroup(Groups.Movable);
+    }
+
 
     public override void _Ready()
     {
@@ -111,6 +121,7 @@ public class EnemyV4 : EnemyMovableBehavior, IEnemy
         Init();
     }
 
+    
     public override void _PhysicsProcess(float delta)
     {
         try

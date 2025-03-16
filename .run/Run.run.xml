@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Run" type="GODOT_DEBUG_RUN_CONFIGURATION" factoryName="Start and Debug">
+    <option name="EXE_PATH" value="$USER_HOME$/Downloads/Godot_v3.6-stable_mono_win64 (2)/Godot_v3.6-stable_mono_win64/Godot_v3.6-stable_mono_win64.exe" />
+    <option name="PROGRAM_PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="PASS_PARENT_ENVS" value="1" />
+    <option name="USE_EXTERNAL_CONSOLE" value="0" />
+    <method v="2">
+      <option name="Build Solution" enabled="true" />
+    </method>
+  </configuration>
+</component>

@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
+using Common;
+using Godot.Collections;
 using Mdfry1.Entities;
 using Mdfry1.Logic.Constants;
 using Mdfry1.Scenes.Level;
@@ -15,6 +19,11 @@ public static class SceneTreeExtensions
         tree.CallGroup(Groups.AllEnemies, "Alert");
     }
 
+    public static List<EnemyV4> GetEnemies(this SceneTree tree)
+    {
+        return tree.GetNodesInGroup(Groups.AllEnemies).ToCSharpList<EnemyV4>();
+    }
+    
     public static void EnableSpawners(this SceneTree tree)
     {
         tree.CallGroup(Groups.Spawner, "EnableSpawning");
@@ -68,9 +77,13 @@ public static class SceneTreeExtensions
     private static List<T> GetNodesByType<T>(this SceneTree tree)
     {
         var retval = new List<T>();
-        foreach (var child in tree.CurrentScene.GetChildren())
+        var array = tree.CurrentScene.GetChildren();
+        for (var index = 0; index < array.Count; index++)
+        {
+            var child = array[index];
             if (child is T t)
                 retval.Add(t);
+        }
 
         return retval;
     }
@@ -82,20 +95,20 @@ public static class SceneTreeExtensions
 
     public static (bool, PlayerV2) GetPlayerNode(this SceneTree tree)
     {
-        return tree.HasPlayerNode() ? (true, tree.CurrentScene.FindNode("Player") as PlayerV2) : (false, null);
+        return tree.HasPlayerNode() ? 
+            (true, tree.CurrentScene.FindNode("Player") as PlayerV2) : (false, null);
     }
 
     public static List<EnemyV4> GetEnemyNodes(this SceneTree tree)
     {
-        return tree.Root.GetChildrenOfType<EnemyV4>();
+        return tree.GetEnemies();
     }
 
     public static int GetEnemyCount(this SceneTree tree)
     {
         return tree.GetEnemyNodes().Count;
     }
-
-
+    
     public static List<LampLight> GetLampLightNodes(this SceneTree tree)
     {
         return tree.Root.GetChildrenOfType<LampLight>();

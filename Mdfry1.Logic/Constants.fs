@@ -5,11 +5,15 @@ open System.Collections.Generic
 module Groups =
     let Player = "Player"
     let Movable = "Movable"
+    let Pushable = "Pushable"
     let AllEnemies = "Enemies"
     let Spawner = "Spawner"
     let Ammo = "Ammo"
     let Items = "Items"
     let LampFluids = "LampFluids"
+    let Examinable = "Examinable"   
+    let SecurityCamera = "SecurityCamera"
+    let LevelMap = "LevelMap"
         
 module ItemConstants =
     let PizzaImagePath = "res://Assets/Art/Food/pizzaslice.png"

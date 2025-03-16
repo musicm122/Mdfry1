@@ -25,8 +25,8 @@ color = Color( 0.321569, 0.152941, 0.921569, 1 )
 [node name="LampLight" parent="." instance=ExtResource( 14 )]
 position = Vector2( -191, 51 )
 z_index = 2
-IsDebugging = true
 Timeline = "/Interactions/LampFluidInteractions/PromptForFluidFull"
+IsDebugging = true
 
 [node name="HealthKit" parent="." instance=ExtResource( 10 )]
 position = Vector2( 736, 56 )
@@ -155,7 +155,6 @@ Timeline = "/KeyAFound"
 
 [node name="Spikes" parent="." instance=ExtResource( 9 )]
 position = Vector2( 792, -32 )
-IsDebugging = true
 EffectForce = 25.0
 
 [node name="Ammo1" parent="." instance=ExtResource( 12 )]
