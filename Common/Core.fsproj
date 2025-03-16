@@ -13,16 +13,13 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Reference Include="GodotSharp">
-            <HintPath>..\.mono\assemblies\Debug\GodotSharp.dll</HintPath>
-        </Reference>
-        <Reference Include="GodotSharpEditor">
-            <HintPath>..\.mono\assemblies\Debug\GodotSharpEditor.dll</HintPath>
-        </Reference>
+        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj"/>
+      <Reference Include="GodotSharp">
+        <HintPath>..\..\Tooling\FSharpGodotUtil\Assemblies\.mono\assemblies\Debug\GodotSharp.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

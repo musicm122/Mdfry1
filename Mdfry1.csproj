@@ -3,27 +3,46 @@
         <LangVersion>10</LangVersion>
         <TargetFramework>netstandard2.1</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-        <CodeAnalysisRuleSet>roslynator.ruleset</CodeAnalysisRuleSet>
         <Nullable>disable</Nullable>
-
     </PropertyGroup>
     <ItemGroup>
-
         <PackageReference Include="Microsoft.CSharp" Version="4.7.0"/>
         <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.3.1"/>
     </ItemGroup>
+
+<!--    <Reference Include="GodotSharp">-->
+<!--        <HintPath>..\..\Assemblies\.mono\assemblies\Debug\GodotSharp.dll</HintPath>-->
+<!--    </Reference>-->
+<!--    <Reference Include="GodotSharpEditor">-->
+<!--        <HintPath>..\..\Assemblies\.mono\assemblies\Debug\GodotSharpEditor.dll</HintPath>-->
+<!--    </Reference>-->
+    
+<!--    <ItemGroup>-->
+<!--        <Reference Include="GodotSharp">-->
+<!--            <HintPath>..\..\Tooling\FSharpGodotUtil\Assemblies\.mono\assemblies\Debug\GodotSharp.dll</HintPath>-->
+<!--        </Reference>-->
+<!--    </ItemGroup>-->
+
+    <!--    <ItemGroup>-->
+<!--        <PackageReference Include="Roslynator.Analyzers">-->
+<!--            <Version>2.2.0</Version>-->
+<!--            <PrivateAssets>all</PrivateAssets>-->
+<!--            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>-->
+<!--        </PackageReference>-->
+<!--    </ItemGroup>-->
+<!--    <ItemGroup>-->
+<!--        <Reference Include="GodotSharp">-->
+<!--            <HintPath>..\..\Assemblies\.mono\assemblies\Debug\GodotSharp.dll</HintPath>-->
+<!--        </Reference>-->
+<!--        <Reference Include="GodotSharpEditor">-->
+<!--            <HintPath>..\..\Assemblies\.mono\assemblies\Debug\GodotSharpEditor.dll</HintPath>-->
+<!--        </Reference>-->
+<!--    </ItemGroup>-->
+
     <ItemGroup>
-        <PackageReference Include="Roslynator.Analyzers">
-            <Version>2.2.0</Version>
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Common\Common\Common.fsproj"/>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\Core2D\Core2D.fsproj"/>
-        <ProjectReference Include="..\..\Tooling\FSharpGodotUtil\CoreUI\CoreUI.fsproj"/>
-        <ProjectReference Include="Common\Core.fsproj"/>
+        <ProjectReference Include="Common\Core.fsproj" />
+        <ProjectReference Include="..\Tooling\FSharpGodotUtil\Core2D\Core2D.fsproj" />
+        <ProjectReference Include="..\Tooling\FSharpGodotUtil\CoreUI\CoreUI.fsproj" />
         <ProjectReference Include="Mdfry1.Logic\Mdfry1.Logic.fsproj"/>
     </ItemGroup>
 </Project>
